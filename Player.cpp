@@ -1,58 +1,96 @@
+
+#include <Game.h>
 #include <QObject>
 #include <Player.h>
 #include <QTimer>
-enum move{LEFT, RIGHT, JUMP};
-Player::Player(QPixmap image,int width,int height) : Character(image, width, height){
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <iostream>
+using namespace std;
+
+Player::Player(QPixmap image,int width,int height) {
     setPixmap(image);
-    setWidth(width);
-    setHeight(height);
-
-    rTimer = new QTimer();
-    lTimer = new QTimer();
-    uTimer = new QTimer();
+    this->width = width;
+    this->height = height;
+    this->verticalSpeed = 0.0;
 }
 
-
-QTimer* Player::getTimer(int type)
+void Player::keyPressEvent(QKeyEvent *e)
 {
-    if (type == LEFT) return lTimer;
-    if (type == RIGHT) return rTimer;
-    if (type == JUMP) return uTimer;
-    return nullptr;
+    if (e->isAutoRepeat()) return;
+    keys[e->key()] = true; QGraphicsPixmapItem::keyPressEvent(e);
 }
 
-void Player::movePlayer(int movement){
+void Player::keyReleaseEvent(QKeyEvent *e)
+{
+    if (e->isAutoRepeat()) return;
+   keys[e->key()] = false; QGraphicsPixmapItem::keyReleaseEvent(e);
+}
 
-    switch(movement){
-        case LEFT:
-            connect(lTimer, SIGNAL(timeout()), this, SLOT(Player::repeatMove_Left()));
-            lTimer->start(1000/60);
-            break;
-            case RIGHT:
-            connect(rTimer, SIGNAL(timeout()), this, SLOT(Player::repeatMove_Right()));
-            rTimer->start(1000/60);
-            break;
-        case JUMP:
-            connect(uTimer, SIGNAL(timeout()), this, SLOT(Player::repeatMove_Jump()));
-            uTimer->start(1000/60);
-            break;
-        default:
-            break;
+void Player::update()
+{
+    Game * game = static_cast<Game*>(scene()->views().first());
+    if(keys[Qt::Key_A]) setPos(x()-2, y());
+    if(keys[Qt::Key_D]) setPos(x()+2, y());
+    if(keys[Qt::Key_Space]) {
+        if (!inAir){
+            setVerticalSpeed(-500.0/120);
+            setVerticalVelocity(0.0);
+            inAir = true;
+        }
+    }
+    if(keys[Qt::Key_S]) setPos(x(), y()+4);
+    if(inAir){
+        if (y() + verticalSpeed + height >= game->WIN_HEIGHT){
+            setPos(x(), game->WIN_HEIGHT-height);
+            setVerticalSpeed(0.0);
+            setVerticalVelocity(0.0);
+            inAir = false;
+        } else {
+            setPos(x(), y()+verticalSpeed);
+            setVerticalSpeed(verticalSpeed + verticalVelocity);
+            setVerticalVelocity(verticalVelocity + verticalAcceleration);
+            cout << "verticalSpeed: " << verticalSpeed << endl;
+        }
     }
 }
 
-void Player::repeatMove_Left(){
-
+void Player::focusOutEvent(QFocusEvent *event){
+    setFocus();
 }
 
-void Player::repeatMove_Right(){
-
+bool Player::isOnGround()
+{
+    // not final implementation, just testing.
+    Game * game = static_cast<Game*>(scene()->views().first());
+    if(y() + height == static_cast<double>(game->WIN_WIDTH)){
+        inAir = false;
+        return true;
+    } else {
+        setVerticalSpeed(0.0);
+        return false;
+    }
 }
 
-void Player::repeatMove_Jump(){
-
+double Player::getVerticalAceleration()
+{
+    return verticalAcceleration;
 }
 
-void Player::stopMovement(int movement){
+double Player::getVerticalVelocity()
+{
+    return verticalVelocity;
+}
 
+double Player::getVerticalSpeed()
+{
+    return verticalSpeed;
+}
+
+void Player::setVerticalSpeed(double speed){
+    this->verticalSpeed = speed;
+}
+
+void Player::setVerticalVelocity(double velocity){
+    this->verticalVelocity = velocity;
 }

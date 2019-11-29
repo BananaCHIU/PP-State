@@ -1,24 +1,42 @@
 #ifndef PLAYER_H
 #define PLAYER_H
-#include "Character.h"
 
+#include <QGraphicsPixmapItem>
+#include <QKeyEvent>
 #include <QTimer>
-class Player : public Character{
+class Player : public QObject, public QGraphicsPixmapItem{
     Q_OBJECT
 public:
     Player(QPixmap image,int width,int height);
-    QTimer* getTimer(int type);
 
+    void update();
+    void keyPressEvent(QKeyEvent * event);
+    void keyReleaseEvent(QKeyEvent * event);
+    void focusOutEvent(QFocusEvent * event) ;
+
+    int getWidth();
+    int getHeight();
+    double getVerticalAceleration();
+    double getVerticalVelocity();
+    double getVerticalSpeed();
+
+    void setWidth(int width);
+    void setHeight(int height);
+    void setVerticalVelocity(double velocity);
+    void setVerticalSpeed(double speed);
+
+        bool isOnGround();
 public slots:
-    void movePlayer(int movement);
-    void repeatMove_Left();
-    void repeatMove_Right();
-    void repeatMove_Jump();
-    void stopMovement(int movement);
 private:
-    QTimer* lTimer;
-    QTimer* rTimer;
-    QTimer* uTimer;
+    int width;
+    int height;
+
+    const double verticalAcceleration = 0.4/120.0;
+    double verticalVelocity = 0;
+    double verticalSpeed = 0;
+
+    bool inAir = true;
+    QMap <int, bool> keys;
 };
 
 #endif // PLAYER_H

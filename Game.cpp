@@ -1,11 +1,12 @@
 #include "Game.h"
 #include "Player.h"
 
+#include <iostream>
 #include <QKeyEvent>
 #include <QDebug>
 #include <QTimer>
 
-enum move{LEFT, RIGHT, JUMP};
+using namespace std;
 
 Game::Game(QWidget *parent) : QGraphicsView(){
     scene = new QGraphicsScene();
@@ -16,49 +17,16 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     setFixedSize(WIN_WIDTH, WIN_HEIGHT);
 
     player = new Player(QPixmap(":/images/player.png"), 64, 64);
+    player->setFlag(QGraphicsItem::ItemIsFocusable);
+    player->setFocus();
     player->setPos(scene->width()/2, scene->height()/2);
     scene->addItem(player);
 
-    QObject::connect(this, &Game::keyInputReceived, player, &Player::movePlayer);
+    timer = new QTimer();
+    connect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
+    timer->start(1000/120);
 }
 
-void Game::keyPressEvent(QKeyEvent * event){
-    switch (event->key()){
-    case Qt::Key_A:{
-        player->movePlayer(LEFT);
-        qDebug() << "LEFT";
-        break;
-    }
-    case Qt::Key_D:{
-        qDebug() << "RIGHT";
-        break;
-    }
-    case Qt::Key_W:{
-        qDebug() << "JUMP";
-        break;
-    }
-    default:
-        break;
-    }
+void Game::update(){
+    player->update();
 }
-
-void Game::keyReleaseEvent(QKeyEvent *event)
-{
-    switch (event->key()){
-        case Qt::Key_A:{
-            qDebug() << "LEFT released";
-            break;
-        }
-        case Qt::Key_D:{
-            qDebug() << "RIGHT released";
-            break;
-        }
-        case Qt::Key_W:{
-            qDebug() << "JUMP released";
-            break;
-        }
-        default:
-            break;
-    }
-}
-
