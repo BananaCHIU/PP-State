@@ -25,12 +25,14 @@ public:
     void setVerticalVelocity(double velocity);
     void setVerticalSpeed(double speed);
 
-        bool isOnGround();
+    bool isOnGround();
+    void flipDirection();
 public slots:
 private:
+    enum direction{LEFT = -1, RIGHT = 1};
     int width;
     int height;
-
+    direction direction;
     const double verticalAcceleration = 0.4/120.0;
     double verticalVelocity = 0;
     double verticalSpeed = 0;

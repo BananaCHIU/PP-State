@@ -13,6 +13,7 @@ Player::Player(QPixmap image,int width,int height) {
     this->width = width;
     this->height = height;
     this->verticalSpeed = 0.0;
+    this->direction = LEFT;
 }
 
 void Player::keyPressEvent(QKeyEvent *e)
@@ -30,8 +31,14 @@ void Player::keyReleaseEvent(QKeyEvent *e)
 void Player::update()
 {
     Game * game = static_cast<Game*>(scene()->views().first());
-    if(keys[Qt::Key_A]) setPos(x()-2, y());
-    if(keys[Qt::Key_D]) setPos(x()+2, y());
+    if(keys[Qt::Key_A]) {
+        if (direction != LEFT) flipDirection();
+        setPos(x()-2, y());
+    }
+    if(keys[Qt::Key_D]) {
+        if (direction != RIGHT) flipDirection();
+        setPos(x()+2, y());
+    }
     if(keys[Qt::Key_Space]) {
         if (!inAir){
             setVerticalSpeed(-500.0/120);
@@ -70,6 +77,12 @@ bool Player::isOnGround()
         setVerticalSpeed(0.0);
         return false;
     }
+}
+
+void Player::flipDirection()
+{
+     direction = direction == LEFT ? RIGHT : LEFT;
+     setPixmap(pixmap().transformed(QTransform().scale(-1,1)));
 }
 
 double Player::getVerticalAceleration()
