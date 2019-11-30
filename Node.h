@@ -8,10 +8,11 @@
 
 template <typename type>
 class Node{
-    type t;
+    type data;
     Node* next;
 
 public:
+    Node(const type& x) : data(x) { }
     ~Node();
 };
 
