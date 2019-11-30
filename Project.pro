@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     Block.cpp \
     Game.cpp \
+    Node.cpp \
     Player.cpp \
     Queue.cpp \
     main.cpp
@@ -25,6 +26,7 @@ SOURCES += \
 HEADERS += \
     Block.h \
     Game.h \
+    Node.h \
     Player.h \
     Queue.h
 
