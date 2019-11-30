@@ -6,6 +6,7 @@
 #include <QKeyEvent>
 #include <QDebug>
 #include <QTimer>
+#include <QScrollBar>
 #include <QTAlgorithms>
 
 using namespace std;
@@ -42,7 +43,7 @@ Game::~Game(){
 
 void Game::update(){
     centerOn(player);
-    mapToScene(QRect(point, QSize(2, 2)))
+    cout << horizontalScrollBar()->value() << endl;
     if(keys[Qt::Key_A]) {
         if (player->getDirection() != 0) player->flipDirection();
         if (player->x() - 4 < 0)  player->setPos(0, player->y());

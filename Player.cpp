@@ -31,7 +31,7 @@ void Player::gravity()
             setPos(x(), y()+verticalSpeed);
             setVerticalSpeed(verticalSpeed + verticalVelocity);
             setVerticalVelocity(verticalVelocity + verticalAcceleration);
-            cout << "verticalSpeed: " << verticalSpeed << endl;
+            //cout << "verticalSpeed: " << verticalSpeed << endl;
         }
     }
 }
