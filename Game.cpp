@@ -20,6 +20,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     setFixedSize(WIN_WIDTH, WIN_HEIGHT);
 
     for (int i = 0; i <= 2000/64; ++i){
+        if (!(i == 14 || i == 16)) continue;
         Block* brick = new Block(QPixmap(":/background/res/brick_1.png"), 64 ,64);
         brick->setPos(i*64, getWinHeight() - 64);
         scene->addItem(brick);
@@ -41,28 +42,55 @@ Game::~Game(){
 
 }
 
+void Game::gravity()
+{
+    if(!player->isOnGround()){
+        // in air:
+        if(player->getVerticalVelocity() < 0){
+            //upward
+            if (player->collide(UPWARD)) {
+
+            } else {
+                player->setPos(player->x(),player->y() + player->getVerticalVelocity());
+                cout << player->getVerticalVelocity() << endl;
+            }
+            player->setVerticalVelocity(player->getVerticalVelocity() + player->getVerticalAcceleration());
+
+        } else if (player->getVerticalVelocity() >= 0){
+            if (player->collide(DOWNWARD)){
+
+            } else {
+                player->setPos(player->x(),player->y() + player->getVerticalVelocity());
+                cout << player->getVerticalVelocity() << endl;
+            }
+            player->setVerticalVelocity(player->getVerticalVelocity() + player->getVerticalAcceleration());
+        }
+        /*if (player->y() + player->getVerticalSpeed() + player->getHeight() >= getWinHeight()){
+            player->setPos(player->x(), getWinHeight()-player->getHeight());
+            player->setVerticalSpeed(0.0);
+            player->setVerticalVelocity(0.0);
+            player->setInAir(false);
+        } else {
+            player->setPos(player->x(), player->y()+player->getVerticalSpeed());
+            player->setVerticalSpeed(player->getVerticalSpeed() + player->getVerticalVelocity());
+            player->setVerticalVelocity(player->getVerticalVelocity() + player->getVerticalAcceleration());
+            //cout << "verticalSpeed: " << verticalSpeed << endl;
+        }*/
+    }
+}
+
 void Game::update(){
     centerOn(player);
-    cout << horizontalScrollBar()->value() << endl;
     if(keys[Qt::Key_A]) {
-        if (player->getDirection() != 0) player->flipDirection();
-        if (player->x() - 4 < 0)  player->setPos(0, player->y());
-        else player->setPos(player->x()-4, player->y());
-
+        player->move(-4);
     }
     if(keys[Qt::Key_D]) {
-        if (player->getDirection() != 1) player->flipDirection();
-        if (player->x() + player->getWidth() + 4 > scene->width())  player->setPos(scene->width() - player->getWidth(), player->y());
-        else player->setPos(player->x()+4, player->y());
+        player->move(4);
     }
     if(keys[Qt::Key_W]) {
-        if (!player->getInAir()){
-            player->setVerticalSpeed(-500.0/120);
-            player->setVerticalVelocity(0.0);
-            player->setInAir();
-        }
+        player->jump();
     }
-    player->gravity();
+    gravity();
 }
 
 void Game::keyPressEvent(QKeyEvent *e)

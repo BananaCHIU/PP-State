@@ -9,6 +9,7 @@
 class Game: public QGraphicsView{
     Q_OBJECT
 
+    void gravity();
     void keyPressEvent(QKeyEvent * event);
     void keyReleaseEvent(QKeyEvent * event);
     QMap <int, bool> getKeyMap();

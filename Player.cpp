@@ -1,39 +1,19 @@
 
 #include <Game.h>
 #include <QObject>
-#include <Player.h>
+#include "Block.h"
+#include "Player.h"
 #include <QTimer>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <iostream>
 using namespace std;
-
 Player::Player(QPixmap image,int width,int height) {
     setPixmap(image);
     this->width = width;
     this->height = height;
-    this->verticalSpeed = 0.0;
+    this->verticalVelocity = 0.0;
     this->direction = LEFT;
-}
-
-
-
-void Player::gravity()
-{
-    Game * game = static_cast<Game*>(scene()->views().first());
-    if(inAir){
-        if (y() + verticalSpeed + height >= game->getWinHeight()){
-            setPos(x(), game->getWinHeight()-height);
-            setVerticalSpeed(0.0);
-            setVerticalVelocity(0.0);
-            inAir = false;
-        } else {
-            setPos(x(), y()+verticalSpeed);
-            setVerticalSpeed(verticalSpeed + verticalVelocity);
-            setVerticalVelocity(verticalVelocity + verticalAcceleration);
-            //cout << "verticalSpeed: " << verticalSpeed << endl;
-        }
-    }
 }
 
 void Player::focusOutEvent(QFocusEvent *event){
@@ -42,15 +22,10 @@ void Player::focusOutEvent(QFocusEvent *event){
 
 bool Player::isOnGround()
 {
-    // not final implementation, just testing.
-    Game * game = static_cast<Game*>(scene()->views().first());
-    if(y() + height == static_cast<double>(game->getWinWidth())){
-        inAir = false;
-        return true;
-    } else {
-        setVerticalSpeed(0.0);
-        return false;
-    }
+    Block *blockA = static_cast<Block*>(scene()->itemAt(pos().x(), pos().y() + height, QTransform()));
+    Block *blockB = static_cast<Block*>(scene()->itemAt(pos().x() + width, pos().y() + height, QTransform()));
+    if (blockA == nullptr && blockB == nullptr) return false;
+    return true;
 }
 
 void Player::flipDirection()
@@ -68,7 +43,7 @@ bool Player::getInAir(){
     return this->inAir;
 }
 
-double Player::getVerticalAceleration()
+double Player::getVerticalAcceleration()
 {
     return verticalAcceleration;
 }
@@ -78,21 +53,81 @@ double Player::getVerticalVelocity()
     return verticalVelocity;
 }
 
-double Player::getVerticalSpeed()
+void Player::move(double dx)
 {
-    return verticalSpeed;
+    // left
+    if (dx < 0) {
+        if (getDirection() != LEFT) flipDirection();
+        if (collide(LEFT)) return;
+        if (x() - 4 < 0)  setPos(0, y());
+        else setPos(x()-4, y());
+    }
+
+    //right
+    if (dx > 0) {
+        if (getDirection() != RIGHT) flipDirection();
+        if (collide(RIGHT)) return;
+        if (x() + getWidth() + 4 > scene()->width())  setPos(scene()->width() - getWidth(), y());
+        else setPos(x()+4, y());
+    }
+
 }
 
-void Player::setInAir(){
-    this->inAir = true;
+void Player::jump()
+{
+    if (!getInAir()){
+        setVerticalVelocity(-500.0/120);
+        setInAir(true);
+    }
 }
 
-void Player::setNotInAir(){
-    this->inAir = false;
+bool Player::collide(enum direction direction)
+{
+    switch(direction){
+    case LEFT:
+    {
+        Block *block = static_cast<Block*>(scene()->itemAt(pos().x() - 4, pos().y() + height - 2, QTransform()));
+        if (block != nullptr){
+            setPos(block->pos().x() + block->getWidth(), y());
+            return true;
+        }
+        break;
+    }
+
+    case RIGHT:
+    {
+        Block *block = static_cast<Block*>(scene()->itemAt(pos().x() + 4 + width, pos().y() + height - 2, QTransform()));
+        if (block != nullptr){
+            setPos(block->pos().x() - width, y());
+            return true;
+        }
+       break;
+     }
+    case UPWARD:
+    {
+        Block *block = static_cast<Block*>(scene()->itemAt(pos().x(), pos().y() + verticalVelocity, QTransform()));
+        if (block != nullptr){
+            setPos(pos().x(), block->y() + block->getWidth());
+            return true;
+        }
+        break;
+    }
+
+    case DOWNWARD:
+    {
+        Block *block = static_cast<Block*>(scene()->itemAt(pos().x(), pos().y() + height + verticalVelocity, QTransform()));
+        if (block != nullptr){
+            setPos(pos().x(), block->y() - height);
+            return true;
+        }
+    break;
+    }
+    }
+    return false;
 }
 
-void Player::setVerticalSpeed(double speed){
-    this->verticalSpeed = speed;
+void Player::setInAir(bool b){
+    this->inAir = b;
 }
 
 void Player::setVerticalVelocity(double velocity){
@@ -101,4 +136,8 @@ void Player::setVerticalVelocity(double velocity){
 
 int Player::getWidth(){
     return width;
+}
+
+int Player::getHeight(){
+    return height;
 }
