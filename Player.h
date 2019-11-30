@@ -9,24 +9,27 @@ class Player : public QObject, public QGraphicsPixmapItem{
 public:
     Player(QPixmap image,int width,int height);
 
-    void update();
-    void keyPressEvent(QKeyEvent * event);
-    void keyReleaseEvent(QKeyEvent * event);
+    void gravity();
     void focusOutEvent(QFocusEvent * event) ;
 
     int getWidth();
     int getHeight();
+    int getDirection();
+    bool getInAir();
     double getVerticalAceleration();
     double getVerticalVelocity();
     double getVerticalSpeed();
 
     void setWidth(int width);
     void setHeight(int height);
+    void setInAir();
+    void setNotInAir();
     void setVerticalVelocity(double velocity);
     void setVerticalSpeed(double speed);
 
     bool isOnGround();
     void flipDirection();
+
 public slots:
 private:
     enum direction{LEFT = -1, RIGHT = 1};
@@ -38,7 +41,7 @@ private:
     double verticalSpeed = 0;
 
     bool inAir = true;
-    QMap <int, bool> keys;
+
 };
 
 #endif // PLAYER_H

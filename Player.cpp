@@ -16,40 +16,14 @@ Player::Player(QPixmap image,int width,int height) {
     this->direction = LEFT;
 }
 
-void Player::keyPressEvent(QKeyEvent *e)
-{
-    if (e->isAutoRepeat()) return;
-    keys[e->key()] = true; QGraphicsPixmapItem::keyPressEvent(e);
-}
 
-void Player::keyReleaseEvent(QKeyEvent *e)
-{
-    if (e->isAutoRepeat()) return;
-   keys[e->key()] = false; QGraphicsPixmapItem::keyReleaseEvent(e);
-}
 
-void Player::update()
+void Player::gravity()
 {
     Game * game = static_cast<Game*>(scene()->views().first());
-    if(keys[Qt::Key_A]) {
-        if (direction != LEFT) flipDirection();
-        setPos(x()-2, y());
-    }
-    if(keys[Qt::Key_D]) {
-        if (direction != RIGHT) flipDirection();
-        setPos(x()+2, y());
-    }
-    if(keys[Qt::Key_Space]) {
-        if (!inAir){
-            setVerticalSpeed(-500.0/120);
-            setVerticalVelocity(0.0);
-            inAir = true;
-        }
-    }
-    if(keys[Qt::Key_S]) setPos(x(), y()+4);
     if(inAir){
-        if (y() + verticalSpeed + height >= game->WIN_HEIGHT){
-            setPos(x(), game->WIN_HEIGHT-height);
+        if (y() + verticalSpeed + height >= game->getWinHeight()){
+            setPos(x(), game->getWinHeight()-height);
             setVerticalSpeed(0.0);
             setVerticalVelocity(0.0);
             inAir = false;
@@ -70,7 +44,7 @@ bool Player::isOnGround()
 {
     // not final implementation, just testing.
     Game * game = static_cast<Game*>(scene()->views().first());
-    if(y() + height == static_cast<double>(game->WIN_WIDTH)){
+    if(y() + height == static_cast<double>(game->getWinWidth())){
         inAir = false;
         return true;
     } else {
@@ -83,6 +57,15 @@ void Player::flipDirection()
 {
      direction = direction == LEFT ? RIGHT : LEFT;
      setPixmap(pixmap().transformed(QTransform().scale(-1,1)));
+}
+
+int Player::getDirection(){
+    if (direction == LEFT) return 0;
+    else return 1;
+}
+
+bool Player::getInAir(){
+    return this->inAir;
 }
 
 double Player::getVerticalAceleration()
@@ -100,10 +83,22 @@ double Player::getVerticalSpeed()
     return verticalSpeed;
 }
 
+void Player::setInAir(){
+    this->inAir = true;
+}
+
+void Player::setNotInAir(){
+    this->inAir = false;
+}
+
 void Player::setVerticalSpeed(double speed){
     this->verticalSpeed = speed;
 }
 
 void Player::setVerticalVelocity(double velocity){
     this->verticalVelocity = velocity;
+}
+
+int Player::getWidth(){
+    return width;
 }
