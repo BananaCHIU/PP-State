@@ -19,12 +19,14 @@ SOURCES += \
     Block.cpp \
     Game.cpp \
     Player.cpp \
+    Queue.cpp \
     main.cpp
 
 HEADERS += \
     Block.h \
     Game.h \
-    Player.h
+    Player.h \
+    Queue.h
 
 FORMS += \
     mainwindow.ui
