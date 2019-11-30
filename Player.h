@@ -35,11 +35,8 @@ private:
     int width;
     int height;
     direction direction;
-    const double verticalAcceleration = 1.2/120.0;
+    const double verticalAcceleration = 4/120.0;
     double verticalVelocity = 0;
-
-    bool inAir = true;
-
 };
 
 #endif // PLAYER_H

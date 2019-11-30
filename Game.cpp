@@ -20,11 +20,23 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     setFixedSize(WIN_WIDTH, WIN_HEIGHT);
 
     for (int i = 0; i <= 2000/64; ++i){
-        if (!(i == 14 || i == 16)) continue;
         Block* brick = new Block(QPixmap(":/background/res/brick_1.png"), 64 ,64);
         brick->setPos(i*64, getWinHeight() - 64);
         scene->addItem(brick);
     }
+
+    Block* bricka = new Block(QPixmap(":/background/res/brick_1.png"), 64 ,64);
+    bricka->setPos(10*64, getWinHeight() - 64 * 2);
+    Block* brickb = new Block(QPixmap(":/background/res/brick_1.png"), 64 ,64);
+    brickb->setPos(10*64, getWinHeight() - 64 * 3);
+    Block* brickc = new Block(QPixmap(":/background/res/brick_1.png"), 64 ,64);
+    brickc->setPos(7*64, getWinHeight() - 64 * 2);
+    Block* brickd = new Block(QPixmap(":/background/res/brick_1.png"), 64 ,64);
+    brickd->setPos(14*64, getWinHeight() - 64 * 4);
+    scene->addItem(bricka);
+    scene->addItem(brickb);
+    scene->addItem(brickc);
+    scene->addItem(brickd);
 
     player = new Player(QPixmap(":/images/res/player.png"), 64, 64);
     player->setFlag(QGraphicsItem::ItemIsFocusable);
@@ -52,7 +64,7 @@ void Game::gravity()
 
             } else {
                 player->setPos(player->x(),player->y() + player->getVerticalVelocity());
-                cout << player->getVerticalVelocity() << endl;
+                //cout << player->getVerticalVelocity() << endl;
             }
             player->setVerticalVelocity(player->getVerticalVelocity() + player->getVerticalAcceleration());
 
@@ -61,7 +73,6 @@ void Game::gravity()
 
             } else {
                 player->setPos(player->x(),player->y() + player->getVerticalVelocity());
-                cout << player->getVerticalVelocity() << endl;
             }
             player->setVerticalVelocity(player->getVerticalVelocity() + player->getVerticalAcceleration());
         }
@@ -81,16 +92,23 @@ void Game::gravity()
 
 void Game::update(){
     centerOn(player);
+    gravity();
+    if(keys[Qt::Key_W]) {
+        player->jump();
+    }
     if(keys[Qt::Key_A]) {
         player->move(-4);
     }
     if(keys[Qt::Key_D]) {
         player->move(4);
     }
-    if(keys[Qt::Key_W]) {
-        player->jump();
+    if(keys[Qt::Key_Space]){
+        cout << "x:" << player->x() << endl;
+        cout << "y:" << player->y() << endl;
+        cout << "velocity:" << player->getVerticalVelocity() << endl;
+        cout << "isOnGround:" << (player->isOnGround() ? "true" : "false") << endl;
     }
-    gravity();
+
 }
 
 void Game::keyPressEvent(QKeyEvent *e)
