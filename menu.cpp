@@ -9,7 +9,7 @@ Menu::Menu(QWidget *parent) :
     ui(new Ui::Menu)
 {
     ui->setupUi(this);
-    QPixmap pm("C:/Users/Herman Ho/Documents/Project/res/title.png"); // <- path to image file
+    QPixmap pm(":/res/title.png"); // <- path to image file
     ui->label->setGeometry(450,200,500,50);
     ui->label->setPixmap(pm);
     ui->label->setScaledContents(true);
