@@ -3,16 +3,15 @@
 
 #include <QPoint>
 #include "Block.h"
-#include "Queue.h"
 
 
 template <typename type>
 class Node{
-    type data;
-    Node* next;
+    type* data;
+    Node* next {nullptr};
 
 public:
-    Node(const type& x) : data(x) { }
+    Node(const type& x);
     ~Node();
 };
 
