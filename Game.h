@@ -13,8 +13,8 @@ class Game: public QGraphicsView{
     void keyPressEvent(QKeyEvent * event);
     void keyReleaseEvent(QKeyEvent * event);
     QMap <int, bool> getKeyMap();
-    const int WIN_WIDTH = 800;
-    const int WIN_HEIGHT = 600;
+    const int WIN_WIDTH = 1400;
+    const int WIN_HEIGHT = 800;
     enum direction{LEFT = -1, RIGHT = 1};
     QGraphicsScene *scene;
     Player *player;

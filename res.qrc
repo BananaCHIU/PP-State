@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/images">
         <file>res/player.png</file>
+        <file>res/title.png</file>
     </qresource>
     <qresource prefix="/background">
         <file>res/cloud.png</file>

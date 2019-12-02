@@ -21,17 +21,20 @@ SOURCES += \
     Node.cpp \
     Player.cpp \
     Queue.cpp \
-    main.cpp
+    main.cpp \
+    menu.cpp
 
 HEADERS += \
     Block.h \
     Game.h \
     Node.h \
     Player.h \
-    Queue.h
+    Queue.h \
+    menu.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    menu.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
