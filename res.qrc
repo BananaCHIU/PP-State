@@ -13,4 +13,7 @@
         <file>res/dirt.png</file>
         <file>res/brick_1.png</file>
     </qresource>
+    <qresource prefix="/music">
+        <file>res/bgm_menu.mp3</file>
+    </qresource>
 </RCC>

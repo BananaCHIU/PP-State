@@ -2,6 +2,7 @@
 #define MENU_H
 
 #include <QDialog>
+#include <QPushButton>
 
 namespace Ui {
 class Menu;
@@ -15,11 +16,11 @@ public:
     explicit Menu(QWidget *parent = nullptr);
     ~Menu();
 
-private slots:
-   void handleButton();
 private:
-   QPushButton *m_button;
     Ui::Menu *ui;
+    QPushButton *m_button;
+private slots:
+    void handleButton();
 };
 
 #endif // MENU_H
