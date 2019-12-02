@@ -1,7 +1,7 @@
 #include <QPushButton>
 #include <QPixmap>
-#include <QMediaPlayer>
-#include <QMediaPlaylist>
+#include <QtMultimedia>
+#include <QtMultimediaWidgets>
 #include "menu.h"
 #include "Game.h"
 #include "ui_menu.h"
@@ -11,13 +11,12 @@ Menu::Menu(QWidget *parent) :
     ui(new Ui::Menu)
 {
     ui->setupUi(this);
-    QMediaPlaylist *playlist = new QMediaPlaylist();
-    playlist->addMedia(QUrl("qrc:/music/res/bgm_menu.mp3"));
-    playlist->setPlaybackMode(QMediaPlaylist::Loop);
 
-    QMediaPlayer *music = new QMediaPlayer();
-    music->setPlaylist(playlist);
+    music = new QMediaPlayer();
+    music->setMedia(QUrl("qrc:/music/res/bgm_menu.mp3"));
+    connect(music, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
     music->play();
+
     QPixmap pm(":images/res/title.png"); // <- path to image file
     ui->label->setGeometry(450,200,500,70);
     ui->label->setPixmap(pm);
@@ -34,6 +33,7 @@ Menu::Menu(QWidget *parent) :
 
 Menu::~Menu()
 {
+    music->stop();
     delete ui;
 }
 

@@ -2,6 +2,11 @@
     <qresource prefix="/images">
         <file>res/player.png</file>
         <file>res/title.png</file>
+        <file>res/sprite_0.png</file>
+        <file>res/sprite_1.png</file>
+        <file>res/sprite_2.png</file>
+        <file>res/sprite_3.png</file>
+        <file>res/icon.png</file>
     </qresource>
     <qresource prefix="/background">
         <file>res/cloud.png</file>
