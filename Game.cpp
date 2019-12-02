@@ -14,6 +14,7 @@ using namespace std;
 Game::Game(QWidget *parent) : QGraphicsView(){
     scene = new QGraphicsScene();
     scene->setSceneRect(0, 0, 2000 ,WIN_HEIGHT);
+    scene->setBackgroundBrush(QBrush(QColor("#82f4ff")));
     setScene(scene);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -97,10 +98,10 @@ void Game::update(){
         player->jump();
     }
     if(keys[Qt::Key_A]) {
-        player->move(-4);
+        player->move(LEFT);
     }
     if(keys[Qt::Key_D]) {
-        player->move(4);
+        player->move(RIGHT);
     }
     if(keys[Qt::Key_Space]){
         cout << "x:" << player->x() << endl;

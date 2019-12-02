@@ -5,7 +5,6 @@
 #include <QTimer>
 #include <QGraphicsView>
 
-
 class Game: public QGraphicsView{
     Q_OBJECT
 
@@ -15,7 +14,6 @@ class Game: public QGraphicsView{
     QMap <int, bool> getKeyMap();
     const int WIN_WIDTH = 1400;
     const int WIN_HEIGHT = 800;
-    enum direction{LEFT = -1, RIGHT = 1};
     QGraphicsScene *scene;
     Player *player;
     QTimer * timer;

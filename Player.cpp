@@ -22,11 +22,13 @@ void Player::focusOutEvent(QFocusEvent *event){
 
 bool Player::isOnGround()
 {
-    if (verticalVelocity < 0) return false;
     Block *blockA = static_cast<Block*>(scene()->itemAt(pos().x() + 1, pos().y() + height, QTransform()));
     Block *blockB = static_cast<Block*>(scene()->itemAt(pos().x() + width - 1, pos().y() + height, QTransform()));
     if (blockA == nullptr && blockB == nullptr) return false;
-    return true;
+    else {
+        setVerticalVelocity(0.0);
+        return true;
+    }
 }
 
 void Player::flipDirection()
@@ -35,37 +37,37 @@ void Player::flipDirection()
      setPixmap(pixmap().transformed(QTransform().scale(-1,1)));
 }
 
-int Player::getDirection(){
+int Player::getDirection() const{
     if (direction == LEFT) return 0;
     else return 1;
 }
 
-double Player::getVerticalAcceleration()
+double Player::getVerticalAcceleration() const
 {
     return verticalAcceleration;
 }
 
-double Player::getVerticalVelocity()
+double Player::getVerticalVelocity() const
 {
     return verticalVelocity;
 }
 
-void Player::move(double dx)
+void Player::move(enum direction dir)
 {
     // left
-    if (dx < 0) {
+    if (dir == LEFT) {
         if (getDirection() != LEFT) flipDirection();
         if (collide(LEFT)) return;
-        if (x() - 4 < 0)  setPos(0, y());
-        else setPos(x()-4, y());
+        if (x() - speed < 0)  setPos(0, y());
+        else setPos(x()- speed, y());
     }
 
     //right
-    if (dx > 0) {
+    if (dir == RIGHT) {
         if (getDirection() != RIGHT) flipDirection();
         if (collide(RIGHT)) return;
-        if (x() + getWidth() + 4 > scene()->width())  setPos(scene()->width() - getWidth(), y());
-        else setPos(x()+4, y());
+        if (x() + getWidth() + speed > scene()->width())  setPos(scene()->width() - getWidth(), y());
+        else setPos(x()+ speed, y());
     }
 
 }
@@ -73,7 +75,7 @@ void Player::move(double dx)
 void Player::jump()
 {
     if (isOnGround()){
-        setVerticalVelocity(-400/120);
+        setVerticalVelocity(-550/120);
         setPos(x(), y()-1);
     }
 }
@@ -84,8 +86,8 @@ bool Player::collide(enum direction direction)
     case LEFT:
     {
 
-        Block *blockA = static_cast<Block*>(scene()->itemAt(pos().x() - 4, pos().y() - 1, QTransform()));
-        Block *blockB = static_cast<Block*>(scene()->itemAt(pos().x() - 4, pos().y() + height - 1, QTransform()));
+        Block *blockA = static_cast<Block*>(scene()->itemAt(pos().x() - speed, pos().y() + 1, QTransform()));
+        Block *blockB = static_cast<Block*>(scene()->itemAt(pos().x() - speed, pos().y() + height - 1, QTransform()));
         if (blockA != nullptr){
             setPos(blockA->pos().x() + blockA->getWidth(), y());
             return true;
@@ -101,8 +103,8 @@ bool Player::collide(enum direction direction)
 
     case RIGHT:
     {
-        Block *blockA = static_cast<Block*>(scene()->itemAt(pos().x() + 4 + width, pos().y() - 1, QTransform()));
-        Block *blockB = static_cast<Block*>(scene()->itemAt(pos().x() + 4 + width, pos().y() + height - 1, QTransform()));
+        Block *blockA = static_cast<Block*>(scene()->itemAt(pos().x() + speed + width, pos().y() + 1, QTransform()));
+        Block *blockB = static_cast<Block*>(scene()->itemAt(pos().x() + speed + width, pos().y() + height - 1, QTransform()));
         if (blockA != nullptr){
             setPos(blockA->pos().x() - width, y());
             return true;
@@ -119,14 +121,12 @@ bool Player::collide(enum direction direction)
         Block *blockA = static_cast<Block*>(scene()->itemAt(pos().x() + 1, pos().y() + verticalVelocity, QTransform()));
         Block *blockB = static_cast<Block*>(scene()->itemAt(pos().x() + width - 1, pos().y() + verticalVelocity, QTransform()));
         if (blockA != nullptr){
-            //setPos(pos().x(), blockA->y() + blockA->getHeight());
             setPos(pos().x(), y());
             setVerticalVelocity(0.0);
             return true;
         }
 
         if (blockB != nullptr){
-            //setPos(pos().x(), blockB->y() + blockB->getHeight());
             setPos(pos().x(), y());
             setVerticalVelocity(0.0);
             return true;
@@ -136,9 +136,15 @@ bool Player::collide(enum direction direction)
 
     case DOWNWARD:
     {
-        Block *block = static_cast<Block*>(scene()->itemAt(pos().x(), pos().y() + height + verticalVelocity, QTransform()));
-        if (block != nullptr){
-            setPos(pos().x(), block->y() - height);
+        Block *blockA = static_cast<Block*>(scene()->itemAt(pos().x() + 1, pos().y() + height + verticalVelocity, QTransform()));
+        Block *blockB = static_cast<Block*>(scene()->itemAt(pos().x() + width - 1, pos().y() + height + verticalVelocity, QTransform()));
+        if (blockA != nullptr){
+            setPos(pos().x(), blockA->y() - height);
+            return true;
+        }
+
+        if (blockB != nullptr){
+            setPos(pos().x(), blockB->y() - height);
             return true;
         }
     break;
@@ -151,10 +157,14 @@ void Player::setVerticalVelocity(double velocity){
     this->verticalVelocity = velocity;
 }
 
-int Player::getWidth(){
+int Player::getWidth() const{
     return width;
 }
 
-int Player::getHeight(){
+int Player::getHeight() const{
     return height;
+}
+
+double Player::getSpeed() const{
+    return speed;
 }

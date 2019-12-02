@@ -12,14 +12,15 @@ public:
 
     void focusOutEvent(QFocusEvent * event) ;
 
-    int getWidth();
-    int getHeight();
-    int getDirection();
-    bool getInAir();
-    double getVerticalAcceleration();
-    double getVerticalVelocity();
+    int getWidth() const;
+    int getHeight() const;
+    int getDirection() const;
+    bool getInAir() const;
+    double getVerticalAcceleration() const;
+    double getVerticalVelocity() const;
+    double getSpeed() const;
 
-    void move(double dx);
+    void move(direction dir);
     void jump();
     bool collide(direction dir);
 
@@ -35,8 +36,9 @@ private:
     int width;
     int height;
     direction direction;
-    const double verticalAcceleration = 4/120.0;
+    const double verticalAcceleration = 6/120.0;
     double verticalVelocity = 0;
+    const double speed = 2.5;
 };
 
 #endif // PLAYER_H
