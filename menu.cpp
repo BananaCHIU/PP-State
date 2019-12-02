@@ -9,8 +9,8 @@ Menu::Menu(QWidget *parent) :
     ui(new Ui::Menu)
 {
     ui->setupUi(this);
-    QPixmap pm(":/res/title.png"); // <- path to image file
-    ui->label->setGeometry(450,200,500,50);
+    QPixmap pm(":images/res/title.png"); // <- path to image file
+    ui->label->setGeometry(450,200,500,70);
     ui->label->setPixmap(pm);
     ui->label->setScaledContents(true);
     // Create the button, make "this" the parent
