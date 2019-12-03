@@ -5,6 +5,7 @@
 //Test
 #include "menu.h"
 #include "Game.h"
+#include "Queue.h"
 
 #include <QApplication>
 
@@ -14,11 +15,25 @@ int main(int argc, char *argv[])
     //a.setWindowIcon(QIcon("./images/res/icon.png"));
     Menu* menu = new Menu();
     menu->show();
-    //Test
+
+    /* Test
     Block* b1 = new Block(QPixmap(":images/res/icon.png"), 100, 100);
-    //Node<Block>* n1 = new Node<Block>(*b1);
+    Block* b2 = new Block(QPixmap(":images/res/icon.png"), 100, 100);
+    Block* b3 = new Block(QPixmap(":images/res/icon.png"), 100, 100);
+    //Node<Block>* n1 = new Node<Block>();
     Queue<Block>* q = new Queue<Block>(b1);
+    q->enqueue(b2);
+    q->enqueue(b3);
     q->print();
-    //Test
+    delete q;
+
+    //q->dequeue();
+    //q->print();
+    //q->dequeue();
+    //q->print();
+    //q->dequeue();
+    //q->print();
+    */
+
     return a.exec();
 }

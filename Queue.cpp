@@ -6,6 +6,8 @@ using namespace std;
 template<typename type>
 Queue<type>::Queue() : head(nullptr), tail(nullptr){}
 
+Queue<Block>::Queue() : head(nullptr), tail(nullptr){}
+
 template<typename type>
 Queue<type>::Queue(type* x) {
     Node<type>* n = new Node<type>(x);
@@ -22,11 +24,27 @@ Queue<Block>::Queue(Block* x) {
 template<typename type>
 Queue<type>::~Queue()
 {
+    while(!isEmpty())
+    {
+        dequeue();
+    }
+}
 
+Queue<Block>::~Queue()
+{
+    while(!isEmpty())
+    {
+        dequeue();
+    }
 }
 
 template<typename type>
 bool Queue<type>::isEmpty()
+{
+    return head == nullptr ? true : false;
+}
+
+bool Queue<Block>::isEmpty()
 {
     return head == nullptr ? true : false;
 }
@@ -43,30 +61,61 @@ void Queue<type>::enqueue(type* data)
     }
 }
 
+void Queue<Block>::enqueue(Block* data)
+{
+    Node<Block> * new_node = new Node<Block>(data);
+    if (isEmpty()) {
+        head = tail = new_node;
+    } else {
+        tail->next = new_node;
+        tail = new_node;
+    }
+}
+
 template<typename type>
 type *Queue<type>::dequeue()
 {
     if (isEmpty()) return nullptr;
-    type* result = head->data;
+    Node<type>* temp = head;
+    type* result = temp->data;
     if (head == tail) {
-        delete head;
+        delete temp;
         head = tail = nullptr;
     } else {
-        delete head;
         head = head->next;
+        delete temp;
     }
+    cout << "dequeue" << endl;
+    return result;
+}
+
+Block *Queue<Block>::dequeue()
+{
+    if (isEmpty()) return nullptr;
+    Node<Block>* temp = head;
+    Block* result = temp->data;
+    if (head == tail) {
+        delete temp;
+        head = tail = nullptr;
+    } else {
+        head = head->next;
+        delete temp;
+    }
+    cout << "dequeue" << endl;
     return result;
 }
 
 template<typename type>
 void Queue<type>::print(){
-    for(const Node<type>* p = head; p; p = p->next){
+    if(isEmpty()) { cout << "empty queue!!" << endl; }
+    for(const Node<type>* p = head; p != nullptr; p = p->next){
         cout << p->data << endl;
     }
 }
 
 void Queue<Block>::print(){
-    for(const Node<Block>* p = head; p; p = p->next){
+    if(isEmpty()) { cout << "empty queue!!" << endl; }
+    for(const Node<Block>* p = head; p != nullptr; p = p->next){
         cout << p->data << endl;
     }
 }

@@ -7,10 +7,10 @@
 template <typename type>
 class Node{
 public:
-    type data;
+    type* data;
     Node* next {nullptr};
 
-    Node(type x);
+    Node(type* x);
     ~Node();
 };
 
