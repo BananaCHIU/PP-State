@@ -1,5 +1,6 @@
 QT       += core gui
-QT += multimedia
+QT += multimedia multimediawidgets
+win32:RC_ICONS += res/icon.ico
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

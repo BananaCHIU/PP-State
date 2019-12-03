@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include <QPushButton>
+#include <QtMultimedia>
+#include <QtMultimediaWidgets>
 
 namespace Ui {
 class Menu;
@@ -19,6 +21,7 @@ public:
 private:
     Ui::Menu *ui;
     QPushButton *m_button;
+    QMediaPlayer *music;
 private slots:
     void handleButton();
 };

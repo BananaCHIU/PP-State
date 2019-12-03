@@ -3,6 +3,7 @@
 #include "Block.h"
 
 #include <iostream>
+#include <String>
 #include <QKeyEvent>
 #include <QDebug>
 #include <QTimer>
@@ -92,6 +93,7 @@ void Game::gravity()
 }
 
 void Game::update(){
+
     centerOn(player);
     gravity();
     if(keys[Qt::Key_W]) {
@@ -99,9 +101,23 @@ void Game::update(){
     }
     if(keys[Qt::Key_A]) {
         player->move(LEFT);
+        int count = anim_count;
+        if (count % (anim_ratio * 4) == 0) {
+            string s = ":/images/res/sprite_" + to_string(count / (anim_ratio * 4)) + ".png";
+            player->setPixmap(QPixmap(QString::fromStdString(s)));
+        }
+        if (anim_count == (anim_ratio * 4 * 4) - 1) anim_count = 0;
+        else ++anim_count;
     }
     if(keys[Qt::Key_D]) {
         player->move(RIGHT);
+        int count = anim_count;
+        if (count % (anim_ratio * 4) == 0) {
+            string s = ":/images/res/sprite_" + to_string(count / (anim_ratio * 4)) + ".png";
+            player->setPixmap(QPixmap(QString::fromStdString(s)).transformed(QTransform().scale(-1,1)));
+        }
+        if (anim_count == (anim_ratio * 4 * 4) - 1) anim_count = 0;
+        else ++anim_count;
     }
     if(keys[Qt::Key_Space]){
         cout << "x:" << player->x() << endl;
