@@ -20,10 +20,13 @@ public:
 
 private:
     Ui::Menu *ui;
-    QPushButton *m_button;
+    QPushButton *btn_play;
+    QPushButton *btn_ins;
     QMediaPlayer *music;
+
 private slots:
-    void handleButton();
+    void handlePlayButton();
+    void handleInsButton();
 };
 
 #endif // MENU_H

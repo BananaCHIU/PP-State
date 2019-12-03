@@ -23,6 +23,7 @@ SOURCES += \
     Node.cpp \
     Player.cpp \
     Queue.cpp \
+    instruction.cpp \
     main.cpp \
     menu.cpp
 
@@ -32,9 +33,11 @@ HEADERS += \
     Node.h \
     Player.h \
     Queue.h \
+    instruction.h \
     menu.h
 
 FORMS += \
+    instruction.ui \
     mainwindow.ui \
     menu.ui
 
