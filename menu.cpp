@@ -4,6 +4,7 @@
 #include <QtMultimediaWidgets>
 #include "menu.h"
 #include "Game.h"
+#include "instruction.h"
 #include "ui_menu.h"
 
 Menu::Menu(QWidget *parent) :
@@ -26,17 +27,35 @@ Menu::Menu(QWidget *parent) :
 
     //Title
     QPixmap pm(":images/res/title.png"); // <- path to image file
-    ui->label->setGeometry(450,200,500,70);
+    ui->label->setGeometry(this->size().width() / 2 - 250, 100,500,70);
     ui->label->setPixmap(pm);
     ui->label->setScaledContents(true);
 
-    // Create the button, make "this" the parent
-    m_button = new QPushButton("Play", this);
+    // Create the playbutton, make "this" the parent
+    btn_play = new QPushButton(this);
+    //Set image
+    QPixmap img_play(":images/res/btn_play.png");
+    img_play = img_play.scaled(200, 60, Qt::KeepAspectRatio, Qt::FastTransformation);
+    QIcon PlayIcon(img_play);
+    btn_play->setIcon(PlayIcon);
+    btn_play->setIconSize(img_play.rect().size());
     // set size and location of the button
-    m_button->setGeometry(650, 600, 100, 100);
-
+    btn_play->setGeometry(this->size().width()/2 - img_play.rect().size().width()/2, this->size().height() - 350, img_play.rect().size().width(), img_play.rect().size().height());
     // Connect button signal to appropriate slot
-    connect(m_button, SIGNAL (released()), this, SLOT (handleButton()));
+    connect(btn_play, SIGNAL (released()), this, SLOT (handlePlayButton()));
+
+    // Create the instruction button, make "this" the parent
+    btn_ins = new QPushButton(this);
+    //Set image
+    QPixmap img_ins(":images/res/btn_ins.png");
+    img_ins = img_ins.scaled(200, 60, Qt::KeepAspectRatio, Qt::FastTransformation);
+    QIcon InsIcon(img_ins);
+    btn_ins->setIcon(InsIcon);
+    btn_ins->setIconSize(img_ins.rect().size());
+    // set size and location of the button
+    btn_ins->setGeometry(this->size().width()/2 - img_ins.rect().size().width()/2, this->size().height() - 250, img_ins.rect().size().width(), img_ins.rect().size().height());
+    // Connect button signal to appropriate slot
+    connect(btn_ins, SIGNAL (released()), this, SLOT (handleInsButton()));
 
 }
 
@@ -46,10 +65,16 @@ Menu::~Menu()
     delete ui;
 }
 
-void Menu::handleButton()
+void Menu::handlePlayButton()
 {
     close();
     music->stop();
     Game * game = new Game();
     game->show();
+}
+
+void Menu::handleInsButton()
+{
+    Instruction * ins = new Instruction();
+    ins->show();
 }
