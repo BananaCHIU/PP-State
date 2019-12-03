@@ -2,20 +2,16 @@
 #include "Block.h"
 #include "Node.h"
 
-template <>
-class Node <Block> {
 
-    Block b;
 
-public:
+template<typename type>
+Node<type>::Node(const type &x) : data(x) {
 
-};
+}
 
-template <>
-class Node <Queue*> {
+template<typename type>
+Node<type>::~Node()
+{
 
-    Queue* q;
+}
 
-public:
-
-};
