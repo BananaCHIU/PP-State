@@ -40,7 +40,7 @@ Menu::Menu(QWidget *parent) :
     btn_play->setIcon(PlayIcon);
     btn_play->setIconSize(img_play.rect().size());
     // set size and location of the button
-    btn_play->setGeometry(this->size().width()/2 - img_play.rect().size().width()/2, this->size().height() - 350, img_play.rect().size().width(), img_play.rect().size().height());
+    btn_play->setGeometry(this->size().width()/2 - img_play.rect().size().width()/2, this->size().height() - 400, img_play.rect().size().width(), img_play.rect().size().height());
     // Connect button signal to appropriate slot
     connect(btn_play, SIGNAL (released()), this, SLOT (handlePlayButton()));
 
@@ -53,10 +53,22 @@ Menu::Menu(QWidget *parent) :
     btn_ins->setIcon(InsIcon);
     btn_ins->setIconSize(img_ins.rect().size());
     // set size and location of the button
-    btn_ins->setGeometry(this->size().width()/2 - img_ins.rect().size().width()/2, this->size().height() - 250, img_ins.rect().size().width(), img_ins.rect().size().height());
+    btn_ins->setGeometry(this->size().width()/2 - img_ins.rect().size().width()/2, this->size().height() - 300, img_ins.rect().size().width(), img_ins.rect().size().height());
     // Connect button signal to appropriate slot
     connect(btn_ins, SIGNAL (released()), this, SLOT (handleInsButton()));
 
+    // Create the quit button, make "this" the parent
+    btn_quit = new QPushButton(this);
+    //Set image
+    QPixmap img_quit(":images/res/btn_quit.png");
+    img_quit = img_quit.scaled(200, 60, Qt::KeepAspectRatio, Qt::FastTransformation);
+    QIcon QuitIcon(img_quit);
+    btn_quit->setIcon(QuitIcon);
+    btn_quit->setIconSize(img_quit.rect().size());
+    // set size and location of the button
+    btn_quit->setGeometry(this->size().width()/2 - img_quit.rect().size().width()/2, this->size().height() - 200, img_quit.rect().size().width(), img_quit.rect().size().height());
+    // Connect button signal to appropriate slot
+    connect(btn_quit, SIGNAL (released()), this, SLOT (handleQuitButton()));
 }
 
 Menu::~Menu()
@@ -77,4 +89,10 @@ void Menu::handleInsButton()
 {
     Instruction * ins = new Instruction();
     ins->show();
+}
+
+void Menu::handleQuitButton()
+{
+    music->stop();
+    exit(0);
 }

@@ -22,11 +22,13 @@ private:
     Ui::Menu *ui;
     QPushButton *btn_play;
     QPushButton *btn_ins;
+    QPushButton *btn_quit;
     QMediaPlayer *music;
 
 private slots:
     void handlePlayButton();
     void handleInsButton();
+    void handleQuitButton();
 };
 
 #endif // MENU_H
