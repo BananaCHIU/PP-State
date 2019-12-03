@@ -14,6 +14,7 @@
         <file>res/ins_1.png</file>
         <file>res/ins_2.png</file>
         <file>res/ins_3.png</file>
+        <file>res/icon.ico</file>
     </qresource>
     <qresource prefix="/background">
         <file>res/cloud.png</file>
