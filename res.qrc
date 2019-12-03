@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>res/player.png</file>
+        <file>res/title.png</file>
+        <file>res/sprite_0.png</file>
+        <file>res/sprite_1.png</file>
+        <file>res/sprite_2.png</file>
+        <file>res/sprite_3.png</file>
+        <file>res/icon.png</file>
+    </qresource>
+    <qresource prefix="/background">
+        <file>res/cloud.png</file>
+        <file>res/cloud1.png</file>
+        <file>res/cloud2.png</file>
+        <file>res/cloud3.png</file>
+        <file>res/cloud4.png</file>
+        <file>res/cloud5.png</file>
+        <file>res/dirt.png</file>
+        <file>res/brick_1.png</file>
+    </qresource>
+    <qresource prefix="/music">
+        <file>res/bgm_menu.mp3</file>
+    </qresource>
+</RCC>
