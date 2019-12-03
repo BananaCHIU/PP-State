@@ -10,6 +10,7 @@ public:
     Player(QPixmap image,int width,int height);
     void move(enum direction dir);
     void jump();
+    void advance(int step) override;
 private:
     const double jumpVelocity{-550.0/120};
 };

@@ -5,8 +5,7 @@
 
 Character::Character(QPixmap image,int width, int height) :
     width(width),
-    height(height),
-    direction(LEFT)
+    height(height)
 {
     setPixmap(image);
 }
@@ -21,9 +20,9 @@ int Character::getHeight() const
     return height;
 }
 
-int Character::getDirection() const
+enum direction Character::getFacing() const
 {
-    return direction;
+    return facing;
 }
 
 double Character::getVerticalVelocity() const
@@ -53,20 +52,22 @@ void Character::setVerticalVelocity(double velocity)
 
 bool Character::isOnGround()
 {
-    Block *blockA = static_cast<Block*>(scene()->itemAt(pos().x() + 1, pos().y() + height, QTransform()));
-    Block *blockB = static_cast<Block*>(scene()->itemAt(pos().x() + width - 1, pos().y() + height, QTransform()));
-    if (blockA == nullptr && blockB == nullptr) return false;
-    else {
+    QGraphicsItem *objectA = scene()->itemAt(pos().x() + 1, pos().y() + height, QTransform());
+    QGraphicsItem *objectB = scene()->itemAt(pos().x() + width - 1, pos().y() + height, QTransform());
+    if ((objectA != nullptr && objectA->type() == Block::Type)
+        || (objectB != nullptr && objectB->type() == Block::Type)) {
         setVerticalVelocity(0.0);
         return true;
-    }
+    } else return false;
 }
 
-void Character::flipDirection()
+void Character::flipFacing()
 {
-    direction = direction == LEFT ? RIGHT : LEFT;
+    facing = facing == LEFT ? RIGHT : LEFT;
     setPixmap(pixmap().transformed(QTransform().scale(-1,1)));
 }
+
+
 
 bool Character::collide(enum direction dir){
     switch(dir){

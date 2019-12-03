@@ -20,6 +20,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     Block.cpp \
     Character.cpp \
+    Dog.cpp \
     Game.cpp \
     Node.cpp \
     Player.cpp \
@@ -31,6 +32,7 @@ SOURCES += \
 HEADERS += \
     Block.h \
     Character.h \
+    Dog.h \
     Game.h \
     Node.h \
     Player.h \

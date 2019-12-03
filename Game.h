@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "Dog.h"
 #include "Player.h"
 #include <QTimer>
 #include <QGraphicsView>
@@ -34,7 +35,8 @@ private:
     QGraphicsScene *scene;
     Player *player;
     QTimer * timer;
-
+    //test purpose:
+    Dog *dog;
 };
 
 #endif // GAME_H

@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Player.h"
 #include "Block.h"
+#include "Dog.h"
 
 #include <iostream>
 #include <String>
@@ -30,7 +31,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     Block* bricka = new Block(QPixmap(":/background/res/brick_1.png"), 64 ,64);
     bricka->setPos(10*64, getWinHeight() - 64 * 2);
     Block* brickb = new Block(QPixmap(":/background/res/brick_1.png"), 64 ,64);
-    brickb->setPos(10*64, getWinHeight() - 64 * 3);
+    brickb->setPos(18*64, getWinHeight() - 64 * 2);
     Block* brickc = new Block(QPixmap(":/background/res/brick_1.png"), 64 ,64);
     brickc->setPos(7*64, getWinHeight() - 64 * 2);
     Block* brickd = new Block(QPixmap(":/background/res/brick_1.png"), 64 ,64);
@@ -49,6 +50,10 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     timer = new QTimer();
     connect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->start(1000/120);
+
+    dog = new Dog(QPixmap(":/images/res/dog.png"), 102, 60);
+    dog->setPos(scene->width()/2, scene->height()-64-60);
+    scene->addItem(dog);
 }
 
 Game::~Game(){
@@ -58,6 +63,7 @@ Game::~Game(){
 
 void Game::gravity()
 {
+    // change player to the list/data structure that holds all the characters
     if(!player->isOnGround()){
         // in air:
         if(player->getVerticalVelocity() < 0){
@@ -78,21 +84,14 @@ void Game::gravity()
             }
             player->setVerticalVelocity(player->getVerticalVelocity() + verticalAcceleration);
         }
-        /*if (player->y() + player->getVerticalSpeed() + player->getHeight() >= getWinHeight()){
-            player->setPos(player->x(), getWinHeight()-player->getHeight());
-            player->setVerticalSpeed(0.0);player->verticalAcceleration()
-            player->setVerticalVelocity(0.0);
-            player->setInAir(false);
-        } else {
-            player->setPos(player->x(), player->y()+player->getVerticalSpeed());
-            player->setVerticalSpeed(player->getVerticalSpeed() + player->getVerticalVelocity());
-            player->setVerticalVelocity(player->getVerticalVelocity() + verticalAcceleration);
-            //cout << "verticalSpeed: " << verticalSpeed << endl;
-        }*/
     }
 }
 
 void Game::update(){
+    // test purpose:
+    // change the following line to advance maybe?
+    scene->advance();
+    //
     centerOn(player);
     gravity();
     if(keys[Qt::Key_W]) {

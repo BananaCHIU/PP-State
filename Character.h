@@ -10,7 +10,7 @@ public:
     //accessor
     int getWidth() const;
     int getHeight() const;
-    int getDirection() const;
+    enum direction getFacing() const;
     double getVerticalVelocity() const;
     double getSpeed() const;
     //mutator
@@ -18,17 +18,18 @@ public:
     void setHeight(int height);
     void setVerticalVelocity(double velocity);
     //other
-    virtual void move(direction dir) =0;
+    virtual void move(enum direction dir) =0;
+    virtual void advance(int step) =0;
     bool collide(enum direction dir);
     bool isOnGround();
-    void flipDirection();
+    void flipFacing();
 
 private:
     int width;
     int height;
-    direction direction;
-    double verticalVelocity = 0;
-    double speed = 2.5;
+    enum direction facing{RIGHT};
+    double verticalVelocity{0};
+    double speed{2.5};
 };
 
 #endif // CHARACTER_H
