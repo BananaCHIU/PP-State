@@ -14,7 +14,6 @@ Menu::Menu(QWidget *parent) :
 
     music = new QMediaPlayer();
     music->setMedia(QUrl("qrc:/music/res/bgm_menu.mp3"));
-    connect(music, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
     music->play();
 
     QPixmap pm(":images/res/title.png"); // <- path to image file
