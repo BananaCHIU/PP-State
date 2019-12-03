@@ -12,14 +12,24 @@ Menu::Menu(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    //Background Image
+    QPixmap bkgnd(":images/res/bg.jpg");
+    bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
+    QPalette palette;
+    palette.setBrush(QPalette::Background, bkgnd);
+    this->setPalette(palette);
+
+    //BGM
     music = new QMediaPlayer();
     music->setMedia(QUrl("qrc:/music/res/bgm_menu.mp3"));
     music->play();
 
+    //Title
     QPixmap pm(":images/res/title.png"); // <- path to image file
     ui->label->setGeometry(450,200,500,70);
     ui->label->setPixmap(pm);
     ui->label->setScaledContents(true);
+
     // Create the button, make "this" the parent
     m_button = new QPushButton("Play", this);
     // set size and location of the button
