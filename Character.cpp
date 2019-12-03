@@ -45,6 +45,11 @@ void Character::setHeight(int height)
     this->height = height;
 }
 
+void Character::setSpeed(double speed)
+{
+    this->speed = speed;
+}
+
 void Character::setVerticalVelocity(double velocity)
 {
     this->verticalVelocity = velocity;

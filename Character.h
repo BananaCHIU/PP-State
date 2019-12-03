@@ -16,6 +16,7 @@ public:
     //mutator
     void setWidth(int width);
     void setHeight(int height);
+    void setSpeed(double speed);
     void setVerticalVelocity(double velocity);
     //other
     virtual void move(enum direction dir) =0;

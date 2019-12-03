@@ -1,19 +1,19 @@
-#ifndef DOG_H
-#define DOG_H
+#ifndef RAPTOR_H
+#define RAPTOR_H
 
 #include "Character.h"
 
 
-class Dog : public Character{
+class Raptor: public Character{
 public:
-    Dog(QPixmap image, int w, int h);
+    Raptor(QPixmap image, int width, int height);
 
     enum direction getMovingDirection();
     void flipMovingDirection();
     void move(enum direction dir) override;
-    virtual void advance(int step) override;
+    void advance(int step) override;
 private:
     enum direction movingDirection{RIGHT};
 };
 
-#endif // DOG_H
+#endif // RAPTOR_H

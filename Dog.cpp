@@ -5,7 +5,7 @@
 
 Dog::Dog(QPixmap image, int width, int height): Character(image, width, height){
     setVerticalVelocity(0.0);
-
+    setSpeed(3.0);
 }
 
 enum direction Dog::getMovingDirection()
@@ -16,8 +16,6 @@ enum direction Dog::getMovingDirection()
 void Dog::flipMovingDirection()
 {
     movingDirection = movingDirection == LEFT? RIGHT : LEFT;
-    //if (movingDirection == LEFT) setPos(x() - 1, y());
-    //else setPos(x() + 1, y());
 }
 
 void Dog::move(enum direction dir)
@@ -42,11 +40,6 @@ void Dog::move(enum direction dir)
     // to be implemented
     // move horizontally, change moving direction when hitting blocks
 
-}
-
-bool Dog::collide(enum direction dir){
-    // to be implemented
-    return Character::collide(dir);
 }
 
 void Dog::advance(int step)

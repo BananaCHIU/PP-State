@@ -25,6 +25,7 @@ SOURCES += \
     Node.cpp \
     Player.cpp \
     Queue.cpp \
+    Raptor.cpp \
     instruction.cpp \
     main.cpp \
     menu.cpp
@@ -37,6 +38,7 @@ HEADERS += \
     Node.h \
     Player.h \
     Queue.h \
+    Raptor.h \
     instruction.h \
     menu.h
 
