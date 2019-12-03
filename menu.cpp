@@ -40,6 +40,7 @@ Menu::~Menu()
 void Menu::handleButton()
 {
     close();
+    music->stop();
     Game * game = new Game();
     game->show();
 }
