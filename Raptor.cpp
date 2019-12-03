@@ -9,16 +9,6 @@ Raptor::Raptor(QPixmap image, int width, int height): Character(image, width, he
     // set the vertical and horizontal speed
 }
 
-enum direction Raptor::getMovingDirection()
-{
-    return movingDirection;
-}
-
-void Raptor::flipMovingDirection()
-{
-    movingDirection = movingDirection == LEFT? RIGHT : LEFT;
-}
-
 void Raptor::move(direction dir)
 {
 
