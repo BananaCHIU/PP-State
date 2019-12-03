@@ -7,19 +7,13 @@
 
 class Game: public QGraphicsView{
     Q_OBJECT
+private:
+    const double verticalAcceleration = 8/120.0;
 
     void gravity();
     void keyPressEvent(QKeyEvent * event);
     void keyReleaseEvent(QKeyEvent * event);
     QMap <int, bool> getKeyMap();
-    const int WIN_WIDTH = 1400;
-    const int WIN_HEIGHT = 800;
-    int anim_count = 0;
-    const int anim_ratio = 2;
-    QGraphicsScene *scene;
-    Player *player;
-    QTimer * timer;
-    QMap <int, bool> keys;
 
 public:
     Game(QWidget *parent = nullptr);
@@ -28,6 +22,19 @@ public:
     double getWinWidth();
 public slots:
     void update();
+
+private:
+    const int WIN_WIDTH = 1400;
+    const int WIN_HEIGHT = 800;
+    const int anim_ratio = 2;
+    int anim_count = 0;
+
+    QMap <int, bool> keys;
+
+    QGraphicsScene *scene;
+    Player *player;
+    QTimer * timer;
+
 };
 
 #endif // GAME_H

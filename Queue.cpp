@@ -32,3 +32,8 @@ type *Queue<type>::dequeue()
     }
     return result;
 }
+
+template<typename type>
+Queue<type>::~Queue(){
+    // to be implemented
+}

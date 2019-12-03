@@ -12,6 +12,6 @@ Node<type>::Node(const type &x) : data(x) {
 template<typename type>
 Node<type>::~Node()
 {
-
+    // to be implemented
 }
 

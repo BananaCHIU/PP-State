@@ -16,3 +16,9 @@ int Block::getHeight()
 {
     return height;
 }
+
+int Block::type() const
+{
+    return Type;
+}
+

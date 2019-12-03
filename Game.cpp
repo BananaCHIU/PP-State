@@ -68,7 +68,7 @@ void Game::gravity()
                 player->setPos(player->x(),player->y() + player->getVerticalVelocity());
                 //cout << player->getVerticalVelocity() << endl;
             }
-            player->setVerticalVelocity(player->getVerticalVelocity() + player->getVerticalAcceleration());
+            player->setVerticalVelocity(player->getVerticalVelocity() + verticalAcceleration);
 
         } else if (player->getVerticalVelocity() >= 0){
             if (player->collide(DOWNWARD)){
@@ -76,24 +76,23 @@ void Game::gravity()
             } else {
                 player->setPos(player->x(),player->y() + player->getVerticalVelocity());
             }
-            player->setVerticalVelocity(player->getVerticalVelocity() + player->getVerticalAcceleration());
+            player->setVerticalVelocity(player->getVerticalVelocity() + verticalAcceleration);
         }
         /*if (player->y() + player->getVerticalSpeed() + player->getHeight() >= getWinHeight()){
             player->setPos(player->x(), getWinHeight()-player->getHeight());
-            player->setVerticalSpeed(0.0);
+            player->setVerticalSpeed(0.0);player->verticalAcceleration()
             player->setVerticalVelocity(0.0);
             player->setInAir(false);
         } else {
             player->setPos(player->x(), player->y()+player->getVerticalSpeed());
             player->setVerticalSpeed(player->getVerticalSpeed() + player->getVerticalVelocity());
-            player->setVerticalVelocity(player->getVerticalVelocity() + player->getVerticalAcceleration());
+            player->setVerticalVelocity(player->getVerticalVelocity() + verticalAcceleration);
             //cout << "verticalSpeed: " << verticalSpeed << endl;
         }*/
     }
 }
 
 void Game::update(){
-
     centerOn(player);
     gravity();
     if(keys[Qt::Key_W]) {
