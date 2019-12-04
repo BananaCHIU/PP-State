@@ -13,17 +13,6 @@ public:
     Node(type* x);
     ~Node();
 };
-/*
-template <>
-class Node <Block>{
-public:
-    Block* data;
-    Node* next {nullptr};
-
-    Node(Block* x);
-    ~Node();
-};
-*/
 
 #include "Node.tpp"
 #endif // NODE_H

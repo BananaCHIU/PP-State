@@ -13,15 +13,3 @@ Node<type>::~Node()
     delete data;
 
 }
-
-/*
-Node<Block>::Node(Block* x) : data(x){
-
-}
-
-Node<Block>::~Node()
-{
-    delete data;
-}
-
-*/

@@ -18,23 +18,6 @@ public:
     void enqueue(type* data);
     type* dequeue();
 };
-/*
-template <typename T>
-class Queue<Block>{
-    Node<Block> *head {nullptr};
-    Node<Block> *tail {nullptr};
-
-public:
-    Queue();
-    Queue(Block* x);
-    ~Queue();
-
-    void print();
-    bool isEmpty();
-    void enqueue(Block* data);
-    Block* dequeue();
-};
-*/
 
 #include "Queue.tpp"
 #endif // QUEUE_H
