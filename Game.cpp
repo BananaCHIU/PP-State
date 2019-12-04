@@ -27,19 +27,24 @@ Game::Game(QWidget *parent) : QGraphicsView(){
         scene->addItem(brick);
     }
 
-    Block* bricka = new Block(QPixmap(":/background/res/brick_1.png"), 64 ,64);
+    Block* bricka = new Block(img_brick, 64 ,64);
     bricka->setPos(10*64, getWinHeight() - 64 * 2);
-    Block* brickb = new Block(QPixmap(":/background/res/brick_1.png"), 64 ,64);
+    Block* brickb = new Block(img_brick, 64 ,64);
     brickb->setPos(10*64, getWinHeight() - 64 * 3);
-    Block* brickc = new Block(QPixmap(":/background/res/brick_1.png"), 64 ,64);
+    Block* brickc = new Block(img_brick, 64 ,64);
     brickc->setPos(7*64, getWinHeight() - 64 * 2);
-    Block* brickd = new Block(QPixmap(":/background/res/brick_1.png"), 64 ,64);
+    Block* brickd = new Block(img_brick, 64 ,64);
     brickd->setPos(14*64, getWinHeight() - 64 * 4);
     scene->addItem(bricka);
     scene->addItem(brickb);
     scene->addItem(brickc);
     scene->addItem(brickd);
 
+    //Player Init
+    player_array.resize(4);
+    for(int i = 0; i < 4; ++i){
+        player_array[i] = QPixmap(QString::fromStdString(":/images/res/sprite_" + to_string(i)+ ".png"));
+    }
     player = new Player(QPixmap(":/images/res/player.png"), 64, 64);
     player->setFlag(QGraphicsItem::ItemIsFocusable);
     player->setFocus();
@@ -103,8 +108,7 @@ void Game::update(){
         player->move(LEFT);
         int count = anim_count;
         if (count % (anim_ratio * 4) == 0) {
-            string s = ":/images/res/sprite_" + to_string(count / (anim_ratio * 4)) + ".png";
-            player->setPixmap(QPixmap(QString::fromStdString(s)));
+            player->setPixmap(player_array[count / (anim_ratio * 4)]);
         }
         if (anim_count == (anim_ratio * 4 * 4) - 1) anim_count = 0;
         else ++anim_count;
@@ -113,8 +117,7 @@ void Game::update(){
         player->move(RIGHT);
         int count = anim_count;
         if (count % (anim_ratio * 4) == 0) {
-            string s = ":/images/res/sprite_" + to_string(count / (anim_ratio * 4)) + ".png";
-            player->setPixmap(QPixmap(QString::fromStdString(s)).transformed(QTransform().scale(-1,1)));
+            player->setPixmap(player_array[count / (anim_ratio * 4)].transformed(QTransform().scale(-1,1)));
         }
         if (anim_count == (anim_ratio * 4 * 4) - 1) anim_count = 0;
         else ++anim_count;

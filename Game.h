@@ -21,6 +21,8 @@ class Game: public QGraphicsView{
     QTimer * timer;
     QMap <int, bool> keys;
 
+    QPixmap img_brick{":/background/res/brick_1.png"};
+    QVector<QPixmap> player_array;
 public:
     Game(QWidget *parent = nullptr);
     ~Game();
