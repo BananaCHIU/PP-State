@@ -13,7 +13,7 @@ public:
     Node(type* x);
     ~Node();
 };
-
+/*
 template <>
 class Node <Block>{
 public:
@@ -23,4 +23,7 @@ public:
     Node(Block* x);
     ~Node();
 };
+*/
+
+#include "Node.tpp"
 #endif // NODE_H

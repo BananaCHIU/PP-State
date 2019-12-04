@@ -20,9 +20,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     Block.cpp \
     Game.cpp \
-    Node.cpp \
     Player.cpp \
-    Queue.cpp \
     instruction.cpp \
     main.cpp \
     menu.cpp
@@ -31,8 +29,10 @@ HEADERS += \
     Block.h \
     Game.h \
     Node.h \
+    Node.tpp \
     Player.h \
     Queue.h \
+    Queue.tpp \
     instruction.h \
     menu.h
 

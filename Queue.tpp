@@ -6,17 +6,9 @@ using namespace std;
 template<typename type>
 Queue<type>::Queue() : head(nullptr), tail(nullptr){}
 
-Queue<Block>::Queue() : head(nullptr), tail(nullptr){}
-
 template<typename type>
 Queue<type>::Queue(type* x) {
     Node<type>* n = new Node<type>(x);
-    head = n;
-    tail = n;
-}
-
-Queue<Block>::Queue(Block* x) {
-    Node<Block>* n = new Node<Block>(x);
     head = n;
     tail = n;
 }
@@ -30,21 +22,8 @@ Queue<type>::~Queue()
     }
 }
 
-Queue<Block>::~Queue()
-{
-    while(!isEmpty())
-    {
-        dequeue();
-    }
-}
-
 template<typename type>
 bool Queue<type>::isEmpty()
-{
-    return head == nullptr ? true : false;
-}
-
-bool Queue<Block>::isEmpty()
 {
     return head == nullptr ? true : false;
 }
@@ -52,18 +31,7 @@ bool Queue<Block>::isEmpty()
 template<typename type>
 void Queue<type>::enqueue(type* data)
 {
-    Node<type> * new_node = new Node<type>(data);
-    if (isEmpty()) {
-        head = tail = new_node;
-    } else {
-        tail->next = new_node;
-        tail = new_node;
-    }
-}
-
-void Queue<Block>::enqueue(Block* data)
-{
-    Node<Block> * new_node = new Node<Block>(data);
+    Node<type>* new_node = new Node<type>(data);
     if (isEmpty()) {
         head = tail = new_node;
     } else {
@@ -73,27 +41,11 @@ void Queue<Block>::enqueue(Block* data)
 }
 
 template<typename type>
-type *Queue<type>::dequeue()
+type Queue<type>::dequeue()
 {
     if (isEmpty()) return nullptr;
     Node<type>* temp = head;
     type* result = temp->data;
-    if (head == tail) {
-        delete temp;
-        head = tail = nullptr;
-    } else {
-        head = head->next;
-        delete temp;
-    }
-    cout << "dequeue" << endl;
-    return result;
-}
-
-Block *Queue<Block>::dequeue()
-{
-    if (isEmpty()) return nullptr;
-    Node<Block>* temp = head;
-    Block* result = temp->data;
     if (head == tail) {
         delete temp;
         head = tail = nullptr;
@@ -112,10 +64,69 @@ void Queue<type>::print(){
         cout << p->data << endl;
     }
 }
+/*
+template<>
+Queue<Block>::Queue() : head(nullptr), tail(nullptr){}
 
+
+template<>
+Queue<Block>::Queue(Block* x) {
+    Node<Block>* n = new Node<Block>(x);
+    head = n;
+    tail = n;
+}
+
+
+template<>
+Queue<Block>::~Queue()
+{
+    while(!isEmpty())
+    {
+        dequeue();
+    }
+}
+
+template<>
+bool Queue<Block>::isEmpty()
+{
+    return head == nullptr ? true : false;
+}
+
+template<>
+void Queue<Block>::enqueue(Block* data)
+{
+    Node<Block> * new_node = new Node<Block>(data);
+    if (isEmpty()) {
+        head = tail = new_node;
+    } else {
+        tail->next = new_node;
+        tail = new_node;
+    }
+}
+
+
+template<>
+Block *Queue<Block>::dequeue()
+{
+    if (isEmpty()) return nullptr;
+    Node<Block>* temp = head;
+    Block* result = temp->data;
+    if (head == tail) {
+        delete temp;
+        head = tail = nullptr;
+    } else {
+        head = head->next;
+        delete temp;
+    }
+    cout << "dequeue" << endl;
+    return result;
+}
+
+template<>
 void Queue<Block>::print(){
     if(isEmpty()) { cout << "empty queue!!" << endl; }
     for(const Node<Block>* p = head; p != nullptr; p = p->next){
         cout << p->data << endl;
     }
 }
+*/

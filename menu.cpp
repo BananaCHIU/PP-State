@@ -74,6 +74,10 @@ Menu::Menu(QWidget *parent) :
 Menu::~Menu()
 {
     music->stop();
+    delete music;
+    delete btn_quit;
+    delete btn_play;
+    delete btn_ins;
     delete ui;
 }
 

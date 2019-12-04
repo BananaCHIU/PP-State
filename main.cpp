@@ -16,24 +16,27 @@ int main(int argc, char *argv[])
     Menu* menu = new Menu();
     menu->show();
 
-    /* Test
+   // Queue<Queue>* q = new Queue<Queue>();
+    // Test
     Block* b1 = new Block(QPixmap(":images/res/icon.png"), 100, 100);
     Block* b2 = new Block(QPixmap(":images/res/icon.png"), 100, 100);
     Block* b3 = new Block(QPixmap(":images/res/icon.png"), 100, 100);
     //Node<Block>* n1 = new Node<Block>();
-    Queue<Block>* q = new Queue<Block>(b1);
+    Queue<Block>* q = new Queue<Block>();
+    q->enqueue(b1);
     q->enqueue(b2);
     q->enqueue(b3);
     q->print();
-    delete q;
+    Queue<Queue<Block>>* w = new Queue<Queue<Block>>();
+    w->enqueue(q);
+    w->print();
+    //q->dequeue();
+    //q->print();
+    //q->dequeue();
+    //q->print();
+    //q->dequeue();
+    //q->print();
 
-    //q->dequeue();
-    //q->print();
-    //q->dequeue();
-    //q->print();
-    //q->dequeue();
-    //q->print();
-    */
 
     return a.exec();
 }

@@ -29,7 +29,9 @@ Instruction::Instruction(QWidget *parent) :
 
 Instruction::~Instruction()
 {
+    delete btn_back;
     delete ui;
+
 }
 
 void Instruction::handleBackButton(){
