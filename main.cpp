@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     menu->show();
 
    // Queue<Queue>* q = new Queue<Queue>();
-    // Test
+    /* Data Structure Test
     Block* b1 = new Block(QPixmap(":images/res/icon.png"), 100, 100);
     Block* b2 = new Block(QPixmap(":images/res/icon.png"), 100, 100);
     Block* b3 = new Block(QPixmap(":images/res/icon.png"), 100, 100);
@@ -30,13 +30,8 @@ int main(int argc, char *argv[])
     Queue<Queue<Block>>* w = new Queue<Queue<Block>>();
     w->enqueue(q);
     w->print();
-    //q->dequeue();
-    //q->print();
-    //q->dequeue();
-    //q->print();
-    //q->dequeue();
-    //q->print();
-
-
+    w->dequeue();
+    q->print();
+    */
     return a.exec();
 }

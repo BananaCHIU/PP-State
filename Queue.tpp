@@ -41,7 +41,7 @@ void Queue<type>::enqueue(type* data)
 }
 
 template<typename type>
-type Queue<type>::dequeue()
+type* Queue<type>::dequeue()
 {
     if (isEmpty()) return nullptr;
     Node<type>* temp = head;

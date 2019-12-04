@@ -16,7 +16,7 @@ public:
     void print();
     bool isEmpty();
     void enqueue(type* data);
-    type dequeue();
+    type* dequeue();
 };
 /*
 template <typename T>
