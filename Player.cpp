@@ -56,7 +56,7 @@ void Player::move(enum direction dir)
 {
     // left
     if (dir == LEFT) {
-        if (getDirection() != LEFT) flipDirection();
+        //if (getDirection() != LEFT) flipDirection();
         if (collide(LEFT)) return;
         if (x() - speed < 0)  setPos(0, y());
         else setPos(x()- speed, y());
@@ -64,7 +64,7 @@ void Player::move(enum direction dir)
 
     //right
     if (dir == RIGHT) {
-        if (getDirection() != RIGHT) flipDirection();
+        //if (getDirection() != RIGHT) flipDirection();
         if (collide(RIGHT)) return;
         if (x() + getWidth() + speed > scene()->width())  setPos(scene()->width() - getWidth(), y());
         else setPos(x()+ speed, y());

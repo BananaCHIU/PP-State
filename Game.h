@@ -14,8 +14,14 @@ class Game: public QGraphicsView{
     QMap <int, bool> getKeyMap();
     const int WIN_WIDTH = 1400;
     const int WIN_HEIGHT = 800;
+
     int anim_count = 0;
     const int anim_ratio = 2;
+
+    //Store the player's xy when it move to the left
+    qreal prev_x = -1, prev_y = -1;
+    bool goingBack = false;
+
     QGraphicsScene *scene;
     Player *player;
     QTimer * timer;

@@ -1,7 +1,10 @@
 #include "Game.h"
 #include "Player.h"
 #include "Block.h"
+#include "float.h"
+#include "Queue.h"
 
+#include <math.h>
 #include <iostream>
 #include <String>
 #include <QKeyEvent>
@@ -14,19 +17,19 @@ using namespace std;
 
 Game::Game(QWidget *parent) : QGraphicsView(){
     scene = new QGraphicsScene();
-    scene->setSceneRect(0, 0, 2000 ,WIN_HEIGHT);
+    scene->setSceneRect(0, 0, 4000 ,WIN_HEIGHT);
     scene->setBackgroundBrush(QBrush(QColor("#82f4ff")));
     setScene(scene);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(WIN_WIDTH, WIN_HEIGHT);
 
-    for (int i = 0; i <= 2000/64; ++i){
+    for (int i = 0; i <= 4000/64; ++i){
         Block* brick = new Block(QPixmap(":/background/res/brick_1.png"), 64 ,64);
         brick->setPos(i*64, getWinHeight() - 64);
         scene->addItem(brick);
     }
-
+    Queue<Block>* q_block= new Queue<Block>();
     Block* bricka = new Block(img_brick, 64 ,64);
     bricka->setPos(10*64, getWinHeight() - 64 * 2);
     Block* brickb = new Block(img_brick, 64 ,64);
@@ -48,12 +51,13 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     player = new Player(QPixmap(":/images/res/player.png"), 64, 64);
     player->setFlag(QGraphicsItem::ItemIsFocusable);
     player->setFocus();
-    player->setPos(scene->width()/2, scene->height()/2);
+    player->setPos(200, scene->height()/2);
     scene->addItem(player);
 
     timer = new QTimer();
     connect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->start(1000/120);
+    centerOn(player);
 }
 
 Game::~Game(){
@@ -98,14 +102,21 @@ void Game::gravity()
 }
 
 void Game::update(){
-
-    centerOn(player);
     gravity();
     if(keys[Qt::Key_W]) {
         player->jump();
     }
     if(keys[Qt::Key_A]) {
-        player->move(LEFT);
+
+        if (!goingBack){                                                //Player is going back, lock the screen
+            prev_x = player->x() + player->getWidth() / 2;
+            prev_y = player->y();
+            centerOn(prev_x, prev_y);
+            goingBack = true;
+        }
+
+        //Cant go back if the player touches the leftmost part of the screen
+        if (player->x() >= this->horizontalScrollBar()->value()) player->move(LEFT);
         int count = anim_count;
         if (count % (anim_ratio * 4) == 0) {
             player->setPixmap(player_array[count / (anim_ratio * 4)]);
@@ -114,6 +125,12 @@ void Game::update(){
         else ++anim_count;
     }
     if(keys[Qt::Key_D]) {
+        if (goingBack){
+            if (player->x()+ player->getWidth() / 2 >= prev_x){
+                centerOn(player);
+                goingBack = false;
+            }
+        }else centerOn(player);
         player->move(RIGHT);
         int count = anim_count;
         if (count % (anim_ratio * 4) == 0) {
@@ -125,8 +142,10 @@ void Game::update(){
     if(keys[Qt::Key_Space]){
         cout << "x:" << player->x() << endl;
         cout << "y:" << player->y() << endl;
-        cout << "velocity:" << player->getVerticalVelocity() << endl;
-        cout << "isOnGround:" << (player->isOnGround() ? "true" : "false") << endl;
+        cout << "prevx:" << prev_x << endl;
+        //cout << "velocity:" << player->getVerticalVelocity() << endl;
+        //cout << "isOnGround:" << (player->isOnGround() ? "true" : "false") << endl;
+        cout << "goingBack:" << goingBack << endl;
     }
 
 }

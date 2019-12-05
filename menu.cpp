@@ -98,5 +98,6 @@ void Menu::handleInsButton()
 void Menu::handleQuitButton()
 {
     music->stop();
+    close();
     exit(0);
 }
