@@ -64,3 +64,13 @@ void Queue<type>::print(){
         cout << p->data << endl;
     }
 }
+
+template<typename type>
+Node<type>* Queue<type>::getHead(){
+    return head;
+}
+
+template<typename type>
+Node<type>* Queue<type>::getTail(){
+    return tail;
+}

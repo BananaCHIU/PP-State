@@ -6,6 +6,7 @@
 
 #include <math.h>
 #include <iostream>
+#include <fstream>
 #include <String>
 #include <QKeyEvent>
 #include <QDebug>
@@ -17,38 +18,32 @@ using namespace std;
 
 Game::Game(QWidget *parent) : QGraphicsView(){
     scene = new QGraphicsScene();
-    scene->setSceneRect(0, 0, 4000 ,WIN_HEIGHT);
+    scene->setSceneRect(0, 0, GAME_WIDTH ,WIN_HEIGHT);
     scene->setBackgroundBrush(QBrush(QColor("#82f4ff")));
     setScene(scene);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(WIN_WIDTH, WIN_HEIGHT);
 
-    for (int i = 0; i <= 4000/64; ++i){
-        Block* brick = new Block(QPixmap(":/background/res/brick_1.png"), 64 ,64);
-        brick->setPos(i*64, getWinHeight() - 64);
-        scene->addItem(brick);
-    }
-    Queue<Block>* q_block= new Queue<Block>();
-    Block* bricka = new Block(img_brick, 64 ,64);
-    bricka->setPos(10*64, getWinHeight() - 64 * 2);
-    Block* brickb = new Block(img_brick, 64 ,64);
-    brickb->setPos(10*64, getWinHeight() - 64 * 3);
-    Block* brickc = new Block(img_brick, 64 ,64);
-    brickc->setPos(7*64, getWinHeight() - 64 * 2);
-    Block* brickd = new Block(img_brick, 64 ,64);
-    brickd->setPos(14*64, getWinHeight() - 64 * 4);
-    scene->addItem(bricka);
-    scene->addItem(brickb);
-    scene->addItem(brickc);
-    scene->addItem(brickd);
+    q_block= new Queue<Block>();
 
+    //Game ground
+    for (int i = 0; (i <= GAME_WIDTH/64); ++i){
+        if(((i>=14) && (i<=16)) || ((i>=22) && (i<=25)) || ((i>=33) && (i<=35)) || ((i>=33) && (i<=35)) ||
+                ((i>=43) && (i<=45)) || ((i>=54) && (i<=57)) || ((i>=59) && (i<=60)) || ((i>=62) && (i<=63))
+                || ((i>=65) && (i<=66))) continue;
+        Block* brick = new Block(img_brick, getWinHeight() , i, 1);
+        q_block->enqueue(brick);
+    }
+
+    loadBrick();
+    placeAllBlock();
     //Player Init
     player_array.resize(4);
     for(int i = 0; i < 4; ++i){
         player_array[i] = QPixmap(QString::fromStdString(":/images/res/sprite_" + to_string(i)+ ".png"));
     }
-    player = new Player(QPixmap(":/images/res/player.png"), 64, 64);
+    player = new Player(player_array[1], 64, 64);
     player->setFlag(QGraphicsItem::ItemIsFocusable);
     player->setFocus();
     player->setPos(200, scene->height()/2);
@@ -61,6 +56,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
 }
 
 Game::~Game(){
+    delete q_block;
     scene->clear();
 
 }
@@ -118,10 +114,10 @@ void Game::update(){
         //Cant go back if the player touches the leftmost part of the screen
         if (player->x() >= this->horizontalScrollBar()->value()) player->move(LEFT);
         int count = anim_count;
-        if (count % (anim_ratio * 4) == 0) {
-            player->setPixmap(player_array[count / (anim_ratio * 4)]);
+        if (count % (ANIM_RATIO * 4) == 0) {
+            player->setPixmap(player_array[count / (ANIM_RATIO * 4)]);
         }
-        if (anim_count == (anim_ratio * 4 * 4) - 1) anim_count = 0;
+        if (anim_count == (ANIM_RATIO * 4 * 4) - 1) anim_count = 0;
         else ++anim_count;
     }
     if(keys[Qt::Key_D]) {
@@ -133,10 +129,10 @@ void Game::update(){
         }else centerOn(player);
         player->move(RIGHT);
         int count = anim_count;
-        if (count % (anim_ratio * 4) == 0) {
-            player->setPixmap(player_array[count / (anim_ratio * 4)].transformed(QTransform().scale(-1,1)));
+        if (count % (ANIM_RATIO * 4) == 0) {
+            player->setPixmap(player_array[count / (ANIM_RATIO * 4)].transformed(QTransform().scale(-1,1)));
         }
-        if (anim_count == (anim_ratio * 4 * 4) - 1) anim_count = 0;
+        if (anim_count == (ANIM_RATIO * 4 * 4) - 1) anim_count = 0;
         else ++anim_count;
     }
     if(keys[Qt::Key_Space]){
@@ -148,6 +144,25 @@ void Game::update(){
         cout << "goingBack:" << goingBack << endl;
     }
 
+}
+
+void Game::loadBrick(){
+    //Open file
+    QFile f(":/coordinates/coordinates/coorBrick.txt");
+    f.open(QIODevice::ReadOnly);
+    //Read Coordinates
+    foreach (QString i,QString(f.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
+        Block* brick = new Block(img_brick, getWinHeight(), i.section(" ",0,0).toInt() , i.section(" ",1,1).toInt());
+        q_block->enqueue(brick);
+    }
+    f.close();
+}
+
+void Game::placeAllBlock(){
+    //Place all block in game
+    for(Node<Block>* p = q_block->getHead(); p != nullptr; p = p->next){
+        scene->addItem(p->data);
+    }
 }
 
 void Game::keyPressEvent(QKeyEvent *e)

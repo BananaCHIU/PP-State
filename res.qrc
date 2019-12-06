@@ -31,4 +31,7 @@
     <qresource prefix="/music">
         <file>res/bgm_menu.mp3</file>
     </qresource>
+    <qresource prefix="/coordinates">
+        <file>coordinates/coorBrick.txt</file>
+    </qresource>
 </RCC>

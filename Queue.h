@@ -17,6 +17,9 @@ public:
     bool isEmpty();
     void enqueue(type* data);
     type* dequeue();
+
+    Node<type>* getHead();
+    Node<type>* getTail();
 };
 
 #include "Queue.tpp"

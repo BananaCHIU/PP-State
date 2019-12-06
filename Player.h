@@ -36,9 +36,9 @@ private:
     int width;
     int height;
     direction direction;
-    const double verticalAcceleration = 6/120.0;
+    const double VERTICALACCELERATION = 6/120.0;
     double verticalVelocity = 0;
-    const double speed = 2.5;
+    const double SPEED = 2.5;
 };
 
 #endif // PLAYER_H

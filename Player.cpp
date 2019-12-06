@@ -44,7 +44,7 @@ int Player::getDirection() const{
 
 double Player::getVerticalAcceleration() const
 {
-    return verticalAcceleration;
+    return VERTICALACCELERATION;
 }
 
 double Player::getVerticalVelocity() const
@@ -58,16 +58,16 @@ void Player::move(enum direction dir)
     if (dir == LEFT) {
         //if (getDirection() != LEFT) flipDirection();
         if (collide(LEFT)) return;
-        if (x() - speed < 0)  setPos(0, y());
-        else setPos(x()- speed, y());
+        if (x() - SPEED < 0)  setPos(0, y());
+        else setPos(x()- SPEED, y());
     }
 
     //right
     if (dir == RIGHT) {
         //if (getDirection() != RIGHT) flipDirection();
         if (collide(RIGHT)) return;
-        if (x() + getWidth() + speed > scene()->width())  setPos(scene()->width() - getWidth(), y());
-        else setPos(x()+ speed, y());
+        if (x() + getWidth() + SPEED > scene()->width())  setPos(scene()->width() - getWidth(), y());
+        else setPos(x()+ SPEED, y());
     }
 
 }
@@ -86,8 +86,8 @@ bool Player::collide(enum direction direction)
     case LEFT:
     {
 
-        Block *blockA = static_cast<Block*>(scene()->itemAt(pos().x() - speed, pos().y() + 1, QTransform()));
-        Block *blockB = static_cast<Block*>(scene()->itemAt(pos().x() - speed, pos().y() + height - 1, QTransform()));
+        Block *blockA = static_cast<Block*>(scene()->itemAt(pos().x() - SPEED, pos().y() + 1, QTransform()));
+        Block *blockB = static_cast<Block*>(scene()->itemAt(pos().x() - SPEED, pos().y() + height - 1, QTransform()));
         if (blockA != nullptr){
             setPos(blockA->pos().x() + blockA->getWidth(), y());
             return true;
@@ -103,8 +103,8 @@ bool Player::collide(enum direction direction)
 
     case RIGHT:
     {
-        Block *blockA = static_cast<Block*>(scene()->itemAt(pos().x() + speed + width, pos().y() + 1, QTransform()));
-        Block *blockB = static_cast<Block*>(scene()->itemAt(pos().x() + speed + width, pos().y() + height - 1, QTransform()));
+        Block *blockA = static_cast<Block*>(scene()->itemAt(pos().x() + SPEED + width, pos().y() + 1, QTransform()));
+        Block *blockB = static_cast<Block*>(scene()->itemAt(pos().x() + SPEED + width, pos().y() + height - 1, QTransform()));
         if (blockA != nullptr){
             setPos(blockA->pos().x() - width, y());
             return true;
@@ -166,5 +166,5 @@ int Player::getHeight() const{
 }
 
 double Player::getSpeed() const{
-    return speed;
+    return SPEED;
 }
