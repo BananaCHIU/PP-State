@@ -21,7 +21,7 @@ public:
     //other
     virtual void move(enum direction dir) =0;
     virtual void advance(int step) =0;
-    bool collide(enum direction dir);
+    virtual bool collide(enum direction dir);
     bool isOnGround();
     void flipFacing();
 

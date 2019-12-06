@@ -20,6 +20,8 @@ void Dog::flipMovingDirection()
 
 void Dog::move(enum direction dir)
 {
+    // move horizontally, change moving direction when hitting blocks
+
     if(dir == LEFT){
         if(getFacing()!= getMovingDirection()) flipFacing();// flip facing and the pixmap
         if (collide(LEFT)) {
@@ -37,9 +39,6 @@ void Dog::move(enum direction dir)
         if (x() + getWidth() + getSpeed() > scene()->width())  setPos(scene()->width() - getWidth(), y());
         else setPos(x()+ getSpeed(), y());
     }
-    // to be implemented
-    // move horizontally, change moving direction when hitting blocks
-
 }
 
 void Dog::advance(int step)

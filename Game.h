@@ -3,6 +3,7 @@
 
 #include "Dog.h"
 #include "Player.h"
+#include "Raptor.h"
 #include <QTimer>
 #include <QGraphicsView>
 
@@ -21,6 +22,7 @@ public:
     ~Game();
     double getWinHeight();
     double getWinWidth();
+    double getVerticalAcceleration();
 public slots:
     void update();
 
@@ -37,6 +39,7 @@ private:
     QTimer * timer;
     //test purpose:
     Dog *dog;
+    Raptor *raptor;
 };
 
 #endif // GAME_H

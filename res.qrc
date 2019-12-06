@@ -15,6 +15,10 @@
         <file>res/ins_2.png</file>
         <file>res/ins_3.png</file>
         <file>res/dog.png</file>
+        <file>res/green_raptor_0.png</file>
+        <file>res/green_raptor_1.png</file>
+        <file>res/green_raptor_2.png</file>
+        <file>res/green_raptor_3.png</file>
     </qresource>
     <qresource prefix="/background">
         <file>res/cloud.png</file>
