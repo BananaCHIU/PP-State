@@ -14,8 +14,16 @@
         <file>res/ins_1.png</file>
         <file>res/ins_2.png</file>
         <file>res/ins_3.png</file>
+<<<<<<< HEAD
         <file>res/btn_back.png</file>
         <file>res/btn_quit.png</file>
+=======
+        <file>res/dog.png</file>
+        <file>res/green_raptor_0.png</file>
+        <file>res/green_raptor_1.png</file>
+        <file>res/green_raptor_2.png</file>
+        <file>res/green_raptor_3.png</file>
+>>>>>>> monster
         <file>res/icon.ico</file>
     </qresource>
     <qresource prefix="/background">

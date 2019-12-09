@@ -19,20 +19,33 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     Block.cpp \
+    Character.cpp \
+    Dog.cpp \
     Game.cpp \
     Player.cpp \
+<<<<<<< HEAD
+=======
+    Queue.cpp \
+    Raptor.cpp \
+>>>>>>> monster
     instruction.cpp \
     main.cpp \
     menu.cpp
 
 HEADERS += \
     Block.h \
+    Character.h \
+    Dog.h \
     Game.h \
     Node.h \
     Node.tpp \
     Player.h \
     Queue.h \
+<<<<<<< HEAD
     Queue.tpp \
+=======
+    Raptor.h \
+>>>>>>> monster
     instruction.h \
     menu.h
 

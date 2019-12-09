@@ -1,44 +1,35 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include "Character.h"
+
 #include <QGraphicsPixmapItem>
-#include <QKeyEvent>
-#include <QTimer>
-enum direction{LEFT, RIGHT, UPWARD, DOWNWARD};
-class Player : public QObject, public QGraphicsPixmapItem{
-    Q_OBJECT
+
+class Player : public Character{
 public:
-    Player(QPixmap image,int width,int height);
-
-    void focusOutEvent(QFocusEvent * event) ;
-
-    int getWidth() const;
-    int getHeight() const;
-    int getDirection() const;
-    bool getInAir() const;
-    double getVerticalAcceleration() const;
-    double getVerticalVelocity() const;
-    double getSpeed() const;
-
-    void move(direction dir);
+    enum type{Type = UserType + 2 };
+    Player();
+    void move(enum direction dir) override;
     void jump();
-    bool collide(direction dir);
-
-    void setWidth(int width);
-    void setHeight(int height);
-    void setInAir(bool b);
-    void setVerticalVelocity(double velocity);
-
-    bool isOnGround();
-    void flipDirection();
-
+    void advance(int step) override;
+    QMap <int, bool> getKeyMap();
+    void setKeyValue(int key, bool value);
+    QPainterPath shape() const override;
 private:
+<<<<<<< HEAD
     int width;
     int height;
     direction direction;
     const double VERTICALACCELERATION = 6/120.0;
     double verticalVelocity = 0;
     const double SPEED = 2.5;
+=======
+    QPixmap sprites[4];
+    const double jumpVelocity{-550.0/120};
+    const int ANIM_RATIO = 2;
+    int anim_count = 0;
+    QMap <int, bool> keys;
+>>>>>>> monster
 };
 
 #endif // PLAYER_H

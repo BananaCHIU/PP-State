@@ -8,27 +8,11 @@
 #include <QGraphicsView>
 #include <iostream>
 using namespace std;
-Player::Player(QPixmap image,int width,int height) {
-    setPixmap(image);
-    this->width = width;
-    this->height = height;
-    this->verticalVelocity = 0.0;
-    this->direction = LEFT;
-}
-
-void Player::focusOutEvent(QFocusEvent *event){
-    setFocus();
-}
-
-bool Player::isOnGround()
-{
-    Block *blockA = static_cast<Block*>(scene()->itemAt(pos().x() + 1, pos().y() + height, QTransform()));
-    Block *blockB = static_cast<Block*>(scene()->itemAt(pos().x() + width - 1, pos().y() + height, QTransform()));
-    if (blockA == nullptr && blockB == nullptr) return false;
-    else {
-        setVerticalVelocity(0.0);
-        return true;
+Player::Player() : Character(QPixmap(":/images/res/sprite_0.png"), 65, 68){
+    for(int i = 0; i < 4; ++i){
+        sprites[i] = QPixmap(QString::fromStdString(":/images/res/sprite_" + to_string(i)+ ".png"));
     }
+<<<<<<< HEAD
 }
 
 void Player::flipDirection()
@@ -50,24 +34,41 @@ double Player::getVerticalAcceleration() const
 double Player::getVerticalVelocity() const
 {
     return verticalVelocity;
+=======
+    setVerticalVelocity(0.0);
+>>>>>>> monster
 }
 
 void Player::move(enum direction dir)
 {
     // left
     if (dir == LEFT) {
+<<<<<<< HEAD
         //if (getDirection() != LEFT) flipDirection();
         if (collide(LEFT)) return;
         if (x() - SPEED < 0)  setPos(0, y());
         else setPos(x()- SPEED, y());
+=======
+        if (getFacing() != LEFT) flipFacing();
+        if (collide(LEFT)) return;
+        if (x() - getSpeed() < 0)  setPos(0, y());
+        else setPos(x()- getSpeed(), y());
+>>>>>>> monster
     }
 
     //right
     if (dir == RIGHT) {
+<<<<<<< HEAD
         //if (getDirection() != RIGHT) flipDirection();
         if (collide(RIGHT)) return;
         if (x() + getWidth() + SPEED > scene()->width())  setPos(scene()->width() - getWidth(), y());
         else setPos(x()+ SPEED, y());
+=======
+        if (getFacing() != RIGHT) flipFacing();
+        if (collide(RIGHT)) return;
+        if (x() + getWidth() + getSpeed() > scene()->width())  setPos(scene()->width() - getWidth(), y());
+        else setPos(x()+ getSpeed(), y());
+>>>>>>> monster
     }
 
 }
@@ -75,13 +76,14 @@ void Player::move(enum direction dir)
 void Player::jump()
 {
     if (isOnGround()){
-        setVerticalVelocity(-550/120);
+        setVerticalVelocity(jumpVelocity);
         setPos(x(), y()-1);
     }
 }
 
-bool Player::collide(enum direction direction)
+void Player::advance(int step)
 {
+<<<<<<< HEAD
     switch(direction){
     case LEFT:
     {
@@ -130,41 +132,47 @@ bool Player::collide(enum direction direction)
             setPos(pos().x(), y());
             setVerticalVelocity(0.0);
             return true;
-        }
-        break;
+=======
+    if (step == 0) return;
+    if(getKeyMap().value(Qt::Key_W)) {
+        jump();
     }
-
-    case DOWNWARD:
-    {
-        Block *blockA = static_cast<Block*>(scene()->itemAt(pos().x() + 1, pos().y() + height + verticalVelocity, QTransform()));
-        Block *blockB = static_cast<Block*>(scene()->itemAt(pos().x() + width - 1, pos().y() + height + verticalVelocity, QTransform()));
-        if (blockA != nullptr){
-            setPos(pos().x(), blockA->y() - height);
-            return true;
+    if(getKeyMap().value(Qt::Key_A)) {
+        move(LEFT);
+        if (anim_count % (ANIM_RATIO * 4) == 0) {
+            setPixmap(sprites[anim_count / (ANIM_RATIO * 4)]);
+>>>>>>> monster
         }
-
-        if (blockB != nullptr){
-            setPos(pos().x(), blockB->y() - height);
-            return true;
+        if (anim_count == (ANIM_RATIO * 4 * 4) - 1) anim_count = 0;
+        else ++anim_count;
+    }
+    if(getKeyMap().value(Qt::Key_D)) {
+        move(RIGHT);
+        if (anim_count % (ANIM_RATIO * 4) == 0) {
+            setPixmap(sprites[anim_count / (ANIM_RATIO * 4)].transformed(QTransform().scale(-1,1)));
         }
-    break;
+        if (anim_count == (ANIM_RATIO * 4 * 4) - 1) anim_count = 0;
+        else ++anim_count;
     }
-    }
-    return false;
 }
 
-void Player::setVerticalVelocity(double velocity){
-    this->verticalVelocity = velocity;
+QMap<int, bool> Player::getKeyMap(){
+    return keys;
 }
 
-int Player::getWidth() const{
-    return width;
+void Player::setKeyValue(int key, bool value)
+{
+    keys[key] = value;
 }
 
-int Player::getHeight() const{
-    return height;
-}
-
+<<<<<<< HEAD
 double Player::getSpeed() const{
     return SPEED;
+=======
+QPainterPath Player::shape() const
+{
+    QPainterPath path;
+    path.addRect(0, 5, getWidth(), getHeight() - 5);
+    return path;
+>>>>>>> monster
 }
