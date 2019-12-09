@@ -36,7 +36,7 @@ class Game: public QGraphicsView{
     QPixmap img_brick{":/background/res/brick_1.png"};
     Queue<Block>* q_block;
 
-    QVector<QPixmap> player_array;
+    QPixmap player_array[4];
 public:
     Game(QWidget *parent = nullptr);
     ~Game();

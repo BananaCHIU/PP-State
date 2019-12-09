@@ -39,7 +39,6 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     loadBrick();
     placeAllBlock();
     //Player Init
-    player_array.resize(4);
     for(int i = 0; i < 4; ++i){
         player_array[i] = QPixmap(QString::fromStdString(":/images/res/sprite_" + to_string(i)+ ".png"));
     }
@@ -113,6 +112,8 @@ void Game::update(){
 
         //Cant go back if the player touches the leftmost part of the screen
         if (player->x() >= this->horizontalScrollBar()->value()) player->move(LEFT);
+
+        //Anim of player
         int count = anim_count;
         if (count % (ANIM_RATIO * 4) == 0) {
             player->setPixmap(player_array[count / (ANIM_RATIO * 4)]);
@@ -121,6 +122,7 @@ void Game::update(){
         else ++anim_count;
     }
     if(keys[Qt::Key_D]) {
+
         if (goingBack){
             if (player->x()+ player->getWidth() / 2 >= prev_x){
                 centerOn(player);
@@ -128,6 +130,8 @@ void Game::update(){
             }
         }else centerOn(player);
         player->move(RIGHT);
+
+        //anim of player
         int count = anim_count;
         if (count % (ANIM_RATIO * 4) == 0) {
             player->setPixmap(player_array[count / (ANIM_RATIO * 4)].transformed(QTransform().scale(-1,1)));
