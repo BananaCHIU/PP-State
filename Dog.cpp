@@ -3,9 +3,17 @@
 
 #include <QGraphicsScene>
 
-Dog::Dog(QPixmap image, int width, int height): Character(image, width, height){
+Dog::Dog(QPixmap image): Character(image, 102, 60)
+{
     setVerticalVelocity(0.0);
     setSpeed(3.0);
+}
+
+Dog::Dog(QPixmap image, direction movingDirection): Character(image, 102, 60)
+{
+    setVerticalVelocity(0.0);
+    setSpeed(3.0);
+    this->movingDirection = movingDirection;
 }
 
 enum direction Dog::getMovingDirection()

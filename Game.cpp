@@ -22,10 +22,10 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(WIN_WIDTH, WIN_HEIGHT);
 
-    player = new Player(QPixmap(":/images/res/player.png"), 64, 64);
+    player = new Player(QPixmap(":/images/res/player.png"));
     player->setFlag(QGraphicsItem::ItemIsFocusable);
     player->setFocus();
-    player->setPos(scene->width()/2, scene->height()/2);
+    player->setPos(player->getWidth(), scene->height()/2);
     scene->addItem(player);
 
     timer = new QTimer();
@@ -41,9 +41,9 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     }
 
     Block* bricka = new Block(QPixmap(":/background/res/brick_1.png"), 64 ,64);
-    bricka->setPos(5*64, getWinHeight() - 64 * 2);
+    bricka->setPos(6*64, getWinHeight() - 64 * 2);
     Block* brickb = new Block(QPixmap(":/background/res/brick_1.png"), 64 ,64);
-    brickb->setPos(9*64, getWinHeight() - 64 * 3);
+    brickb->setPos(10*64, getWinHeight() - 64 * 3);
     Block* brickc = new Block(QPixmap(":/background/res/brick_1.png"), 64 ,64);
     brickc->setPos(13*64, getWinHeight() - 64 * 4);
     Block* brickd = new Block(QPixmap(":/background/res/brick_1.png"), 64 ,64);
@@ -54,12 +54,12 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     scene->addItem(brickd);
 
     // temp enemy spawning
-    dog = new Dog(QPixmap(":/images/res/dog.png"), 102, 60);
-    dog->setPos(scene->width()/2-102*3, scene->height()-64-60*4);
+    dog = new Dog(QPixmap(":/images/res/dog.png"));
+    dog->setPos(scene->width()/2-102*3, scene->height()-64-60*3);
     scene->addItem(dog);
 
     raptor = new Raptor(QPixmap(":/images/res/green_raptor_0.png"));
-    raptor->setPos(0, scene->height()-64- raptor->getHeight());
+    raptor->setPos(-60, scene->height()-64- raptor->getHeight());
     scene->addItem(raptor);
 }
 
@@ -99,45 +99,23 @@ void Game::gravity()
 }
 
 void Game::update(){
-    // test purpose:
     scene->advance();
-    //
     centerOn(player);
     gravity();
-    if(keys[Qt::Key_W]) {
-        player->jump();
-    }
-    if(keys[Qt::Key_A]) {
-        player->move(LEFT);
-        int count = anim_count;
-        if (count % (anim_ratio * 4) == 0) {
-            string s = ":/images/res/sprite_" + to_string(count / (anim_ratio * 4)) + ".png";
-            player->setPixmap(QPixmap(QString::fromStdString(s)));
-        }
-        if (anim_count == (anim_ratio * 4 * 4) - 1) anim_count = 0;
-        else ++anim_count;
-    }
-    if(keys[Qt::Key_D]) {
-        player->move(RIGHT);
-        int count = anim_count;
-        if (count % (anim_ratio * 4) == 0) {
-            string s = ":/images/res/sprite_" + to_string(count / (anim_ratio * 4)) + ".png";
-            player->setPixmap(QPixmap(QString::fromStdString(s)).transformed(QTransform().scale(-1,1)));
-        }
-        if (anim_count == (anim_ratio * 4 * 4) - 1) anim_count = 0;
-        else ++anim_count;
-    }
-    if(keys[Qt::Key_Space]){
+
+    // debug purpose, remove later:
+    cout << "" << player->shape().boundingRect().left() + 1 << endl;
+    if(player->getKeyMap().value(Qt::Key_Space)){
         scene->removeItem(dog);
         delete dog;
-        dog = new Dog(QPixmap(":/images/res/dog.png"), 102, 60);
-        dog->setPos(scene->width()/2-102*3, scene->height()-64-60*4);
+        dog = new Dog(QPixmap(":/images/res/dog.png"));
+        dog->setPos(scene->width()/2-102*3, scene->height()-64-60*3);
         scene->addItem(dog);
 
         scene->removeItem(raptor);
         delete raptor;
-        raptor = new Raptor(QPixmap(":/images/res/green_raptor_0.png"));
-        raptor->setPos(0, scene->height()-64- raptor->getHeight());
+        raptor = new Raptor(QPixmap(":/images/res/green_raptor_0.png"), LEFT);
+        raptor->setPos(scene->width() - raptor->getWidth(), scene->height()-64- raptor->getHeight());
         scene->addItem(raptor);
     }
 
@@ -146,13 +124,13 @@ void Game::update(){
 void Game::keyPressEvent(QKeyEvent *e)
 {
     if (e->isAutoRepeat()) return;
-    keys[e->key()] = true; //QGraphicsPixmapItem::keyPressEvent(e);
+    player->setKeyValue(e->key(), true); //QGraphicsPixmapItem::keyPressEvent(e);
 }
 
 void Game::keyReleaseEvent(QKeyEvent *e)
 {
     if (e->isAutoRepeat()) return;
-   keys[e->key()] = false; //QGraphicsPixmapItem::keyReleaseEvent(e);
+    player->setKeyValue(e->key(), false); //QGraphicsPixmapItem::keyReleaseEvent(e);
 }
 
 double Game::getWinHeight(){

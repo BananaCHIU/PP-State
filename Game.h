@@ -15,7 +15,6 @@ private:
     void gravity();
     void keyPressEvent(QKeyEvent * event);
     void keyReleaseEvent(QKeyEvent * event);
-    QMap <int, bool> getKeyMap();
 
 public:
     Game(QWidget *parent = nullptr);
@@ -31,8 +30,6 @@ private:
     const int WIN_HEIGHT = 800;
     const int anim_ratio = 2;
     int anim_count = 0;
-
-    QMap <int, bool> keys;
 
     QGraphicsScene *scene;
     Player *player;

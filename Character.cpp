@@ -57,6 +57,8 @@ void Character::setVerticalVelocity(double velocity)
 
 bool Character::isOnGround()
 {
+    //QGraphicsItem *objectA = scene()->itemAt(pos().x() + shape().boundingRect().left() + 1, pos().y() + shape().boundingRect().bottom(), QTransform());
+    //QGraphicsItem *objectB = scene()->itemAt(pos().x() + shape().boundingRect().right() - 1, pos().y() + shape().boundingRect().bottom(), QTransform());
     QGraphicsItem *objectA = scene()->itemAt(pos().x() + 1, pos().y() + height, QTransform());
     QGraphicsItem *objectB = scene()->itemAt(pos().x() + width - 1, pos().y() + height, QTransform());
     if ((objectA != nullptr && objectA->type() == Block::Type)
@@ -72,21 +74,24 @@ void Character::flipFacing()
     setPixmap(pixmap().transformed(QTransform().scale(-1,1)));
 }
 
-
-
 bool Character::collide(enum direction dir){
+    //QList<QGraphicsItem*> objects = collidingItems(Qt::IntersectsItemBoundingRect);
     switch(dir){
     case LEFT:
     {
-        QGraphicsItem *objectA = (scene()->itemAt(pos().x() - getSpeed(), pos().y() + 1, QTransform()));
-        QGraphicsItem *objectB = (scene()->itemAt(pos().x() - getSpeed(), pos().y() + getHeight() - 1, QTransform()));
-
+        QGraphicsItem *objectA = (scene()->itemAt(pos().x() - getSpeed() + boundingRect().left(), pos().y() + shape().boundingRect().top() + 1, QTransform()));
+        QGraphicsItem *objectB = (scene()->itemAt(pos().x() - getSpeed() + boundingRect().left(), pos().y() + shape().boundingRect().bottom() - 1, QTransform()));
+        QGraphicsItem *objectC = (scene()->itemAt(pos().x() - getSpeed() + boundingRect().left(), pos().y() + shape().boundingRect().center().y(), QTransform()));
         if (objectA != nullptr && objectA->type()==Block::Type){
-            setPos(objectA->pos().x() + static_cast<Block*>(objectA)->getWidth(), y());
+            setPos(objectA->pos().x() - boundingRect().left() + static_cast<Block*>(objectA)->getWidth(), y());
             return true;
         }
         if (objectB != nullptr && objectB->type()==Block::Type){
-            setPos(objectB->pos().x() + static_cast<Block*>(objectB)->getWidth(), y());
+            setPos(objectB->pos().x() - boundingRect().left() + static_cast<Block*>(objectB)->getWidth(), y());
+            return true;
+        }
+        if (objectC != nullptr && objectC->type()==Block::Type){
+            setPos(objectC->pos().x() - boundingRect().left() + static_cast<Block*>(objectC)->getWidth(), y());
             return true;
         }
        break;
@@ -94,8 +99,9 @@ bool Character::collide(enum direction dir){
 
     case RIGHT:
     {
-        QGraphicsItem *objectA = (scene()->itemAt(pos().x() + getSpeed() + getWidth(), pos().y() + 1, QTransform()));
-        QGraphicsItem *objectB = (scene()->itemAt(pos().x() + getSpeed() + getWidth(), pos().y() + getHeight() - 1, QTransform()));
+        QGraphicsItem *objectA = (scene()->itemAt(pos().x() + getSpeed() + boundingRect().right(), pos().y() + shape().boundingRect().top() + 1, QTransform()));
+        QGraphicsItem *objectB = (scene()->itemAt(pos().x() + getSpeed() + boundingRect().right(), pos().y() + shape().boundingRect().bottom() - 1, QTransform()));
+        QGraphicsItem *objectC = (scene()->itemAt(pos().x() + getSpeed() + boundingRect().right(), pos().y() + shape().boundingRect().center().y(), QTransform()));
 
         if (objectA != nullptr && objectA->type()==Block::Type){
             setPos(objectA->pos().x() - getWidth(), y());
@@ -104,6 +110,11 @@ bool Character::collide(enum direction dir){
 
         if (objectB != nullptr && objectB->type()==Block::Type){
             setPos(objectB->pos().x() - getWidth(), y());
+            return true;
+        }
+
+        if (objectC != nullptr && objectC->type()==Block::Type){
+            setPos(objectC->pos().x() - getWidth(), y());
             return true;
         }
        break;
@@ -129,8 +140,8 @@ bool Character::collide(enum direction dir){
 
     case DOWNWARD:
     {
-        QGraphicsItem *objectA = (scene()->itemAt(pos().x() + 1, pos().y() + getHeight() + getVerticalVelocity(), QTransform()));
-        QGraphicsItem *objectB = (scene()->itemAt(pos().x() + getWidth() - 1, pos().y() + getHeight() + getVerticalVelocity(), QTransform()));
+        QGraphicsItem *objectA = (scene()->itemAt(pos().x() + shape().boundingRect().left() + 1, pos().y() + getHeight() + getVerticalVelocity(), QTransform()));
+        QGraphicsItem *objectB = (scene()->itemAt(pos().x() + + shape().boundingRect().right() - 1, pos().y() + getHeight() + getVerticalVelocity(), QTransform()));
 
         if (objectA != nullptr && objectA->type()==Block::Type){
             setPos(pos().x(), objectA->y() - getHeight());

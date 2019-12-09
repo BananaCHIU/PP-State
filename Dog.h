@@ -6,8 +6,9 @@
 
 class Dog : public Character{
 public:
-    Dog(QPixmap image, int w, int h);
-
+    enum type{Type = UserType + 3 };
+    Dog(QPixmap image);
+    Dog(QPixmap image, direction movingDirection);
     enum direction getMovingDirection();
     void flipMovingDirection();
     void move(enum direction dir) override;
