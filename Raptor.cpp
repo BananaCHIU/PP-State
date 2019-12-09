@@ -1,5 +1,6 @@
 #include "Block.h"
 #include "Raptor.h"
+#include "Game.h"
 #include <QGraphicsScene>
 #include <math.h>
 #include <iostream>

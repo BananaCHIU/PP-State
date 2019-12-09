@@ -23,11 +23,7 @@ SOURCES += \
     Dog.cpp \
     Game.cpp \
     Player.cpp \
-<<<<<<< HEAD
-=======
-    Queue.cpp \
     Raptor.cpp \
->>>>>>> monster
     instruction.cpp \
     main.cpp \
     menu.cpp
@@ -41,11 +37,8 @@ HEADERS += \
     Node.tpp \
     Player.h \
     Queue.h \
-<<<<<<< HEAD
     Queue.tpp \
-=======
     Raptor.h \
->>>>>>> monster
     instruction.h \
     menu.h
 
