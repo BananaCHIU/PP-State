@@ -7,8 +7,8 @@
 class Raptor: public Character{
 public:
     enum type{Type = UserType + 4 };
-    Raptor(QPixmap image);
-    Raptor(QPixmap image, direction facing);
+    Raptor();
+    Raptor(direction facing);
     void flipMovingDirection();
     void jump();
     void move(enum direction dir) override;
@@ -17,7 +17,10 @@ public:
     double getHorizontalAcceleration() const;
     QPainterPath shape() const override;
 private:
-    const int anim_ratio = 2;
+    // maybe change to static later
+    QPixmap sprites[4];
+
+    const int ANIM_RATIO = 2;
     int anim_count = 0;
     const double horizontalAcceleration = 0.7/120.0;
     const double jumpVelocity{-375.0/120};

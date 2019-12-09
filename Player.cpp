@@ -8,7 +8,10 @@
 #include <QGraphicsView>
 #include <iostream>
 using namespace std;
-Player::Player(QPixmap image) : Character(image, 65, 68){
+Player::Player() : Character(QPixmap(":/images/res/sprite_0.png"), 65, 68){
+    for(int i = 0; i < 4; ++i){
+        sprites[i] = QPixmap(QString::fromStdString(":/images/res/sprite_" + to_string(i)+ ".png"));
+    }
     setVerticalVelocity(0.0);
 }
 
@@ -48,20 +51,18 @@ void Player::advance(int step)
     }
     if(getKeyMap().value(Qt::Key_A)) {
         move(LEFT);
-        if (anim_count % (anim_ratio * 4) == 0) {
-            string s = ":/images/res/sprite_" + to_string(anim_count / (anim_ratio * 4)) + ".png";
-            setPixmap(QPixmap(QString::fromStdString(s)));
+        if (anim_count % (ANIM_RATIO * 4) == 0) {
+            setPixmap(sprites[anim_count / (ANIM_RATIO * 4)]);
         }
-        if (anim_count == (anim_ratio * 4 * 4) - 1) anim_count = 0;
+        if (anim_count == (ANIM_RATIO * 4 * 4) - 1) anim_count = 0;
         else ++anim_count;
     }
     if(getKeyMap().value(Qt::Key_D)) {
         move(RIGHT);
-        if (anim_count % (anim_ratio * 4) == 0) {
-            string s = ":/images/res/sprite_" + to_string(anim_count / (anim_ratio * 4)) + ".png";
-            setPixmap(QPixmap(QString::fromStdString(s)).transformed(QTransform().scale(-1,1)));
+        if (anim_count % (ANIM_RATIO * 4) == 0) {
+            setPixmap(sprites[anim_count / (ANIM_RATIO * 4)].transformed(QTransform().scale(-1,1)));
         }
-        if (anim_count == (anim_ratio * 4 * 4) - 1) anim_count = 0;
+        if (anim_count == (ANIM_RATIO * 4 * 4) - 1) anim_count = 0;
         else ++anim_count;
     }
 }

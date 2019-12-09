@@ -22,7 +22,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(WIN_WIDTH, WIN_HEIGHT);
 
-    player = new Player(QPixmap(":/images/res/player.png"));
+    player = new Player();
     player->setFlag(QGraphicsItem::ItemIsFocusable);
     player->setFocus();
     player->setPos(player->getWidth(), scene->height()/2);
@@ -54,11 +54,11 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     scene->addItem(brickd);
 
     // temp enemy spawning
-    dog = new Dog(QPixmap(":/images/res/dog.png"));
+    dog = new Dog();
     dog->setPos(scene->width()/2-102*3, scene->height()-64-60*3);
     scene->addItem(dog);
 
-    raptor = new Raptor(QPixmap(":/images/res/green_raptor_0.png"));
+    raptor = new Raptor(RIGHT);
     raptor->setPos(-60, scene->height()-64- raptor->getHeight());
     scene->addItem(raptor);
 }
@@ -108,13 +108,13 @@ void Game::update(){
     if(player->getKeyMap().value(Qt::Key_Space)){
         scene->removeItem(dog);
         delete dog;
-        dog = new Dog(QPixmap(":/images/res/dog.png"));
+        dog = new Dog();
         dog->setPos(scene->width()/2-102*3, scene->height()-64-60*3);
         scene->addItem(dog);
 
         scene->removeItem(raptor);
         delete raptor;
-        raptor = new Raptor(QPixmap(":/images/res/green_raptor_0.png"), LEFT);
+        raptor = new Raptor(LEFT);
         raptor->setPos(scene->width() - raptor->getWidth(), scene->height()-64- raptor->getHeight());
         scene->addItem(raptor);
     }

@@ -8,7 +8,7 @@
 class Player : public Character{
 public:
     enum type{Type = UserType + 2 };
-    Player(QPixmap image);
+    Player();
     void move(enum direction dir) override;
     void jump();
     void advance(int step) override;
@@ -16,8 +16,9 @@ public:
     void setKeyValue(int key, bool value);
     QPainterPath shape() const override;
 private:
+    QPixmap sprites[4];
     const double jumpVelocity{-550.0/120};
-    const int anim_ratio = 2;
+    const int ANIM_RATIO = 2;
     int anim_count = 0;
     QMap <int, bool> keys;
 };
