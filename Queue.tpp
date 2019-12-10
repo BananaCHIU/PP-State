@@ -11,6 +11,7 @@ Queue<type>::Queue(type* x) {
     Node<type>* n = new Node<type>(x);
     head = n;
     tail = n;
+    ++size;
 }
 
 template<typename type>
@@ -25,7 +26,7 @@ Queue<type>::~Queue()
 template<typename type>
 bool Queue<type>::isEmpty()
 {
-    return head == nullptr ? true : false;
+    return size == 0 ? true : false;
 }
 
 template<typename type>
@@ -38,6 +39,7 @@ void Queue<type>::enqueue(type* data)
         tail->next = new_node;
         tail = new_node;
     }
+    ++size;
 }
 
 template<typename type>
@@ -53,6 +55,7 @@ type* Queue<type>::dequeue()
         head = head->next;
         delete temp;
     }
+    --size;
     cout << "dequeue" << endl;
     return result;
 }
@@ -73,4 +76,9 @@ Node<type>* Queue<type>::getHead(){
 template<typename type>
 Node<type>* Queue<type>::getTail(){
     return tail;
+}
+
+template<typename type>
+int Queue<type>::getSize(){
+    return size;
 }

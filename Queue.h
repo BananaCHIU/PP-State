@@ -7,6 +7,7 @@ template <typename type>
 class Queue{
     Node<type> *head {nullptr};
     Node<type> *tail {nullptr};
+    int size {0};
 
 public:
     Queue();
@@ -20,6 +21,7 @@ public:
 
     Node<type>* getHead();
     Node<type>* getTail();
+    int getSize();
 };
 
 #include "Queue.tpp"
