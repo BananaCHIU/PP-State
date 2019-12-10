@@ -7,7 +7,7 @@ template <typename type>
 class Queue{
     Node<type> *head {nullptr};
     Node<type> *tail {nullptr};
-    int size = 0;
+    int size {0};
 public:
     Queue();
     Queue(type* x);

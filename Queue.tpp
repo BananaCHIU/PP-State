@@ -11,6 +11,7 @@ Queue<type>::Queue(type* x) {
     Node<type>* n = new Node<type>(x);
     head = n;
     tail = n;
+    ++size;
 }
 
 template<typename type>
@@ -25,7 +26,7 @@ Queue<type>::~Queue()
 template<typename type>
 bool Queue<type>::isEmpty()
 {
-    return head == nullptr ? true : false;
+    return size == 0 ? true : false;
 }
 
 template<typename type>
