@@ -25,6 +25,7 @@ SOURCES += \
     Game.cpp \
     Player.cpp \
     Raptor.cpp \
+    Trigger.cpp \
     instruction.cpp \
     main.cpp \
     menu.cpp
@@ -41,6 +42,7 @@ HEADERS += \
     Queue.h \
     Queue.tpp \
     Raptor.h \
+    Trigger.h \
     instruction.h \
     menu.h
 

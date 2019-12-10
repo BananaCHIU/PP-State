@@ -7,6 +7,7 @@
 class Block : public QObject, public QGraphicsPixmapItem{
     Q_OBJECT
 public :
+    Block(int width, int height);
     Block(QPixmap, double, int, int);
 
     enum type{Type = UserType + 1 };
@@ -14,9 +15,11 @@ public :
     int getWidth();
     int getHeight();
     int type() const;
-private:
+protected:
+    // width and height of a block
     const int WIDTH = 64;
     const int HEIGHT = 64;
+private:
     int coor_x = -1, coor_y = -1;
 };
 

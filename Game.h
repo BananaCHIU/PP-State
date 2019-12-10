@@ -48,6 +48,7 @@ public:
     double getVerticalAcceleration();
 public slots:
     void update();
+    void gameOver();
 };
 
 #endif // GAME_H
