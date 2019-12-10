@@ -22,6 +22,7 @@
         <file>res/green_raptor_2.png</file>
         <file>res/green_raptor_3.png</file>
         <file>res/icon.ico</file>
+        <file>res/bullet.png</file>
     </qresource>
     <qresource prefix="/background">
         <file>res/cloud.png</file>

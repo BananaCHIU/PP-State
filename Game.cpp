@@ -4,7 +4,7 @@
 #include "float.h"
 #include "Queue.h"
 #include "Dog.h"
-
+#include "Bullet.h"
 
 #include <math.h>
 #include <iostream>
@@ -65,7 +65,8 @@ void Game::gravity()
     QList<Character*> characters = {player};
     // change player to the list/data structure that holds all the characters
     for (int i = 0; i < characters.size(); ++i){
-        if(!characters[i]->isOnGround()){
+        if ((characters[i])->type() == Bullet::Type) continue;
+        if (!characters[i]->isOnGround()){
             // in air:
             if(characters[i]->getVerticalVelocity() < 0){
                 //upward
@@ -111,6 +112,18 @@ void Game::update(){
             }
         }else centerOn(player);
     }
+    // testing purpose:
+    if(player->getKeyMap().value(Qt::Key_Space)){
+        if (bullet != nullptr) {
+            scene->removeItem(bullet);
+            bullet = nullptr;
+        }
+        bullet = new Bullet();
+        bullet->setPos(player->x() + player->boundingRect().center().x(), player->y() + 200);
+        scene->addItem(bullet);
+        cout << Player::Type << endl;
+    }
+
 }
 
 void Game::loadBrick(){

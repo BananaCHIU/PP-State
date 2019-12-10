@@ -74,3 +74,8 @@ template<typename type>
 Node<type>* Queue<type>::getTail(){
     return tail;
 }
+
+template<typename type>
+int Queue<type>::getSize(){
+    return size;
+}

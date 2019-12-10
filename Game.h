@@ -6,6 +6,7 @@
 #include "Block.h"
 #include "Queue.h"
 
+#include "Bullet.h"
 #include "Raptor.h"
 
 #include <QTimer>
@@ -36,6 +37,8 @@ private:
 
     QPixmap img_brick{":/background/res/brick_1.png"};
     Queue<Block>* q_block;
+    // testing purpose:
+    Bullet *bullet;
 
 public:
     Game(QWidget *parent = nullptr);
