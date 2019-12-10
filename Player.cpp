@@ -41,6 +41,18 @@ void Player::jump()
 
 void Player::advance(int step)
 {
+    if (y() > scene()->height()) emit playerIsDead();
+
+    QList<QGraphicsItem*> collidingitems = collidingItems();
+    for (int i = 0; i < collidingitems.size(); ++i){
+        if (collidingitems[i]->type() != Block::Type
+            // && collidingitems[i]->type() != Trigger::Type
+                ){
+            emit playerIsDead();
+            break;
+        }
+    }
+
     if (step == 0) return;
 
     // if "W" key was pressed/pressing

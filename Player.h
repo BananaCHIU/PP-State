@@ -6,6 +6,7 @@
 #include <QGraphicsPixmapItem>
 
 class Player : public Character{
+    Q_OBJECT
 public:
     enum type{Type = UserType + 2 };
     Player();
@@ -15,8 +16,10 @@ public:
     QMap <int, bool> getKeyMap();
     void setKeyValue(int key, bool value);
     QPainterPath shape() const override;
-private:
+signals:
+    void playerIsDead();
 
+private:
     int width;
     int height;
     direction direction;
