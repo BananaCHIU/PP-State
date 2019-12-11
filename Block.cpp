@@ -7,7 +7,6 @@ using namespace std;
 
 Block::Block(int x, int y)
 {
-    setPixmap(QPixmap(":/background/res/brick_1.png"));
     setPos(x * WIDTH, Game::getWinHeight() - HEIGHT * y);
 }
 

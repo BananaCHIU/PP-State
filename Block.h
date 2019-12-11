@@ -16,7 +16,7 @@ public :
 
     int getWidth();
     int getHeight();
-    int type() const;
+    virtual int type() const;
 protected:
     // width and height of a block
     const int WIDTH = 64;

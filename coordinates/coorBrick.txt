@@ -1,3 +1,4 @@
+10 4 trigger 1
 10 2 block
 10 3 block
 11 2 block

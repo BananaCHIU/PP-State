@@ -7,17 +7,19 @@
 class Trigger : public Block{
     Q_OBJECT
 public:
+    enum type{Type = UserType + 5};
     struct spawnee{
         int x;
         int y;
-        int typeIndex;
+        QString type;
         direction dir = RIGHT;
     };
-    enum type{Type = UserType + 5};
+
     Trigger(int size, int x, int y);
     ~Trigger() override;
     void setDataAt(int index, spawnee data);
     QRectF boundingRect() const override;
+    int type() const override;
 public slots:
     void triggered();
 private:

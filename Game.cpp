@@ -118,14 +118,7 @@ void Game::update(){
     }
     // testing purpose:
     if(player->getKeyMap().value(Qt::Key_Space)){
-        if (bullet != nullptr) {
-            scene->removeItem(bullet);
-            bullet = nullptr;
-        }
-        bullet = new Bullet();
-        bullet->setPos(player->x() + player->boundingRect().center().x(), player->y() + 200);
-        scene->addItem(bullet);
-        cout << Player::Type << endl;
+        cout << floor(player->x()/64.0) << " " << floor(player->y()/64.0) << endl;
     }
 
 }
@@ -167,7 +160,7 @@ void Game::loadBrick(){
                     Trigger::spawnee temp;
                     temp.x = j.section(" ",1,1).toInt();
                     temp.y = j.section(" ",2,2).toInt();
-                    temp.typeIndex = j.section(" ",3,3).toInt();
+                    temp.type = j.section(" ",3,3).toUpper();
                     temp.dir = dir;
 
                     // add it to the Trigger block
@@ -177,7 +170,7 @@ void Game::loadBrick(){
                     count++;
                 }
             }
-
+            scene->addItem(trigger);
             triggerFile.close();
         }
     }

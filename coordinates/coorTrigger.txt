@@ -1,22 +1,2 @@
-10 2 block
-10 3 block
-11 2 block
-17 2 block
-17 3 block
-21 2 block
-28 2 block
-29 2 block
-29 3 block
-29 4 block
-38 4 block
-39 4 block
-40 4 block
-41 4 block
-42 4 block
-46 2 block
-61 2 block
-61 3 block
-64 2 block
-64 3 block
-64 4 block
-64 5 block
+1 10 6 dog left
+1 11 6 raptor left

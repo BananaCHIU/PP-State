@@ -43,13 +43,16 @@ void Player::advance(int step)
 {
     if (y() > scene()->height()) emit playerIsDead();
 
-    QList<QGraphicsItem*> collidingitems = collidingItems();
+    // player die checking && interaction with trigger
+    QList<QGraphicsItem*> collidingitems = collidingItems(Qt::IntersectsItemBoundingRect);
     for (int i = 0; i < collidingitems.size(); ++i){
         if (collidingitems[i]->type() != Block::Type
             && collidingitems[i]->type() != Trigger::Type
                 ){
             emit playerIsDead();
             break;
+        } else if (collidingitems[i]->type() == Trigger::Type){
+            static_cast<Trigger*>(collidingitems[i])->triggered();
         }
     }
 
