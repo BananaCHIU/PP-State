@@ -29,6 +29,7 @@
         <file>res/gw_1.png</file>
         <file>res/gw_2.png</file>
         <file>res/gw.png</file>
+        <file>res/day_bg.png</file>
     </qresource>
     <qresource prefix="/background">
         <file>res/cloud.png</file>

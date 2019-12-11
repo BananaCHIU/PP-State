@@ -23,7 +23,6 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     this->setWindowTitle("Save this city!");
     scene = new QGraphicsScene();
     scene->setSceneRect(0, 0, GAME_WIDTH ,WIN_HEIGHT);
-    scene->setBackgroundBrush(QBrush(QColor("#82f4ff")));
     setScene(scene);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -105,26 +104,17 @@ void Game::update(){
             goingBack = true;
         }
 
-    }
-    if(player->getKeyMap().value(Qt::Key_D)){
+    }else if(player->getKeyMap().value(Qt::Key_D)){
 
         if (goingBack){
             if (player->x()+ player->getWidth() / 2 >= prev_x){
                 centerOn(player);
                 goingBack = false;
             }
-        }else centerOn(player);
-    }
-    if(player->getKeyMap().value(Qt::Key_D)){
-
-        if (goingBack){
-            if (player->x()+ player->getWidth() / 2 >= prev_x){
-                centerOn(player);
-                goingBack = false;
-            }
-        }else centerOn(player);
-
-    }if(player->getKeyMap().value(Qt::Key_Space)){
+        }else {
+            centerOn(player);
+        }
+    }else if(player->getKeyMap().value(Qt::Key_Space)){
         gameOver();
     }else if(player->getKeyMap().value(Qt::Key_L)){
         gameWin();
@@ -156,6 +146,7 @@ void Game::placeAllBlock(){
 void Game::gameOver(){
     disconnect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->stop();
+    centerOn(0,0);
     result = LOSE;
     QSound::play(":/music/res/go.wav");
 
@@ -190,6 +181,7 @@ void Game::gameOver(){
 void Game::gameWin(){
     disconnect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->stop();
+    centerOn(0,0);
     result = WIN;
     gwMusic = new QMediaPlayer();
     gwMusic->setMedia(QUrl("qrc:/music/res/gw.wav"));

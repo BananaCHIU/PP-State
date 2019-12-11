@@ -26,7 +26,7 @@ private:
     const int WIN_WIDTH = 1400;
     const int WIN_HEIGHT = 800;
     const int GAME_WIDTH = 40000;
-    enum gameResult {WIN, LOSE} result;
+    enum gameResult {WIN, LOSE, NOPE} result = NOPE;
 
     //Store the player's xy when it move to the left
     qreal prev_x = -1, prev_y = -1;
