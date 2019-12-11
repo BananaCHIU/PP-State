@@ -5,6 +5,7 @@
 #include "Queue.h"
 #include "Dog.h"
 #include "Bullet.h"
+#include "Trigger.h"
 
 #include <math.h>
 #include <iostream>
@@ -34,7 +35,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
         if(((i>=14) && (i<=16)) || ((i>=22) && (i<=25)) || ((i>=33) && (i<=35)) || ((i>=33) && (i<=35)) ||
                 ((i>=43) && (i<=45)) || ((i>=54) && (i<=57)) || ((i>=59) && (i<=60)) || ((i>=62) && (i<=63))
                 || ((i>=65) && (i<=66))) continue;
-        Block* brick = new Block(img_brick, getWinHeight() , i, 1);
+        Block* brick = new Block(img_brick, i, 1);
         q_block->enqueue(brick);
     }
 
@@ -50,6 +51,9 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     timer = new QTimer();
     connect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->start(1000/120);
+
+    connect(player, SIGNAL(playerIsDead()), this, SLOT(gameOver()));
+
     centerOn(player);
 }
 
@@ -132,8 +136,50 @@ void Game::loadBrick(){
     f.open(QIODevice::ReadOnly);
     //Read Coordinates
     foreach (QString i,QString(f.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
-        Block* brick = new Block(img_brick, getWinHeight(), i.section(" ",0,0).toInt() , i.section(" ",1,1).toInt());
-        q_block->enqueue(brick);
+        if (i.section(" ",2,2).toUpper().compare("BLOCK")==0){
+            Block* block = new Block(img_brick, i.section(" ",0,0).toInt() , i.section(" ",1,1).toInt());
+            q_block->enqueue(block);
+            cout << "enqueued" << endl;
+        } else if (i.section(" ",2,2).toUpper().compare("TRIGGER")==0){
+            QFile triggerFile(":/coordinates/coordinates/coorTrigger.txt");
+            triggerFile.open(QIODevice::ReadOnly);
+            // count data with matching index
+            int size = 0;
+            foreach (QString j,QString(triggerFile.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
+                if (i.section(" ",3,3).toInt() == j.section(" ",0,0).toInt()) size++;
+            }
+            triggerFile.close();
+
+            // read and put data into the Trigger block
+            int count = 0;
+            Trigger *trigger = new Trigger(size, i.section(" ",0,0).toInt() , i.section(" ",1,1).toInt());
+            triggerFile.open(QIODevice::ReadOnly);
+            foreach (QString j,QString(triggerFile.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
+                if (i.section(" ",3,3).toInt() == j.section(" ",0,0).toInt()){
+                    // convert string to enum direction
+                    direction dir;
+                    if (!j.section(" ",4,4).toUpper().compare("UPWARD")) dir = UPWARD;
+                    else if (!j.section(" ",4,4).toUpper().compare("DOWNWARD")) dir = DOWNWARD;
+                    else if (!j.section(" ",4,4).toUpper().compare("LEFT")) dir = LEFT;
+                    else dir = RIGHT;
+
+                    // store value to a temp spawnee variable
+                    Trigger::spawnee temp;
+                    temp.x = j.section(" ",1,1).toInt();
+                    temp.y = j.section(" ",2,2).toInt();
+                    temp.typeIndex = j.section(" ",3,3).toInt();
+                    temp.dir = dir;
+
+                    // add it to the Trigger block
+                    trigger->setDataAt(count, temp);
+
+                    // increase counter
+                    count++;
+                }
+            }
+
+            triggerFile.close();
+        }
     }
     f.close();
 }
@@ -168,4 +214,9 @@ double Game::getWinWidth(){
 double Game::getVerticalAcceleration()
 {
     return verticalAcceleration;
+}
+
+void Game::gameOver(){
+    // to be merged with gameOver() in branche game_over
+    // cout << " game over" << endl;
 }

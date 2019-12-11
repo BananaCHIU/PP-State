@@ -1,13 +1,20 @@
 #include "Trigger.h"
 #include "QGraphicsScene"
 
-Trigger::Trigger(int size): Block(64, 64)
+Trigger::Trigger(int size, int x, int y): Block(x, y)
 {
     data = new struct spawnee[size];
 }
 
 Trigger::~Trigger(){
-   delete [] data;
+    delete [] data;
+}
+
+void Trigger::setDataAt(int index, spawnee data)
+{
+    // shallow copying, since there isn't any pointer
+    // in the struct spawnee,
+    this->data[index] = data;
 }
 
 void Trigger::triggered()
@@ -29,4 +36,9 @@ void Trigger::triggered()
         // scene()->addItem(pointer in data structure);
     }
     delete this;
+}
+
+QRectF Trigger::boundingRect() const{
+    QRectF rect = QRect(0, 0, 64, 64);
+    return rect;
 }

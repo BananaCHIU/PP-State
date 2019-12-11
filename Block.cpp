@@ -1,9 +1,25 @@
 #include "Block.h"
+#include "Game.h"
+#include <QGraphicsScene>
 
-Block::Block(QPixmap image, double winHeight, int x, int y): coor_x(x), coor_y(y)
+#include <iostream>
+using namespace std;
+
+Block::Block(int x, int y)
+{
+    setPixmap(QPixmap(":/background/res/brick_1.png"));
+    setPos(x * WIDTH, Game::getWinHeight() - HEIGHT * y);
+}
+
+Block::Block(QPixmap image)
 {
     setPixmap(image);
-    setPos(coor_x * WIDTH, winHeight - HEIGHT * coor_y);
+}
+
+Block::Block(QPixmap image, int x, int y)
+{
+    setPixmap(image);
+    setPos(x * WIDTH, Game::getWinHeight() - HEIGHT * y);
 }
 
 int Block::getWidth()

@@ -46,7 +46,7 @@ void Player::advance(int step)
     QList<QGraphicsItem*> collidingitems = collidingItems();
     for (int i = 0; i < collidingitems.size(); ++i){
         if (collidingitems[i]->type() != Block::Type
-            // && collidingitems[i]->type() != Trigger::Type
+            && collidingitems[i]->type() != Trigger::Type
                 ){
             emit playerIsDead();
             break;
