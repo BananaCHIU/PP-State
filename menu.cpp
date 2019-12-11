@@ -7,12 +7,40 @@
 #include "instruction.h"
 #include "ui_menu.h"
 
-Menu::Menu(QWidget *parent) :
+Menu::Menu(bool state, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Menu)
 {
+    //Title
     ui->setupUi(this);
+    if (state){
+        this->setWindowTitle("PP State");
+        QPixmap pm(":images/res/title_pp.png"); // <- path to image file
+        ui->label->setGeometry(this->size().width() / 2 - pm.width() / 2, 100,pm.width(), pm.height());
+        ui->label->setPixmap(pm);
+        ui->label->setScaledContents(true);
+    }else {
+        this->setWindowTitle("HK");
+        QPixmap pm(":images/res/title_hk.png"); // <- path to image file
+        ui->label->setGeometry(this->size().width() / 2 - pm.width() / 2, 100,pm.width(), pm.height());
+        ui->label->setPixmap(pm);
+        ui->label->setScaledContents(true);
+    }
+    createMenu();
+}
 
+Menu::~Menu()
+{
+    music->stop();
+    delete music;
+    delete btn_quit;
+    delete btn_play;
+    delete btn_ins;
+    delete ui;
+}
+
+void Menu::createMenu()
+{
     //Background Image
     QPixmap bkgnd(":images/res/bg.jpg");
     bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
@@ -24,12 +52,6 @@ Menu::Menu(QWidget *parent) :
     music = new QMediaPlayer();
     music->setMedia(QUrl("qrc:/music/res/bgm_menu.mp3"));
     music->play();
-
-    //Title
-    QPixmap pm(":images/res/title.png"); // <- path to image file
-    ui->label->setGeometry(this->size().width() / 2 - 250, 100,500,70);
-    ui->label->setPixmap(pm);
-    ui->label->setScaledContents(true);
 
     // Create the playbutton, make "this" the parent
     btn_play = new QPushButton(this);
@@ -69,16 +91,6 @@ Menu::Menu(QWidget *parent) :
     btn_quit->setGeometry(this->size().width()/2 - img_quit.rect().size().width()/2, this->size().height() - 200, img_quit.rect().size().width(), img_quit.rect().size().height());
     // Connect button signal to appropriate slot
     connect(btn_quit, SIGNAL (released()), this, SLOT (handleQuitButton()));
-}
-
-Menu::~Menu()
-{
-    music->stop();
-    delete music;
-    delete btn_quit;
-    delete btn_play;
-    delete btn_ins;
-    delete ui;
 }
 
 void Menu::handlePlayButton()

@@ -4,7 +4,7 @@
 #include "float.h"
 #include "Queue.h"
 #include "Dog.h"
-
+#include "menu.h"
 
 #include <math.h>
 #include <iostream>
@@ -15,10 +15,12 @@
 #include <QTimer>
 #include <QScrollBar>
 #include <QTAlgorithms>
+#include <QSound>
 
 using namespace std;
 
 Game::Game(QWidget *parent) : QGraphicsView(){
+    this->setWindowTitle("Save this city!");
     scene = new QGraphicsScene();
     scene->setSceneRect(0, 0, GAME_WIDTH ,WIN_HEIGHT);
     scene->setBackgroundBrush(QBrush(QColor("#82f4ff")));
@@ -27,7 +29,8 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(WIN_WIDTH, WIN_HEIGHT);
 
-    q_block= new Queue<Block>();
+    q_block = new Queue<Block>();
+    q_baseBrick = new Queue<Block>();
 
     //Game ground
     for (int i = 0; (i <= GAME_WIDTH/64); ++i){
@@ -35,7 +38,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
                 ((i>=43) && (i<=45)) || ((i>=54) && (i<=57)) || ((i>=59) && (i<=60)) || ((i>=62) && (i<=63))
                 || ((i>=65) && (i<=66))) continue;
         Block* brick = new Block(img_brick, getWinHeight() , i, 1);
-        q_block->enqueue(brick);
+        q_baseBrick->enqueue(brick);
     }
 
     loadBrick();
@@ -55,8 +58,9 @@ Game::Game(QWidget *parent) : QGraphicsView(){
 
 Game::~Game(){
     delete q_block;
-    scene->clear();
-
+    delete q_baseBrick;
+    delete player;
+    delete gwMusic;
 }
 
 void Game::gravity()
@@ -111,6 +115,20 @@ void Game::update(){
             }
         }else centerOn(player);
     }
+    if(player->getKeyMap().value(Qt::Key_D)){
+
+        if (goingBack){
+            if (player->x()+ player->getWidth() / 2 >= prev_x){
+                centerOn(player);
+                goingBack = false;
+            }
+        }else centerOn(player);
+
+    }if(player->getKeyMap().value(Qt::Key_Space)){
+        gameOver();
+    }else if(player->getKeyMap().value(Qt::Key_L)){
+        gameWin();
+    }
 }
 
 void Game::loadBrick(){
@@ -130,16 +148,100 @@ void Game::placeAllBlock(){
     for(Node<Block>* p = q_block->getHead(); p != nullptr; p = p->next){
         scene->addItem(p->data);
     }
+    for(Node<Block>* p = q_baseBrick->getHead(); p != nullptr; p = p->next){
+        scene->addItem(p->data);
+    }
+}
+
+void Game::gameOver(){
+    disconnect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
+    timer->stop();
+    result = LOSE;
+    QSound::play(":/music/res/go.wav");
+
+    scene->removeItem(player);
+    delete player;
+    player = nullptr;
+
+    QGraphicsItem* temp;
+    while(!q_baseBrick->isEmpty()){
+        temp = q_baseBrick->dequeue();
+        scene->removeItem(temp);
+        delete temp;
+    }
+    while(!q_block->isEmpty()){
+        temp = q_block->dequeue();
+        scene->removeItem(temp);
+        delete temp;
+    }
+
+    scene->setBackgroundBrush(QBrush(QColor("#ffffff")));
+    QGraphicsPixmapItem* goTitle = new QGraphicsPixmapItem (QPixmap(":/images/res/go.png"));
+    goTitle->setPos(700 - goTitle->pixmap().width() /2 , 70);
+    scene->addItem(goTitle);
+    QGraphicsPixmapItem* go1 = new QGraphicsPixmapItem (QPixmap(":/images/res/go_1.png"));
+    go1->setPos(200 , 230);
+    scene->addItem(go1);
+    QGraphicsPixmapItem* go2 = new QGraphicsPixmapItem (QPixmap(":/images/res/go_2.png"));
+    go2->setPos(700 - go2->pixmap().width() /2 , 660);
+    scene->addItem(go2);
+}
+
+void Game::gameWin(){
+    disconnect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
+    timer->stop();
+    result = WIN;
+    gwMusic = new QMediaPlayer();
+    gwMusic->setMedia(QUrl("qrc:/music/res/gw.wav"));
+    gwMusic->play();
+
+    scene->removeItem(player);
+    delete player;
+    player = nullptr;
+
+    QGraphicsItem* temp;
+    while(!q_baseBrick->isEmpty()){
+        temp = q_baseBrick->dequeue();
+        scene->removeItem(temp);
+        delete temp;
+    }
+    while(!q_block->isEmpty()){
+        temp = q_block->dequeue();
+        scene->removeItem(temp);
+        delete temp;
+    }
+
+    scene->setBackgroundBrush(QBrush(QColor("#ffffff")));
+    QGraphicsPixmapItem* gwTitle = new QGraphicsPixmapItem (QPixmap(":/images/res/gw.png"));
+    gwTitle->setPos(700 - gwTitle->pixmap().width() /2 , 70);
+    scene->addItem(gwTitle);
+    QGraphicsPixmapItem* gw1 = new QGraphicsPixmapItem (QPixmap(":/images/res/gw_1.png"));
+    gw1->setPos(200 , 230);
+    scene->addItem(gw1);
+    QGraphicsPixmapItem* gw2 = new QGraphicsPixmapItem (QPixmap(":/images/res/gw_2.png"));
+    gw2->setPos(700 - gw2->pixmap().width() /2 , 660);
+    scene->addItem(gw2);
 }
 
 void Game::keyPressEvent(QKeyEvent *e)
 {
+    if (result == LOSE){
+        Menu* menu = new Menu(true);
+        menu->show();
+        close();
+    }else if (result == WIN){
+        Menu* menu = new Menu();
+        menu->show();
+        close();
+    }
+    if (player == nullptr) return;
     if (e->isAutoRepeat()) return;
     player->setKeyValue(e->key(), true);
 }
 
 void Game::keyReleaseEvent(QKeyEvent *e)
 {
+    if (player == nullptr) return;
     if (e->isAutoRepeat()) return;
     player->setKeyValue(e->key(), false);
 }

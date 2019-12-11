@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/images">
         <file>res/player.png</file>
-        <file>res/title.png</file>
+        <file>res/title_pp.png</file>
         <file>res/sprite_0.png</file>
         <file>res/sprite_1.png</file>
         <file>res/sprite_2.png</file>
@@ -22,6 +22,13 @@
         <file>res/green_raptor_2.png</file>
         <file>res/green_raptor_3.png</file>
         <file>res/icon.ico</file>
+        <file>res/go.png</file>
+        <file>res/go_1.png</file>
+        <file>res/go_2.png</file>
+        <file>res/title_hk.png</file>
+        <file>res/gw_1.png</file>
+        <file>res/gw_2.png</file>
+        <file>res/gw.png</file>
     </qresource>
     <qresource prefix="/background">
         <file>res/cloud.png</file>
@@ -35,6 +42,8 @@
     </qresource>
     <qresource prefix="/music">
         <file>res/bgm_menu.mp3</file>
+        <file>res/go.wav</file>
+        <file>res/gw.wav</file>
     </qresource>
     <qresource prefix="/coordinates">
         <file>coordinates/coorBrick.txt</file>

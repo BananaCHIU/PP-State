@@ -1,11 +1,5 @@
-//Test
-#include "Node.h"
-#include "Queue.h"
-#include "Block.h"
-//Test
 #include "menu.h"
-#include "Game.h"
-#include "Queue.h"
+
 
 #include <QApplication>
 
