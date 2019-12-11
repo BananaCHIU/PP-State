@@ -132,49 +132,53 @@ void Game::loadBrick(){
         if (i.section(" ",2,2).toUpper().compare("BLOCK")==0){
             Block* block = new Block(img_brick, i.section(" ",0,0).toInt() , i.section(" ",1,1).toInt());
             q_block->enqueue(block);
-            cout << "enqueued" << endl;
         } else if (i.section(" ",2,2).toUpper().compare("TRIGGER")==0){
-            QFile triggerFile(":/coordinates/coordinates/coorTrigger.txt");
-            triggerFile.open(QIODevice::ReadOnly);
-            // count data with matching index
-            int size = 0;
-            foreach (QString j,QString(triggerFile.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
-                if (i.section(" ",3,3).toInt() == j.section(" ",0,0).toInt()) size++;
-            }
-            triggerFile.close();
-
-            // read and put data into the Trigger block
-            int count = 0;
-            Trigger *trigger = new Trigger(size, i.section(" ",0,0).toInt() , i.section(" ",1,1).toInt());
-            triggerFile.open(QIODevice::ReadOnly);
-            foreach (QString j,QString(triggerFile.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
-                if (i.section(" ",3,3).toInt() == j.section(" ",0,0).toInt()){
-                    // convert string to enum direction
-                    direction dir;
-                    if (!j.section(" ",4,4).toUpper().compare("UPWARD")) dir = UPWARD;
-                    else if (!j.section(" ",4,4).toUpper().compare("DOWNWARD")) dir = DOWNWARD;
-                    else if (!j.section(" ",4,4).toUpper().compare("LEFT")) dir = LEFT;
-                    else dir = RIGHT;
-
-                    // store value to a temp spawnee variable
-                    Trigger::spawnee temp;
-                    temp.x = j.section(" ",1,1).toInt();
-                    temp.y = j.section(" ",2,2).toInt();
-                    temp.type = j.section(" ",3,3).toUpper();
-                    temp.dir = dir;
-
-                    // add it to the Trigger block
-                    trigger->setDataAt(count, temp);
-
-                    // increase counter
-                    count++;
-                }
-            }
-            scene->addItem(trigger);
-            triggerFile.close();
+            loadTrigger(i);
         }
     }
     f.close();
+}
+
+void Game::loadTrigger(QString blockData)
+{
+    QFile triggerFile(":/coordinates/coordinates/coorTrigger.txt");
+    triggerFile.open(QIODevice::ReadOnly);
+    // count data with matching index
+    int size = 0;
+    foreach (QString characterData,QString(triggerFile.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
+        if (blockData.section(" ",3,3).toInt() == characterData.section(" ",0,0).toInt()) size++;
+    }
+    triggerFile.close();
+
+    // read and put data into the Trigger block
+    int count = 0;
+    Trigger *trigger = new Trigger(size, blockData.section(" ",0,0).toInt() , blockData.section(" ",1,1).toInt());
+    triggerFile.open(QIODevice::ReadOnly);
+    foreach (QString characterData,QString(triggerFile.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
+        if (blockData.section(" ",3,3).toInt() == characterData.section(" ",0,0).toInt()){
+            // convert string to enum direction
+            direction dir;
+            if (!characterData.section(" ",4,4).toUpper().compare("UPWARD")) dir = UPWARD;
+            else if (!characterData.section(" ",4,4).toUpper().compare("DOWNWARD")) dir = DOWNWARD;
+            else if (!characterData.section(" ",4,4).toUpper().compare("LEFT")) dir = LEFT;
+            else dir = RIGHT;
+
+            // store value to a temp spawnee variable
+            Trigger::characterData temp;
+            temp.x = characterData.section(" ",1,1).toInt();
+            temp.y = characterData.section(" ",2,2).toInt();
+            temp.type = characterData.section(" ",3,3).toUpper();
+            temp.dir = dir;
+
+            // add it to the Trigger block
+            trigger->setDataAt(count, temp);
+
+            // increase counter
+            count++;
+        }
+    }
+    scene->addItem(trigger);
+    triggerFile.close();
 }
 
 void Game::placeAllBlock(){
