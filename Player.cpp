@@ -3,71 +3,32 @@
 #include <QObject>
 #include "Block.h"
 #include "Player.h"
+#include <QScrollBar>
 #include <QTimer>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <iostream>
 using namespace std;
-Player::Player(QPixmap image,int width,int height) {
-    setPixmap(image);
-    this->width = width;
-    this->height = height;
-    this->verticalVelocity = 0.0;
-    this->direction = LEFT;
-}
-
-void Player::focusOutEvent(QFocusEvent *event){
-    setFocus();
-}
-
-bool Player::isOnGround()
-{
-    Block *blockA = static_cast<Block*>(scene()->itemAt(pos().x() + 1, pos().y() + height, QTransform()));
-    Block *blockB = static_cast<Block*>(scene()->itemAt(pos().x() + width - 1, pos().y() + height, QTransform()));
-    if (blockA == nullptr && blockB == nullptr) return false;
-    else {
-        setVerticalVelocity(0.0);
-        return true;
+Player::Player() : Character(QPixmap(":/images/res/sprite_0.png"), 65, 68){
+    for(int i = 0; i < 4; ++i){
+        sprites[i] = QPixmap(QString::fromStdString(":/images/res/sprite_" + to_string(i)+ ".png"));
     }
-}
-
-void Player::flipDirection()
-{
-     direction = direction == LEFT ? RIGHT : LEFT;
-     setPixmap(pixmap().transformed(QTransform().scale(-1,1)));
-}
-
-int Player::getDirection() const{
-    if (direction == LEFT) return 0;
-    else return 1;
-}
-
-double Player::getVerticalAcceleration() const
-{
-    return verticalAcceleration;
-}
-
-double Player::getVerticalVelocity() const
-{
-    return verticalVelocity;
 }
 
 void Player::move(enum direction dir)
 {
     // left
     if (dir == LEFT) {
-        if (getDirection() != LEFT) flipDirection();
         if (collide(LEFT)) return;
-        if (x() - speed < 0)  setPos(0, y());
-        else setPos(x()- speed, y());
+        if ((x() - getSpeed()) < 0)  setPos(0, y());
+        else setPos(x()- getSpeed(), y());
     }
 
     //right
     if (dir == RIGHT) {
-        if (getDirection() != RIGHT) flipDirection();
         if (collide(RIGHT)) return;
-        if (x() + getWidth() + speed > scene()->width())  setPos(scene()->width() - getWidth(), y());
-        else setPos(x()+ speed, y());
+        if (x() + getWidth() + getSpeed() > scene()->width())  setPos(scene()->width() - getWidth(), y());
+        else setPos(x()+ getSpeed(), y());
     }
 
 }
@@ -75,96 +36,51 @@ void Player::move(enum direction dir)
 void Player::jump()
 {
     if (isOnGround()){
-        setVerticalVelocity(-550/120);
+        setVerticalVelocity(jumpVelocity);
         setPos(x(), y()-1);
     }
 }
 
-bool Player::collide(enum direction direction)
+void Player::advance(int step)
 {
-    switch(direction){
-    case LEFT:
-    {
-
-        Block *blockA = static_cast<Block*>(scene()->itemAt(pos().x() - speed, pos().y() + 1, QTransform()));
-        Block *blockB = static_cast<Block*>(scene()->itemAt(pos().x() - speed, pos().y() + height - 1, QTransform()));
-        if (blockA != nullptr){
-            setPos(blockA->pos().x() + blockA->getWidth(), y());
-            return true;
+    if (step == 0) return;
+        if(getKeyMap().value(Qt::Key_W)) {
+            jump();
         }
+        if(getKeyMap().value(Qt::Key_A)) {
 
-        if (blockB != nullptr){
-            setPos(blockB->pos().x() + blockB->getWidth(), y());
-            return true;
-        }
+            //Cant go back if the player touches the leftmost part of the screen
+            if (x() >= scene()->views().first()->horizontalScrollBar()->value()) move(LEFT);
 
-        break;
-    }
-
-    case RIGHT:
-    {
-        Block *blockA = static_cast<Block*>(scene()->itemAt(pos().x() + speed + width, pos().y() + 1, QTransform()));
-        Block *blockB = static_cast<Block*>(scene()->itemAt(pos().x() + speed + width, pos().y() + height - 1, QTransform()));
-        if (blockA != nullptr){
-            setPos(blockA->pos().x() - width, y());
-            return true;
+            if (anim_count % (ANIM_RATIO * 4) == 0) {
+                setPixmap(sprites[anim_count / (ANIM_RATIO * 4)]);
+            }
+            if (anim_count == (ANIM_RATIO * 4 * 4) - 1) anim_count = 0;
+            else ++anim_count;
         }
-
-        if (blockB != nullptr){
-            setPos(blockB->pos().x() - width, y());
-            return true;
+        if(getKeyMap().value(Qt::Key_D)) {
+            move(RIGHT);
+            if (anim_count % (ANIM_RATIO * 4) == 0) {
+                setPixmap(sprites[anim_count / (ANIM_RATIO * 4)].transformed(QTransform().scale(-1,1)));
+            }
+            if (anim_count == (ANIM_RATIO * 4 * 4) - 1) anim_count = 0;
+            else ++anim_count;
         }
-       break;
-     }
-    case UPWARD:
-    {
-        Block *blockA = static_cast<Block*>(scene()->itemAt(pos().x() + 1, pos().y() + verticalVelocity, QTransform()));
-        Block *blockB = static_cast<Block*>(scene()->itemAt(pos().x() + width - 1, pos().y() + verticalVelocity, QTransform()));
-        if (blockA != nullptr){
-            setPos(pos().x(), y());
-            setVerticalVelocity(0.0);
-            return true;
-        }
-
-        if (blockB != nullptr){
-            setPos(pos().x(), y());
-            setVerticalVelocity(0.0);
-            return true;
-        }
-        break;
-    }
-
-    case DOWNWARD:
-    {
-        Block *blockA = static_cast<Block*>(scene()->itemAt(pos().x() + 1, pos().y() + height + verticalVelocity, QTransform()));
-        Block *blockB = static_cast<Block*>(scene()->itemAt(pos().x() + width - 1, pos().y() + height + verticalVelocity, QTransform()));
-        if (blockA != nullptr){
-            setPos(pos().x(), blockA->y() - height);
-            return true;
-        }
-
-        if (blockB != nullptr){
-            setPos(pos().x(), blockB->y() - height);
-            return true;
-        }
-    break;
-    }
-    }
-    return false;
 }
 
-void Player::setVerticalVelocity(double velocity){
-    this->verticalVelocity = velocity;
+QMap<int, bool> Player::getKeyMap(){
+    return keys;
 }
 
-int Player::getWidth() const{
-    return width;
+void Player::setKeyValue(int key, bool value)
+{
+    keys[key] = value;
 }
 
-int Player::getHeight() const{
-    return height;
-}
+QPainterPath Player::shape() const
+{
+    QPainterPath path;
+    path.addRect(0, 5, getWidth(), getHeight() - 5);
+    return path;
 
-double Player::getSpeed() const{
-    return speed;
 }

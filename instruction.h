@@ -2,6 +2,7 @@
 #define INSTRUCTION_H
 
 #include <QWidget>
+#include <QPushButton>
 
 namespace Ui {
 class Instruction;
@@ -17,6 +18,9 @@ public:
 
 private:
     Ui::Instruction *ui;
+    QPushButton* btn_back;
+private slots:
+    void handleBackButton();
 };
 
 #endif // INSTRUCTION_H

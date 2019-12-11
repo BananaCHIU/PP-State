@@ -4,15 +4,15 @@
 #include <QPoint>
 #include "Block.h"
 
-
 template <typename type>
 class Node{
+public:
     type* data;
     Node* next {nullptr};
 
-public:
-    Node(const type& x);
+    Node(type* x);
     ~Node();
 };
 
+#include "Node.tpp"
 #endif // NODE_H
