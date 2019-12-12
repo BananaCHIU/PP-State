@@ -14,7 +14,7 @@ Player::Player() : Character(QPixmap(":/images/res/sprite_0.png"), 65, 68){
     for(int i = 0; i < 4; ++i){
         sprites[i] = QPixmap(QString::fromStdString(":/images/res/sprite_" + to_string(i)+ ".png"));
     }
-    sound_jump.setMedia(QUrl("qrc:/music/res/jump.wav"));
+    sound_jump.setMedia(QUrl("qrc:/music/res/jump.mp3"));
 }
 
 void Player::move(enum direction dir)
