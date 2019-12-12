@@ -16,7 +16,7 @@
 class Game: public QGraphicsView{
     Q_OBJECT
 private:
-    const double verticalAcceleration = 8/120.0;
+    const double verticalAcceleration = 13/120.0;
 
     void gravity();
     void keyPressEvent(QKeyEvent * event);

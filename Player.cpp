@@ -13,7 +13,8 @@ Player::Player() : Character(QPixmap(":/images/res/sprite_0.png"), 65, 68){
     for(int i = 0; i < 4; ++i){
         sprites[i] = QPixmap(QString::fromStdString(":/images/res/sprite_" + to_string(i)+ ".png"));
     }
-    sound_jump.setMedia(QUrl("qrc:/music/res/jump.mp3"));
+    sound_jump.setMedia(QUrl("qrc:/music/res/jump.wav"));
+    sound_jump.setVolume(20);
 }
 
 void Player::move(enum direction dir)
@@ -37,8 +38,8 @@ void Player::move(enum direction dir)
 void Player::jump()
 {
     if (isOnGround()){
-        sound_jump.stop();
-        sound_jump.play();
+        if (sound_jump.state() == QMediaPlayer::PlayingState) sound_jump.setPosition(0);
+        else if(sound_jump.state() == QMediaPlayer::StoppedState) sound_jump.play();
         setVerticalVelocity(jumpVelocity);
         setPos(x(), y()-1);
     }

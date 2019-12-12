@@ -25,13 +25,15 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     QGLFormat fmt;
         fmt.setSampleBuffers(true);
         fmt.setSamples(2);
-        this->setViewport(new QGLWidget(fmt));
+        setViewport(new QGLWidget(fmt));
+        fmt.setDirectRendering(true);
 
-    this->setCacheMode(QGraphicsView::CacheBackground);
-    this->setWindowTitle("Save this city!");
+    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+    //this->setCacheMode(QGraphicsView::CacheBackground);
+    setWindowTitle("Save this city!");
     scene = new QGraphicsScene();
     scene->setSceneRect(0, 0, GAME_WIDTH ,WIN_HEIGHT);
-    scene->setItemIndexMethod(QGraphicsScene::NoIndex);
+    scene->setItemIndexMethod(QGraphicsScene::BspTreeIndex);
     setScene(scene);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -43,8 +45,8 @@ Game::Game(QWidget *parent) : QGraphicsView(){
 
     //Game ground
     for (int i = 0; (i <= GAME_WIDTH/64); ++i){
-        if(((i>=14) && (i<=16)) || ((i>=22) && (i<=25)) || ((i>=33) && (i<=35)) || ((i>=33) && (i<=35)) ||
-                ((i>=43) && (i<=45)) || ((i>=54) && (i<=57)) || ((i>=59) && (i<=60)) || ((i>=62) && (i<=63))
+        if(((i>=14) && (i<=16)) || ((i>=27) && (i<=30)) || ((i>=42) && (i<=44)) ||
+                ((i>=53) && (i<=54)) || ((i>=63) && (i<=66)) || ((i>=74) && (i<=75)) || ((i>=77) && (i<=78))
                 || ((i>=65) && (i<=66))) continue;
         Block* brick = new Block(img_brick, i, 1);
         q_baseBrick->enqueue(brick);
@@ -66,7 +68,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
 
     timer = new QTimer();
     connect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
-    timer->setInterval(5);
+    timer->setInterval(10);
     timer->start();
     centerOn(player);
 }
@@ -132,9 +134,7 @@ void Game::update(){
             centerOn(player);
         }
     }else if(player->getKeyMap().value(Qt::Key_Space)){
-        gameOver();
-    }else if(player->getKeyMap().value(Qt::Key_L)){
-        gameWin();
+        cout << player->x() / 64 << "  " << -(player->y() - WIN_HEIGHT) / 64 << endl;
     }
 }
 

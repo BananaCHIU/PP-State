@@ -23,7 +23,7 @@ private:
     const int ANIM_RATIO = 2;
     int anim_count = 0;
     const double horizontalAcceleration = 0.7/120.0;
-    const double jumpVelocity{-375.0/120};
+    const double jumpVelocity{-375/120.0};
     enum direction movingDirection{RIGHT};
     const double MAX_SPEED{4.0};
 };

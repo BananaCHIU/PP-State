@@ -2,11 +2,13 @@
 #include "Character.h"
 
 #include <QGraphicsScene>
-
+#include <QPixmapCache>
 Character::Character(QPixmap image,int width, int height) :
     width(width),
     height(height)
 {
+    setCacheMode(QGraphicsItem::DeviceCoordinateCache);
+    QPixmapCache::setCacheLimit(102400);
     setPixmap(image);
 }
 

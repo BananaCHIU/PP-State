@@ -21,13 +21,12 @@ private:
     int width;
     int height;
     direction direction;
-    const double VERTICALACCELERATION = 6/120.0;
     double verticalVelocity = 0;
     const double SPEED = 2.5;
 
     QMediaPlayer sound_jump;
     QPixmap sprites[4];
-    const double jumpVelocity{-550.0/120};
+    const double jumpVelocity{-700/120.0};
     const int ANIM_RATIO = 2;
     int anim_count = 0;
     QMap <int, bool> keys;

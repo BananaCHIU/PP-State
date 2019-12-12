@@ -30,7 +30,7 @@ private:
     int height;
     enum direction facing{RIGHT};
     double verticalVelocity{0};
-    double speed{2.5};
+    double speed{3};
 };
 
 #endif // CHARACTER_H
