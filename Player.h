@@ -2,7 +2,7 @@
 #define PLAYER_H
 
 #include "Character.h"
-
+#include <QMediaPlayer>
 #include <QGraphicsPixmapItem>
 
 class Player : public Character{
@@ -25,6 +25,7 @@ private:
     double verticalVelocity = 0;
     const double SPEED = 2.5;
 
+    QMediaPlayer sound_jump;
     QPixmap sprites[4];
     const double jumpVelocity{-550.0/120};
     const int ANIM_RATIO = 2;

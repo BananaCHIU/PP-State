@@ -44,7 +44,10 @@ void Dog::move(enum direction dir)
             return;
         }
         // out of scene prevention, remove later
-        if (x() - getSpeed() < 0)  setPos(0, y());
+        if (x() - getSpeed() < 0)  {
+            setPos(0, y());
+            flipMovingDirection();
+        }
         else setPos(x()- getSpeed(), y());
 
     // in case moving rightward:
@@ -55,7 +58,10 @@ void Dog::move(enum direction dir)
             return;
         }
         // out of scene prevention, remove later
-        if (x() + getWidth() + getSpeed() > scene()->width())  setPos(scene()->width() - getWidth(), y());
+        if (x() + getWidth() + getSpeed() > scene()->width()) {
+            setPos(scene()->width() - getWidth(), y());
+            flipMovingDirection();
+        }
         else setPos(x()+ getSpeed(), y());
     }
 }

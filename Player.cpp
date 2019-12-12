@@ -5,6 +5,7 @@
 #include "Player.h"
 #include <QScrollBar>
 #include <QTimer>
+#include <QMediaPlayer>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <iostream>
@@ -13,6 +14,7 @@ Player::Player() : Character(QPixmap(":/images/res/sprite_0.png"), 65, 68){
     for(int i = 0; i < 4; ++i){
         sprites[i] = QPixmap(QString::fromStdString(":/images/res/sprite_" + to_string(i)+ ".png"));
     }
+    sound_jump.setMedia(QUrl("qrc:/music/res/jump.wav"));
 }
 
 void Player::move(enum direction dir)
@@ -36,6 +38,8 @@ void Player::move(enum direction dir)
 void Player::jump()
 {
     if (isOnGround()){
+        sound_jump.stop();
+        sound_jump.play();
         setVerticalVelocity(jumpVelocity);
         setPos(x(), y()-1);
     }
@@ -45,8 +49,8 @@ void Player::advance(int step)
 {
     if (y() > scene()->height()) {
 
-        //emit playerIsDead();
-        //return;
+        emit playerIsDead();
+        return;
     }
 
     // player die checking && interaction with trigger

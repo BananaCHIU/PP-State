@@ -99,7 +99,9 @@ void Game::gravity()
 }
 
 void Game::update(){
+
     scene->advance();
+    if (player == nullptr) return;
     gravity();
     if(player->getKeyMap().value(Qt::Key_A)){
 
@@ -211,20 +213,19 @@ void Game::gameOver(){
     while(!q_baseBrick->isEmpty()){
         temp = q_baseBrick->dequeue();
         scene->removeItem(temp);
-        delete temp;
 
     }
     while(!q_block->isEmpty()){
         temp = q_block->dequeue();
         scene->removeItem(temp);
-        delete temp;
     }
     while(!q_char->isEmpty()){
              temp = q_char->dequeue();
              scene->removeItem(temp);
-             delete temp;
          }
+
     player = nullptr;
+
     scene->setBackgroundBrush(QBrush(QColor("#ffffff")));
     QGraphicsPixmapItem* goTitle = new QGraphicsPixmapItem (QPixmap(":/images/res/go.png"));
     goTitle->setPos(700 - goTitle->pixmap().width() /2 , 70);
@@ -250,17 +251,14 @@ void Game::gameWin(){
     while(!q_baseBrick->isEmpty()){
         temp = q_baseBrick->dequeue();
         scene->removeItem(temp);
-        delete temp;
     }
     while(!q_block->isEmpty()){
         temp = q_block->dequeue();
         scene->removeItem(temp);
-        delete temp;
     }
     while(!q_char->isEmpty()){
         temp = q_char->dequeue();
         scene->removeItem(temp);
-        delete temp;
     }
     player = nullptr;
 

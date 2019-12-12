@@ -25,6 +25,6 @@ private:
     const double horizontalAcceleration = 0.7/120.0;
     const double jumpVelocity{-375.0/120};
     enum direction movingDirection{RIGHT};
-    const double MAX_SPEED{5.0};
+    const double MAX_SPEED{4.0};
 };
 #endif // RAPTOR_H
