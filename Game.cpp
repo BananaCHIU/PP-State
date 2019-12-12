@@ -17,13 +17,21 @@
 #include <QScrollBar>
 #include <QTAlgorithms>
 #include <QSound>
+#include <QGLFormat>
 
 using namespace std;
 
 Game::Game(QWidget *parent) : QGraphicsView(){
+    QGLFormat fmt;
+        fmt.setSampleBuffers(true);
+        fmt.setSamples(2);
+        this->setViewport(new QGLWidget(fmt));
+
+    this->setCacheMode(QGraphicsView::CacheBackground);
     this->setWindowTitle("Save this city!");
     scene = new QGraphicsScene();
     scene->setSceneRect(0, 0, GAME_WIDTH ,WIN_HEIGHT);
+    scene->setItemIndexMethod(QGraphicsScene::NoIndex);
     setScene(scene);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -58,7 +66,8 @@ Game::Game(QWidget *parent) : QGraphicsView(){
 
     timer = new QTimer();
     connect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
-    timer->start(1000/120);
+    timer->setInterval(5);
+    timer->start();
     centerOn(player);
 }
 
