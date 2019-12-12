@@ -56,7 +56,6 @@ type* Queue<type>::dequeue()
         //delete temp;
     }
     --size;
-    cout << "dequeue" << endl;
     return result;
 }
 

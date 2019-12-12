@@ -30,7 +30,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
 
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     //this->setCacheMode(QGraphicsView::CacheBackground);
-    setWindowTitle("Save this city!");
+    setWindowTitle("Quick! Go Back Home!");
     scene = new QGraphicsScene();
     scene->setSceneRect(0, 0, GAME_WIDTH ,WIN_HEIGHT);
     scene->setItemIndexMethod(QGraphicsScene::BspTreeIndex);
@@ -46,8 +46,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     //Game ground
     for (int i = 0; (i <= GAME_WIDTH/64); ++i){
         if(((i>=14) && (i<=16)) || ((i>=27) && (i<=30)) || ((i>=42) && (i<=44)) ||
-                ((i>=53) && (i<=54)) || ((i>=63) && (i<=66)) || ((i>=74) && (i<=75)) || ((i>=77) && (i<=78))
-                || ((i>=65) && (i<=66))) continue;
+                ((i>=58) && (i<=66)) )continue;
         Block* brick = new Block(img_brick, i, 1);
         q_baseBrick->enqueue(brick);
     }
@@ -134,7 +133,7 @@ void Game::update(){
             centerOn(player);
         }
     }else if(player->getKeyMap().value(Qt::Key_Space)){
-        cout << player->x() / 64 << "  " << -(player->y() - WIN_HEIGHT) / 64 << endl;
+        cout << static_cast<int>(player->x() / 64) << "  " << static_cast<int>(-(player->y() - WIN_HEIGHT) / 64 )<< endl;
     }
 }
 
@@ -251,7 +250,10 @@ void Game::gameWin(){
     disconnect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->stop();
     centerOn(0,0);
-    result = WIN;
+
+    //If lose before, the game is lose forever
+    if (result != LOSE) result = WIN;
+
     gwMusic = new QMediaPlayer();
     gwMusic->setMedia(QUrl("qrc:/music/res/gw.wav"));
     gwMusic->play();
