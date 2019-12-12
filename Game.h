@@ -37,13 +37,24 @@ private:
     QTimer * timer;
     QMediaPlayer* gwMusic;
     QPixmap img_brick{":/background/res/brick_1.png"};
+<<<<<<< HEAD
     Queue<Block>* q_block, *q_baseBrick;
+=======
+    Queue<Block>* q_block;
+    // testing purpose:
+    Bullet *bullet;
+>>>>>>> parent of 38990cd... Add char queue
 
 public:
     Game(QWidget *parent = nullptr);
     ~Game();
+<<<<<<< HEAD
     double getWinHeight();
     double getWinWidth();
+=======
+    static double getWinHeight();
+    static double getWinWidth();
+>>>>>>> parent of 38990cd... Add char queue
     double getVerticalAcceleration();
 public slots:
     void update();

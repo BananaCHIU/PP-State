@@ -28,8 +28,12 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(WIN_WIDTH, WIN_HEIGHT);
 
+<<<<<<< HEAD
     q_block = new Queue<Block>();
     q_baseBrick = new Queue<Block>();
+=======
+    q_block= new Queue<Block>();
+>>>>>>> parent of 38990cd... Add char queue
 
     //Game ground
     for (int i = 0; (i <= GAME_WIDTH/64); ++i){
@@ -68,7 +72,12 @@ void Game::gravity()
     QList<Character*> characters = {player};
     // change player to the list/data structure that holds all the characters
     for (int i = 0; i < characters.size(); ++i){
+<<<<<<< HEAD
         if(!characters[i]->isOnGround()){
+=======
+        if ((characters[i])->type() == Bullet::Type) continue;
+        if (!characters[i]->isOnGround()){
+>>>>>>> parent of 38990cd... Add char queue
             // in air:
             if(characters[i]->getVerticalVelocity() < 0){
                 //upward
@@ -119,6 +128,10 @@ void Game::update(){
     }else if(player->getKeyMap().value(Qt::Key_L)){
         gameWin();
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of 38990cd... Add char queue
 }
 
 void Game::loadBrick(){
@@ -143,6 +156,7 @@ void Game::placeAllBlock(){
     }
 }
 
+<<<<<<< HEAD
 void Game::gameOver(){
     disconnect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->stop();
@@ -159,6 +173,17 @@ void Game::gameOver(){
         temp = q_baseBrick->dequeue();
         scene->removeItem(temp);
         delete temp;
+=======
+void Game::loadTrigChar(QString trigData)
+{
+
+    QFile trigCharFile(":/coordinates/coordinates/coorTrigChar.txt");
+    trigCharFile.open(QIODevice::ReadOnly);
+    // count data with matching index
+    int size = 0;
+    foreach (QString characterData,QString(trigCharFile.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
+        size++;
+>>>>>>> parent of 38990cd... Add char queue
     }
     while(!q_block->isEmpty()){
         temp = q_block->dequeue();
