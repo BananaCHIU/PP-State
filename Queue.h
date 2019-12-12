@@ -8,7 +8,10 @@ class Queue{
     Node<type> *head {nullptr};
     Node<type> *tail {nullptr};
     int size {0};
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/data_structure
 public:
     Queue();
     Queue(type* x);

@@ -39,7 +39,11 @@ void Queue<type>::enqueue(type* data)
         tail->next = new_node;
         tail = new_node;
     }
+<<<<<<< HEAD
     ++size;
+=======
+        ++size;
+>>>>>>> origin/data_structure
 }
 
 template<typename type>
@@ -55,7 +59,11 @@ type* Queue<type>::dequeue()
         head = head->next;
         //delete temp;
     }
+<<<<<<< HEAD
     --size;
+=======
+        --size;
+>>>>>>> origin/data_structure
     cout << "dequeue" << endl;
     return result;
 }

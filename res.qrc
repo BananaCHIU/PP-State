@@ -22,6 +22,7 @@
         <file>res/green_raptor_2.png</file>
         <file>res/green_raptor_3.png</file>
         <file>res/icon.ico</file>
+<<<<<<< HEAD
         <file>res/go.png</file>
         <file>res/go_1.png</file>
         <file>res/go_2.png</file>
@@ -30,6 +31,10 @@
         <file>res/gw_2.png</file>
         <file>res/gw.png</file>
         <file>res/day_bg.png</file>
+=======
+        <file>res/bullet.png</file>
+        <file>res/trigger.png</file>
+>>>>>>> origin/data_structure
     </qresource>
     <qresource prefix="/background">
         <file>res/cloud.png</file>
@@ -48,5 +53,7 @@
     </qresource>
     <qresource prefix="/coordinates">
         <file>coordinates/coorBrick.txt</file>
+        <file>coordinates/coorTrigger.txt</file>
+        <file>coordinates/coorTrigChar.txt</file>
     </qresource>
 </RCC>

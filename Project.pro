@@ -19,17 +19,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     Block.cpp \
+    Bullet.cpp \
     Character.cpp \
     Dog.cpp \
     Game.cpp \
     Player.cpp \
     Raptor.cpp \
+    Trigger.cpp \
     instruction.cpp \
     main.cpp \
     menu.cpp
 
 HEADERS += \
     Block.h \
+    Bullet.h \
     Character.h \
     Dog.h \
     Game.h \
@@ -39,6 +42,7 @@ HEADERS += \
     Queue.h \
     Queue.tpp \
     Raptor.h \
+    Trigger.h \
     instruction.h \
     menu.h
 

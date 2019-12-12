@@ -4,7 +4,12 @@
 #include "float.h"
 #include "Queue.h"
 #include "Dog.h"
+<<<<<<< HEAD
 #include "menu.h"
+=======
+#include "Bullet.h"
+#include "Trigger.h"
+>>>>>>> origin/data_structure
 
 #include <math.h>
 #include <iostream>
@@ -36,12 +41,19 @@ Game::Game(QWidget *parent) : QGraphicsView(){
         if(((i>=14) && (i<=16)) || ((i>=22) && (i<=25)) || ((i>=33) && (i<=35)) || ((i>=33) && (i<=35)) ||
                 ((i>=43) && (i<=45)) || ((i>=54) && (i<=57)) || ((i>=59) && (i<=60)) || ((i>=62) && (i<=63))
                 || ((i>=65) && (i<=66))) continue;
+<<<<<<< HEAD
         Block* brick = new Block(img_brick, getWinHeight() , i, 1);
         q_baseBrick->enqueue(brick);
+=======
+        Block* brick = new Block(img_brick, i, 1);
+        q_block->enqueue(brick);
+>>>>>>> origin/data_structure
     }
 
     loadBrick();
     placeAllBlock();
+
+    loadTrigger();
 
     player = new Player();
     player->setFlag(QGraphicsItem::ItemIsFocusable);
@@ -52,6 +64,9 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     timer = new QTimer();
     connect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->start(1000/120);
+
+    connect(player, SIGNAL(playerIsDead()), this, SLOT(gameOver()));
+
     centerOn(player);
 }
 
@@ -68,7 +83,8 @@ void Game::gravity()
     QList<Character*> characters = {player};
     // change player to the list/data structure that holds all the characters
     for (int i = 0; i < characters.size(); ++i){
-        if(!characters[i]->isOnGround()){
+        if ((characters[i])->type() == Bullet::Type) continue;
+        if (!characters[i]->isOnGround()){
             // in air:
             if(characters[i]->getVerticalVelocity() < 0){
                 //upward
@@ -119,6 +135,11 @@ void Game::update(){
     }else if(player->getKeyMap().value(Qt::Key_L)){
         gameWin();
     }
+    // testing purpose:
+    if(player->getKeyMap().value(Qt::Key_Space)){
+        cout << floor(player->x()/64.0) << " " << floor(player->y()/64.0) << endl;
+    }
+
 }
 
 void Game::loadBrick(){
@@ -127,10 +148,61 @@ void Game::loadBrick(){
     f.open(QIODevice::ReadOnly);
     //Read Coordinates
     foreach (QString i,QString(f.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
-        Block* brick = new Block(img_brick, getWinHeight(), i.section(" ",0,0).toInt() , i.section(" ",1,1).toInt());
-        q_block->enqueue(brick);
+        Block* block = new Block(img_brick, i.section(" ",0,0).toInt() , i.section(" ",1,1).toInt());
+        q_block->enqueue(block);
     }
     f.close();
+}
+
+void Game::loadTrigger(){
+    QFile triggerFile(":/coordinates/coordinates/coorTrigger.txt");
+    triggerFile.open(QIODevice::ReadOnly);
+    foreach (QString trigData,QString(triggerFile.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
+        loadTrigChar(trigData);
+    }
+}
+
+void Game::loadTrigChar(QString trigData)
+{
+
+    QFile trigCharFile(":/coordinates/coordinates/coorTrigChar.txt");
+    trigCharFile.open(QIODevice::ReadOnly);
+    // count data with matching index
+    int size = 0;
+    foreach (QString characterData,QString(trigCharFile.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
+        size++;
+    }
+    trigCharFile.close();
+
+    // read and put data into the Trigger block
+    int count = 0;
+    Trigger *trigger = new Trigger(size, trigData.section(" ",0,0).toInt() , trigData.section(" ",1,1).toInt());
+    trigCharFile.open(QIODevice::ReadOnly);
+    foreach (QString characterData,QString(trigCharFile.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
+        if (trigData.section(" ",2,2).toInt() == characterData.section(" ",0,0).toInt()){
+            // convert string to enum direction
+            direction dir;
+            if (!characterData.section(" ",4,4).toUpper().compare("UPWARD")) dir = UPWARD;
+            else if (!characterData.section(" ",4,4).toUpper().compare("DOWNWARD")) dir = DOWNWARD;
+            else if (!characterData.section(" ",4,4).toUpper().compare("LEFT")) dir = LEFT;
+            else dir = RIGHT;
+
+            // store value to a temp spawnee variable
+            Trigger::characterData temp;
+            temp.x = characterData.section(" ",1,1).toInt();
+            temp.y = characterData.section(" ",2,2).toInt();
+            temp.type = characterData.section(" ",3,3).toUpper();
+            temp.dir = dir;
+
+            // add it to the Trigger block
+            trigger->setDataAt(count, temp);
+
+            // increase counter
+            count++;
+        }
+    }
+    scene->addItem(trigger);
+    trigCharFile.close();
 }
 
 void Game::placeAllBlock(){
@@ -249,4 +321,9 @@ double Game::getWinWidth(){
 double Game::getVerticalAcceleration()
 {
     return verticalAcceleration;
+}
+
+void Game::gameOver(){
+    // to be merged with gameOver() in branche game_over
+    // cout << " game over" << endl;
 }
