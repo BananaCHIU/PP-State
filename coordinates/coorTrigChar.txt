@@ -1,3 +1,4 @@
 1 7 2 dog left
 1 18 2 dog right
 1 20 2 dog left
+2 29 10 raptor left

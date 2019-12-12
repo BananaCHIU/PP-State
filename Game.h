@@ -28,7 +28,7 @@ private:
 
     static const int WIN_WIDTH = 1400;
     static const int WIN_HEIGHT = 800;
-    const int GAME_WIDTH = 40000;
+    const int GAME_WIDTH = 6000;
     enum gameResult {WIN, LOSE, NOPE} result = NOPE;
 
     //Store the player's xy when it move to the left
