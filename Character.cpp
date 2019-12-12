@@ -74,11 +74,6 @@ void Character::flipFacing()
     setPixmap(pixmap().transformed(QTransform().scale(-1,1)));
 }
 
-int Character::type() const
-{
-    return Type;
-}
-
 bool Character::collide(enum direction dir){
     //QList<QGraphicsItem*> objects = collidingItems(Qt::IntersectsItemBoundingRect);
     switch(dir){

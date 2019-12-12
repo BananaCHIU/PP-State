@@ -21,10 +21,9 @@ public:
     //other
     virtual void move(enum direction dir) =0;
     virtual void advance(int step) =0;
-    bool collide(enum direction dir);
+    virtual bool collide(enum direction dir);
     bool isOnGround();
     void flipFacing();
-    int type() const;
 
 private:
     int width;
@@ -32,7 +31,6 @@ private:
     enum direction facing{RIGHT};
     double verticalVelocity{0};
     double speed{2.5};
-
 };
 
 #endif // CHARACTER_H
