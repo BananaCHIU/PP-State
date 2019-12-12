@@ -5,7 +5,8 @@
 #include "Player.h"
 #include "Block.h"
 #include "Queue.h"
-
+#include "Trigger.h"
+#include "Bullet.h"
 #include "Raptor.h"
 
 #include <QTimer>
@@ -21,10 +22,12 @@ private:
     void keyPressEvent(QKeyEvent * event);
     void keyReleaseEvent(QKeyEvent * event);
     void loadBrick();
+    void loadTrigger();
+    void loadTrigChar(QString trigData);
     void placeAllBlock();
 
-    const int WIN_WIDTH = 1400;
-    const int WIN_HEIGHT = 800;
+    static const int WIN_WIDTH = 1400;
+    static const int WIN_HEIGHT = 800;
     const int GAME_WIDTH = 40000;
     enum gameResult {WIN, LOSE, NOPE} result = NOPE;
 
@@ -37,24 +40,17 @@ private:
     QTimer * timer;
     QMediaPlayer* gwMusic;
     QPixmap img_brick{":/background/res/brick_1.png"};
-<<<<<<< HEAD
     Queue<Block>* q_block, *q_baseBrick;
-=======
-    Queue<Block>* q_block;
-    // testing purpose:
-    Bullet *bullet;
->>>>>>> parent of 38990cd... Add char queue
+    Queue<Character>* q_char;
 
 public:
     Game(QWidget *parent = nullptr);
     ~Game();
-<<<<<<< HEAD
-    double getWinHeight();
-    double getWinWidth();
-=======
+
+    Queue<Character>* getCharQueue();
     static double getWinHeight();
     static double getWinWidth();
->>>>>>> parent of 38990cd... Add char queue
+
     double getVerticalAcceleration();
 public slots:
     void update();

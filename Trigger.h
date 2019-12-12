@@ -18,13 +18,14 @@ public:
     Trigger(int size, int x, int y);
     ~Trigger() override;
     void setDataAt(int index, characterData data);
-    QRectF boundingRect() const override;
-    int type() const override;
+
 public slots:
     void triggered();
 private:
     int dataSize;
     struct characterData* data;
+    QRectF boundingRect() const override;
+    int type() const override;
 };
 
 #endif // TRIGGER_H

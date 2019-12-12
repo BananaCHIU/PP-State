@@ -7,7 +7,10 @@
 class Block : public QObject, public QGraphicsPixmapItem{
     Q_OBJECT
 public :
-    Block(QPixmap, double, int, int);
+    Block(int x, int y);
+    Block(QPixmap image);
+    Block(QPixmap, double, int x, int y);
+    Block(QPixmap image, int x, int y);
 
     enum type{Type = UserType + 1 };
 

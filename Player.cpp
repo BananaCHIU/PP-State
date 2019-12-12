@@ -43,29 +43,59 @@ void Player::jump()
 
 void Player::advance(int step)
 {
+    if (y() > scene()->height()) {
+
+        //emit playerIsDead();
+        //return;
+    }
+
+    // player die checking && interaction with trigger
+    QList<QGraphicsItem*> collidingitems = collidingItems(Qt::IntersectsItemBoundingRect);
+    for (int i = 0; i < collidingitems.size(); ++i){
+        if (collidingitems[i]->type() != Block::Type
+            && collidingitems[i]->type() != Trigger::Type
+                ){
+            emit playerIsDead();
+            return;
+        } else if (collidingitems[i]->type() == Trigger::Type){
+            static_cast<Trigger*>(collidingitems[i])->triggered();
+        }
+    }
+
     if (step == 0) return;
-        if(getKeyMap().value(Qt::Key_W)) {
-            jump();
-        }
-        if(getKeyMap().value(Qt::Key_A)) {
 
-            //Cant go back if the player touches the leftmost part of the screen
-            if (x() >= scene()->views().first()->horizontalScrollBar()->value()) move(LEFT);
+    // if "W" key was pressed/pressing
+    if(getKeyMap().value(Qt::Key_W)) {
+        // perform jumping
+        jump();
+    }
 
-            if (anim_count % (ANIM_RATIO * 4) == 0) {
-                setPixmap(sprites[anim_count / (ANIM_RATIO * 4)]);
-            }
-            if (anim_count == (ANIM_RATIO * 4 * 4) - 1) anim_count = 0;
-            else ++anim_count;
+    // if "A" key was pressed/pressing
+    if(getKeyMap().value(Qt::Key_A)) {
+        // out of view prevention + move to leftwards
+        // Cant go back if the player touches the leftmost part of the screen
+        if (x() >= scene()->views().first()->horizontalScrollBar()->value()) move(LEFT);
+
+        // animation handler
+        if (anim_count % (ANIM_RATIO * 4) == 0) {
+            setPixmap(sprites[anim_count / (ANIM_RATIO * 4)]);
         }
-        if(getKeyMap().value(Qt::Key_D)) {
-            move(RIGHT);
-            if (anim_count % (ANIM_RATIO * 4) == 0) {
-                setPixmap(sprites[anim_count / (ANIM_RATIO * 4)].transformed(QTransform().scale(-1,1)));
-            }
-            if (anim_count == (ANIM_RATIO * 4 * 4) - 1) anim_count = 0;
-            else ++anim_count;
+        if (anim_count == (ANIM_RATIO * 4 * 4) - 1) anim_count = 0;
+        else ++anim_count;
+    }
+
+    // if "D" key was pressed/pressing
+    if(getKeyMap().value(Qt::Key_D)) {
+        // move to leftwards
+        move(RIGHT);
+
+        // animation handler
+        if (anim_count % (ANIM_RATIO * 4) == 0) {
+            setPixmap(sprites[anim_count / (ANIM_RATIO * 4)].transformed(QTransform().scale(-1,1)));
         }
+        if (anim_count == (ANIM_RATIO * 4 * 4) - 1) anim_count = 0;
+        else ++anim_count;
+    }
 }
 
 QMap<int, bool> Player::getKeyMap(){

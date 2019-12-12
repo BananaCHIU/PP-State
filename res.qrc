@@ -30,6 +30,8 @@
         <file>res/gw_2.png</file>
         <file>res/gw.png</file>
         <file>res/day_bg.png</file>
+        <file>res/bullet.png</file>
+        <file>res/trigger.png</file>
     </qresource>
     <qresource prefix="/background">
         <file>res/cloud.png</file>
@@ -48,5 +50,7 @@
     </qresource>
     <qresource prefix="/coordinates">
         <file>coordinates/coorBrick.txt</file>
+        <file>coordinates/coorTrigChar.txt</file>
+        <file>coordinates/coorTrigger.txt</file>
     </qresource>
 </RCC>

@@ -3,7 +3,8 @@
 #include "Block.h"
 #include "float.h"
 #include "Queue.h"
-#include "Dog.h"
+#include "Trigger.h"
+#include "Character.h"
 #include "menu.h"
 
 #include <math.h>
@@ -28,30 +29,32 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(WIN_WIDTH, WIN_HEIGHT);
 
-<<<<<<< HEAD
     q_block = new Queue<Block>();
     q_baseBrick = new Queue<Block>();
-=======
-    q_block= new Queue<Block>();
->>>>>>> parent of 38990cd... Add char queue
+    q_char = new Queue<Character>();
 
     //Game ground
     for (int i = 0; (i <= GAME_WIDTH/64); ++i){
         if(((i>=14) && (i<=16)) || ((i>=22) && (i<=25)) || ((i>=33) && (i<=35)) || ((i>=33) && (i<=35)) ||
                 ((i>=43) && (i<=45)) || ((i>=54) && (i<=57)) || ((i>=59) && (i<=60)) || ((i>=62) && (i<=63))
                 || ((i>=65) && (i<=66))) continue;
-        Block* brick = new Block(img_brick, getWinHeight() , i, 1);
+        Block* brick = new Block(img_brick, i, 1);
         q_baseBrick->enqueue(brick);
     }
 
     loadBrick();
     placeAllBlock();
 
+    loadTrigger();
+
     player = new Player();
     player->setFlag(QGraphicsItem::ItemIsFocusable);
     player->setFocus();
     player->setPos(200, scene->height()/2);
+    q_char->enqueue(player);
     scene->addItem(player);
+
+    connect(player, SIGNAL(playerIsDead()), this, SLOT(gameOver()));
 
     timer = new QTimer();
     connect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
@@ -68,34 +71,28 @@ Game::~Game(){
 
 void Game::gravity()
 {
-    // temp data structure to hold characters:
-    QList<Character*> characters = {player};
     // change player to the list/data structure that holds all the characters
-    for (int i = 0; i < characters.size(); ++i){
-<<<<<<< HEAD
-        if(!characters[i]->isOnGround()){
-=======
-        if ((characters[i])->type() == Bullet::Type) continue;
-        if (!characters[i]->isOnGround()){
->>>>>>> parent of 38990cd... Add char queue
+    for (Node<Character>* p = q_char->getHead(); p != nullptr; p = p->next){
+        if ((p->data)->type() == Bullet::Type) continue;
+        if (!p->data->isOnGround()){
             // in air:
-            if(characters[i]->getVerticalVelocity() < 0){
+            if(p->data->getVerticalVelocity() < 0){
                 //upward
-                if (characters[i]->collide(UPWARD)) {
+                if (p->data->collide(UPWARD)) {
 
                 } else {
-                    characters[i]->setPos(characters[i]->x(),characters[i]->y() + characters[i]->getVerticalVelocity());
+                    p->data->setPos(p->data->x(),p->data->y() + p->data->getVerticalVelocity());
                     //cout << player->getVerticalVelocity() << endl;
                 }
-                characters[i]->setVerticalVelocity(characters[i]->getVerticalVelocity() + verticalAcceleration);
+                p->data->setVerticalVelocity(p->data->getVerticalVelocity() + verticalAcceleration);
 
-            } else if (characters[i]->getVerticalVelocity() >= 0){
-                if (characters[i]->collide(DOWNWARD)){
+            } else if (p->data->getVerticalVelocity() >= 0){
+                if (p->data->collide(DOWNWARD)){
 
                 } else {
-                    characters[i]->setPos(characters[i]->x(),characters[i]->y() + characters[i]->getVerticalVelocity());
+                    p->data->setPos(p->data->x(),p->data->y() + p->data->getVerticalVelocity());
                 }
-                characters[i]->setVerticalVelocity(characters[i]->getVerticalVelocity() + verticalAcceleration);
+                p->data->setVerticalVelocity(p->data->getVerticalVelocity() + verticalAcceleration);
             }
         }
     }
@@ -128,10 +125,6 @@ void Game::update(){
     }else if(player->getKeyMap().value(Qt::Key_L)){
         gameWin();
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> parent of 38990cd... Add char queue
 }
 
 void Game::loadBrick(){
@@ -140,7 +133,7 @@ void Game::loadBrick(){
     f.open(QIODevice::ReadOnly);
     //Read Coordinates
     foreach (QString i,QString(f.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
-        Block* brick = new Block(img_brick, getWinHeight(), i.section(" ",0,0).toInt() , i.section(" ",1,1).toInt());
+        Block* brick = new Block(img_brick, i.section(" ",0,0).toInt() , i.section(" ",1,1).toInt());
         q_block->enqueue(brick);
     }
     f.close();
@@ -156,24 +149,14 @@ void Game::placeAllBlock(){
     }
 }
 
-<<<<<<< HEAD
-void Game::gameOver(){
-    disconnect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
-    timer->stop();
-    centerOn(0,0);
-    result = LOSE;
-    QSound::play(":/music/res/go.wav");
+void Game::loadTrigger(){
+    QFile triggerFile(":/coordinates/coordinates/coorTrigger.txt");
+    triggerFile.open(QIODevice::ReadOnly);
+    foreach (QString trigData,QString(triggerFile.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
+        loadTrigChar(trigData);
+    }
+}
 
-    scene->removeItem(player);
-    delete player;
-    player = nullptr;
-
-    QGraphicsItem* temp;
-    while(!q_baseBrick->isEmpty()){
-        temp = q_baseBrick->dequeue();
-        scene->removeItem(temp);
-        delete temp;
-=======
 void Game::loadTrigChar(QString trigData)
 {
 
@@ -182,15 +165,66 @@ void Game::loadTrigChar(QString trigData)
     // count data with matching index
     int size = 0;
     foreach (QString characterData,QString(trigCharFile.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
-        size++;
->>>>>>> parent of 38990cd... Add char queue
+        ++size;
+    }
+    trigCharFile.close();
+
+    // read and put data into the Trigger block
+    int count = 0;
+    Trigger *trigger = new Trigger(size, trigData.section(" ",0,0).toInt() , trigData.section(" ",1,1).toInt());
+    trigCharFile.open(QIODevice::ReadOnly);
+    foreach (QString characterData,QString(trigCharFile.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
+        if (trigData.section(" ",2,2).toInt() == characterData.section(" ",0,0).toInt()){
+            // convert string to enum direction
+            direction dir;
+            if (!characterData.section(" ",4,4).toUpper().compare("UPWARD")) dir = UPWARD;
+            else if (!characterData.section(" ",4,4).toUpper().compare("DOWNWARD")) dir = DOWNWARD;
+            else if (!characterData.section(" ",4,4).toUpper().compare("LEFT")) dir = LEFT;
+            else dir = RIGHT;
+
+            // store value to a temp spawnee variable
+            Trigger::characterData temp;
+            temp.x = characterData.section(" ",1,1).toInt();
+            temp.y = characterData.section(" ",2,2).toInt();
+            temp.type = characterData.section(" ",3,3).toUpper();
+            temp.dir = dir;
+
+            // add it to the Trigger block
+            trigger->setDataAt(count, temp);
+
+            // increase counter
+            count++;
+        }
+    }
+    scene->addItem(trigger);
+    trigCharFile.close();
+}
+
+void Game::gameOver(){
+    disconnect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
+    timer->stop();
+    centerOn(0,0);
+    result = LOSE;
+    QSound::play(":/music/res/go.wav");
+
+    QGraphicsItem* temp;
+    while(!q_baseBrick->isEmpty()){
+        temp = q_baseBrick->dequeue();
+        scene->removeItem(temp);
+        delete temp;
+
     }
     while(!q_block->isEmpty()){
         temp = q_block->dequeue();
         scene->removeItem(temp);
         delete temp;
     }
-
+    while(!q_char->isEmpty()){
+             temp = q_char->dequeue();
+             scene->removeItem(temp);
+             delete temp;
+         }
+    player = nullptr;
     scene->setBackgroundBrush(QBrush(QColor("#ffffff")));
     QGraphicsPixmapItem* goTitle = new QGraphicsPixmapItem (QPixmap(":/images/res/go.png"));
     goTitle->setPos(700 - goTitle->pixmap().width() /2 , 70);
@@ -212,10 +246,6 @@ void Game::gameWin(){
     gwMusic->setMedia(QUrl("qrc:/music/res/gw.wav"));
     gwMusic->play();
 
-    scene->removeItem(player);
-    delete player;
-    player = nullptr;
-
     QGraphicsItem* temp;
     while(!q_baseBrick->isEmpty()){
         temp = q_baseBrick->dequeue();
@@ -227,6 +257,12 @@ void Game::gameWin(){
         scene->removeItem(temp);
         delete temp;
     }
+    while(!q_char->isEmpty()){
+        temp = q_char->dequeue();
+        scene->removeItem(temp);
+        delete temp;
+    }
+    player = nullptr;
 
     scene->setBackgroundBrush(QBrush(QColor("#ffffff")));
     QGraphicsPixmapItem* gwTitle = new QGraphicsPixmapItem (QPixmap(":/images/res/gw.png"));
@@ -261,6 +297,11 @@ void Game::keyReleaseEvent(QKeyEvent *e)
     if (player == nullptr) return;
     if (e->isAutoRepeat()) return;
     player->setKeyValue(e->key(), false);
+}
+
+Queue<Character>* Game::getCharQueue()
+{
+    return q_char;
 }
 
 double Game::getWinHeight(){

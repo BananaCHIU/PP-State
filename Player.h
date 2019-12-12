@@ -6,6 +6,7 @@
 #include <QGraphicsPixmapItem>
 
 class Player : public Character{
+    Q_OBJECT
 public:
     enum type{Type = UserType + 2 };
     Player();
@@ -30,6 +31,8 @@ private:
     int anim_count = 0;
     QMap <int, bool> keys;
 
+signals:
+    void playerIsDead();
 };
 
 #endif // PLAYER_H
