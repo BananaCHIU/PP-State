@@ -3,6 +3,8 @@
 #include "Dog.h"
 #include "Raptor.h"
 #include "Bullet.h"
+#include "Queue.h"
+#include "Game.h"
 #include <iostream>
 using namespace std;
 
@@ -29,6 +31,7 @@ void Trigger::setDataAt(int index, characterData data)
 
 void Trigger::triggered()
 {
+    Queue<Character>* temp = static_cast<Game*>(scene()->views().first())->getCharQueue();
     // add character to teh scene according
     // to the character data stored
     for (int i = 0; i < dataSize; ++i){
@@ -38,17 +41,22 @@ void Trigger::triggered()
             // change the hard coded 64 to block width & height
             // change the hard coded 800 to win height
             dog->setPos(data[i].x * 64, 800 - data[i].y * 64);
+            temp->enqueue(dog);
             scene()->addItem(dog);
         } else if (!data[i].type.compare("RAPTOR")){
             Raptor *raptor = new Raptor(data[i].dir);
             raptor->setPos(data[i].x * 64, 800 - data[i].y * 64);
+            temp->enqueue(raptor);
             scene()->addItem(raptor);
         } else if (!data[i].type.compare("BULLET")){
             Bullet *bullet = new Bullet();
             bullet->setPos(data[i].x * 64, 800 - data[i].y * 64);
+            temp->enqueue(bullet);
             scene()->addItem(bullet);
         }
     }
+
+
     delete this;
 }
 

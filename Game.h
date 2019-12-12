@@ -41,12 +41,17 @@ private:
 
     QPixmap img_brick{":/background/res/brick_1.png"};
     Queue<Block>* q_block;
+    Queue<Character>* q_char;
+
+
     // testing purpose:
     Bullet *bullet;
 
 public:
     Game(QWidget *parent = nullptr);
     ~Game();
+
+    Queue<Character>* getCharQueue();
     static double getWinHeight();
     static double getWinWidth();
     double getVerticalAcceleration();
