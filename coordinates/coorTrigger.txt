@@ -1,2 +1,1 @@
-1 10 6 dog left
-1 11 6 raptor left
+10 4 1

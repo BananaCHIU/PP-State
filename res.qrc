@@ -41,5 +41,6 @@
     <qresource prefix="/coordinates">
         <file>coordinates/coorBrick.txt</file>
         <file>coordinates/coorTrigger.txt</file>
+        <file>coordinates/coorTrigChar.txt</file>
     </qresource>
 </RCC>

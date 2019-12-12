@@ -42,6 +42,8 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     loadBrick();
     placeAllBlock();
 
+    loadTrigger();
+
     player = new Player();
     player->setFlag(QGraphicsItem::ItemIsFocusable);
     player->setFocus();
@@ -129,33 +131,38 @@ void Game::loadBrick(){
     f.open(QIODevice::ReadOnly);
     //Read Coordinates
     foreach (QString i,QString(f.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
-        if (i.section(" ",2,2).toUpper().compare("BLOCK")==0){
-            Block* block = new Block(img_brick, i.section(" ",0,0).toInt() , i.section(" ",1,1).toInt());
-            q_block->enqueue(block);
-        } else if (i.section(" ",2,2).toUpper().compare("TRIGGER")==0){
-            loadTrigger(i);
-        }
+        Block* block = new Block(img_brick, i.section(" ",0,0).toInt() , i.section(" ",1,1).toInt());
+        q_block->enqueue(block);
     }
     f.close();
 }
 
-void Game::loadTrigger(QString blockData)
-{
+void Game::loadTrigger(){
     QFile triggerFile(":/coordinates/coordinates/coorTrigger.txt");
     triggerFile.open(QIODevice::ReadOnly);
+    foreach (QString trigData,QString(triggerFile.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
+        loadTrigChar(trigData);
+    }
+}
+
+void Game::loadTrigChar(QString trigData)
+{
+
+    QFile trigCharFile(":/coordinates/coordinates/coorTrigChar.txt");
+    trigCharFile.open(QIODevice::ReadOnly);
     // count data with matching index
     int size = 0;
-    foreach (QString characterData,QString(triggerFile.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
-        if (blockData.section(" ",3,3).toInt() == characterData.section(" ",0,0).toInt()) size++;
+    foreach (QString characterData,QString(trigCharFile.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
+        size++;
     }
-    triggerFile.close();
+    trigCharFile.close();
 
     // read and put data into the Trigger block
     int count = 0;
-    Trigger *trigger = new Trigger(size, blockData.section(" ",0,0).toInt() , blockData.section(" ",1,1).toInt());
-    triggerFile.open(QIODevice::ReadOnly);
-    foreach (QString characterData,QString(triggerFile.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
-        if (blockData.section(" ",3,3).toInt() == characterData.section(" ",0,0).toInt()){
+    Trigger *trigger = new Trigger(size, trigData.section(" ",0,0).toInt() , trigData.section(" ",1,1).toInt());
+    trigCharFile.open(QIODevice::ReadOnly);
+    foreach (QString characterData,QString(trigCharFile.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
+        if (trigData.section(" ",2,2).toInt() == characterData.section(" ",0,0).toInt()){
             // convert string to enum direction
             direction dir;
             if (!characterData.section(" ",4,4).toUpper().compare("UPWARD")) dir = UPWARD;
@@ -178,7 +185,7 @@ void Game::loadTrigger(QString blockData)
         }
     }
     scene->addItem(trigger);
-    triggerFile.close();
+    trigCharFile.close();
 }
 
 void Game::placeAllBlock(){

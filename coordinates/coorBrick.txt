@@ -1,23 +1,22 @@
-10 4 trigger 1
-10 2 block
-10 3 block
-11 2 block
-17 2 block
-17 3 block
-21 2 block
-28 2 block
-29 2 block
-29 3 block
-29 4 block
-38 4 block
-39 4 block
-40 4 block
-41 4 block
-42 4 block
-46 2 block
-61 2 block
-61 3 block
-64 2 block
-64 3 block
-64 4 block
-64 5 block
+10 2
+10 3
+11 2
+17 2
+17 3
+21 2
+28 2
+29 2
+29 3
+29 4
+38 4
+39 4
+40 4
+41 4
+42 4
+46 2
+61 2
+61 3
+64 2
+64 3
+64 4
+64 5

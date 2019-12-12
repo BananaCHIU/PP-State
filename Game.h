@@ -23,7 +23,8 @@ private:
     void keyReleaseEvent(QKeyEvent * event);
     void loadTriggerData();
     void loadBrick();
-    void loadTrigger(QString blockData);
+    void loadTrigger();
+    void loadTrigChar(QString trigData);
     void placeAllBlock();
 
     static const int WIN_WIDTH = 1400;
