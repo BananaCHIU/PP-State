@@ -22,6 +22,7 @@ private:
     void gravity();
     void keyPressEvent(QKeyEvent * event);
     void keyReleaseEvent(QKeyEvent * event);
+    void gameSoundInit();
     void loadBrick();
     void loadTrigger();
     void loadTrigChar(QString trigData);
@@ -41,7 +42,7 @@ private:
     Player *player;
     House* house;
     QTimer * timer;
-    QMediaPlayer* gwMusic, *gameMusic;
+    QMediaPlayer* gwMusic, *goMusic,*gameMusic;
     QPixmap img_brick{":/background/res/brick_1.png"};
     Queue<Block>* q_block, *q_baseBrick;
     Queue<Character>* q_char;

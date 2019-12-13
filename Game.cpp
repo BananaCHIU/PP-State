@@ -11,13 +11,10 @@
 #include <math.h>
 #include <iostream>
 #include <fstream>
-#include <String>
 #include <QKeyEvent>
 #include <QDebug>
 #include <QTimer>
 #include <QScrollBar>
-#include <QTAlgorithms>
-#include <QSound>
 #include <QGLFormat>
 
 using namespace std;
@@ -49,6 +46,8 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     q_baseBrick = new Queue<Block>();
     q_char = new Queue<Character>();
 
+    gameSoundInit();
+
     //Game ground
     for (int i = 0; (i <= GAME_WIDTH/64); ++i){
         if(((i>=14) && (i<=16)) || ((i>=27) && (i<=30)) || ((i>=42) && (i<=44)) ||
@@ -75,9 +74,6 @@ Game::Game(QWidget *parent) : QGraphicsView(){
 
     connect(player, SIGNAL(backedHome()), this, SLOT(gameWin()));
 
-    gameMusic = new QMediaPlayer();
-    gameMusic->setMedia(QUrl("qrc:/music/res/bgm_game.mp3"));
-    gameMusic->setVolume(20);
     gameMusic->play();
 }
 
@@ -86,6 +82,7 @@ Game::~Game(){
     delete q_baseBrick;
     delete player;
     delete gwMusic;
+    delete goMusic;
     delete gameMusic;
     delete house;
 }
@@ -154,8 +151,26 @@ void Game::update(){
             centerOn(player);
         }
     }else if(player->getKeyMap().value(Qt::Key_Space)){
-        cout << static_cast<int>(player->x() / 64) << "  " << static_cast<int>(-(player->y() - WIN_HEIGHT) / 64 )<< endl;
+        gameWin();
+        //cout << static_cast<int>(player->x() / 64) << "  " << static_cast<int>(-(player->y() - WIN_HEIGHT) / 64 )<< endl;
     }
+}
+
+void Game::gameSoundInit(){
+    //bgm
+    gameMusic = new QMediaPlayer();
+    gameMusic->setMedia(QUrl("qrc:/music/res/bgm_game.mp3"));
+    gameMusic->setVolume(20);
+
+    //Game Over
+    goMusic = new QMediaPlayer();
+    goMusic->setMedia(QUrl("qrc:/music/res/go.wav"));
+    goMusic->setVolume(20);
+
+    //Game Win
+    gwMusic = new QMediaPlayer();
+    gwMusic->setMedia(QUrl("qrc:/music/res/gw.wav"));
+    gwMusic->setVolume(10);
 }
 
 void Game::loadBrick(){
@@ -237,7 +252,8 @@ void Game::gameOver(){
     gameMusic->stop();
     centerOn(0,0);
     result = LOSE;
-    QSound::play(":/music/res/go.wav");
+
+    goMusic->play();
 
     QGraphicsItem* temp;
     while(!q_baseBrick->isEmpty()){
@@ -276,8 +292,6 @@ void Game::gameWin(){
     //If lose before, the game is lose forever
     if (result != LOSE) result = WIN;
 
-    gwMusic = new QMediaPlayer();
-    gwMusic->setMedia(QUrl("qrc:/music/res/gw.wav"));
     gwMusic->play();
 
     QGraphicsItem* temp;

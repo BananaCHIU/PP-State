@@ -53,6 +53,7 @@ void Menu::createMenu()
     //BGM
     music = new QMediaPlayer();
     music->setMedia(QUrl("qrc:/music/res/bgm_menu.mp3"));
+    music->setVolume(40);
     music->play();
 
     // Create the playbutton, make "this" the parent
@@ -116,7 +117,7 @@ void Menu::handlePlayButton()
 
     processLabel->resize(1400,800);
     processLabel->setMovie(movie);
-    processLabel->setWindowFlags(Qt::FramelessWindowHint);
+    processLabel->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
     processLabel->setStyleSheet("background-color: rgba(255,255,255,255);");
 
     processLabel->setAlignment(Qt::AlignCenter);
@@ -129,11 +130,11 @@ void Menu::handlePlayButton()
     movie->start();
     processLabel->show();
 
-    QTimer::singleShot(2000,processLabel,SLOT(close()));
+    QTimer::singleShot(1950,processLabel,SLOT(close()));
     QTimer::singleShot(2000,game,SLOT(startTimer()));
     //QTimer::singleShot(1300, splash, SLOT(close())); // Timer
 
-    QTimer::singleShot(2000, this, SLOT(close()));
+    QTimer::singleShot(1950, this, SLOT(close()));
 }
 
 void Menu::handleInsButton()
