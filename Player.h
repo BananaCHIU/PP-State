@@ -33,6 +33,7 @@ private:
     int type()const override;
 signals:
     void playerIsDead();
+    void backedHome();
 };
 
 #endif // PLAYER_H

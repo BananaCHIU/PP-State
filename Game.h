@@ -46,7 +46,6 @@ private:
 public:
     Game(QWidget *parent = nullptr);
     ~Game();
-
     Queue<Character>* getCharQueue();
     static double getWinHeight();
     static double getWinWidth();

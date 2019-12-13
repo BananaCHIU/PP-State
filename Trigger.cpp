@@ -13,7 +13,7 @@ Trigger::Trigger(int size, int x, int y): Block(QPixmap(":/images/res/trigger.pn
     // comment the setOpacity(0.0) line or change to
     // setOpacity(1.0) to view trigger image
     // for debug purpose :P
-    setOpacity(1.0);
+    setOpacity(0.0);
     data = new struct characterData[size];
     dataSize = size;
 }

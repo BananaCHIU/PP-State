@@ -6,6 +6,7 @@
 #include "Trigger.h"
 #include "Character.h"
 #include "menu.h"
+#include "House.h"
 
 #include <math.h>
 #include <iostream>
@@ -56,7 +57,8 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     placeAllBlock();
 
     loadTrigger();
-
+    House* house = new House();
+    scene->addItem(house);
     player = new Player();
     player->setFlag(QGraphicsItem::ItemIsFocusable);
     player->setFocus();
@@ -65,6 +67,8 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     scene->addItem(player);
 
     connect(player, SIGNAL(playerIsDead()), this, SLOT(gameOver()));
+
+    connect(player, SIGNAL(backedHome()), this, SLOT(gameWin()));
 
     timer = new QTimer();
     connect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
@@ -114,6 +118,7 @@ void Game::update(){
     scene->advance();
     if (player == nullptr) return;
     gravity();
+
     if(player->getKeyMap().value(Qt::Key_A)){
 
         if (!goingBack){                                                //Player is going back, lock the screen

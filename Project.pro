@@ -24,6 +24,7 @@ SOURCES += \
     Character.cpp \
     Dog.cpp \
     Game.cpp \
+    House.cpp \
     Player.cpp \
     Raptor.cpp \
     Trigger.cpp \
@@ -37,6 +38,7 @@ HEADERS += \
     Character.h \
     Dog.h \
     Game.h \
+    House.h \
     Node.h \
     Node.tpp \
     Player.h \

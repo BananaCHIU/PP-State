@@ -32,6 +32,7 @@
         <file>res/day_bg.png</file>
         <file>res/bullet.png</file>
         <file>res/trigger.png</file>
+        <file>res/house.png</file>
     </qresource>
     <qresource prefix="/background">
         <file>res/cloud.png</file>

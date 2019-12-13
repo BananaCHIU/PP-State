@@ -2,6 +2,7 @@
 #include <QObject>
 #include "Block.h"
 #include "Player.h"
+#include "House.h"
 #include <QScrollBar>
 #include <QTimer>
 #include <QMediaPlayer>
@@ -63,6 +64,8 @@ void Player::advance(int step)
             return;
         } else if (collidingitems[i]->type() == Trigger::Type){
             static_cast<Trigger*>(collidingitems[i])->triggered();
+        }else if (collidingitems[i]->type() == House::Type){
+            emit backedHome();
         }
     }
 
