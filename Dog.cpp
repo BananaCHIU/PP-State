@@ -90,3 +90,8 @@ void Dog::advance(int step)
         else ++anim_count;
     }*/
 }
+
+int Dog::type() const
+{
+    return Type;
+}

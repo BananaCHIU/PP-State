@@ -8,7 +8,7 @@
 class Player : public Character{
     Q_OBJECT
 public:
-    enum type{Type = UserType + 2 };
+    enum type{Type = UserType + 2};
     Player();
     void move(enum direction dir) override;
     void jump();
@@ -30,7 +30,7 @@ private:
     const int ANIM_RATIO = 2;
     int anim_count = 0;
     QMap <int, bool> keys;
-
+    int type()const override;
 signals:
     void playerIsDead();
 };

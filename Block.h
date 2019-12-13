@@ -16,7 +16,7 @@ public :
 
     int getWidth();
     int getHeight();
-    int type() const;
+    int type() const override;
 private:
     const int WIDTH = 64;
     const int HEIGHT = 64;

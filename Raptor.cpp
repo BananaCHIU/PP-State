@@ -142,3 +142,7 @@ enum direction Raptor::getMovingDirection()
     path.addRect(56, 0, 133-56, getHeight());
     return path;
 }*/
+
+int Raptor::type() const{
+    return Type;
+}

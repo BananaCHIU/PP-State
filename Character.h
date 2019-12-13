@@ -24,7 +24,7 @@ public:
     virtual bool collide(enum direction dir);
     bool isOnGround();
     void flipFacing();
-
+    int type() const override;
 private:
     int width;
     int height;

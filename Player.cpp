@@ -118,3 +118,7 @@ void Player::setKeyValue(int key, bool value)
     return path;
 
 }*/
+
+int Player::type() const{
+    return Type;
+}

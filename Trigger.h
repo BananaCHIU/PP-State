@@ -7,7 +7,7 @@
 class Trigger : public Block{
     Q_OBJECT
 public:
-    enum type{Type = UserType + 5};
+    enum type{Type = UserType + 6};
     struct characterData{
         int x;
         int y;
@@ -18,14 +18,13 @@ public:
     Trigger(int size, int x, int y);
     ~Trigger() override;
     void setDataAt(int index, characterData data);
-
+        int type() const override;
 public slots:
     void triggered();
 private:
     int dataSize;
     struct characterData* data;
     QRectF boundingRect() const override;
-    int type() const override;
 };
 
 #endif // TRIGGER_H

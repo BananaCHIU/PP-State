@@ -6,7 +6,7 @@
 
 class Raptor: public Character{
 public:
-    enum type{Type = UserType + 4 };
+    enum type{Type = UserType + 4};
     Raptor();
     Raptor(direction facing);
     void flipMovingDirection();
@@ -15,6 +15,7 @@ public:
     void advance(int step) override;
     enum direction getMovingDirection();
     double getHorizontalAcceleration() const;
+    int type() const override;
     //QPainterPath shape() const override;
 private:
     // maybe change to static later
