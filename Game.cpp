@@ -43,6 +43,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(WIN_WIDTH, WIN_HEIGHT);
+    centerOn(0,0);
 
     q_block = new Queue<Block>();
     q_baseBrick = new Queue<Block>();

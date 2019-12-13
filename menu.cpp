@@ -101,10 +101,10 @@ void Menu::handlePlayButton()
 {
     music->stop();
     QSplashScreen *splash = new QSplashScreen;
-    splash->setPixmap(QPixmap(":/images/res/icon.png")); // splash picture
-    splash->show();
+    splash->setPixmap(QPixmap(":/images/res/bg_load.png")); // splash picture
+
     Game* game = new Game();
-    //QTimer::singleShot(4000, splash, SLOT(close())); // Timer
+
     //QTimer::singleShot(3000, game, SLOT(show()));
 
     //close();
@@ -112,8 +112,10 @@ void Menu::handlePlayButton()
 
     //testing:
     game->show();
-    QTimer::singleShot(100,game,SLOT(startTimer()));
-    QTimer::singleShot(200, this, SLOT(close()));
+    splash->show();
+    QTimer::singleShot(1300, splash, SLOT(close())); // Timer
+    QTimer::singleShot(1300,game,SLOT(startTimer()));
+    QTimer::singleShot(500, this, SLOT(close()));
 }
 
 void Menu::handleInsButton()

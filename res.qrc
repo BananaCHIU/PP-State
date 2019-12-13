@@ -34,6 +34,7 @@
         <file>res/trigger.png</file>
         <file>res/house.png</file>
         <file>res/level1_bg.png</file>
+        <file>res/bg_load.png</file>
     </qresource>
     <qresource prefix="/background">
         <file>res/cloud.png</file>
