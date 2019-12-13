@@ -38,6 +38,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     scene = new QGraphicsScene();
     scene->setSceneRect(0, 0, GAME_WIDTH ,WIN_HEIGHT);
     scene->setItemIndexMethod(QGraphicsScene::BspTreeIndex);
+    scene->setBackgroundBrush(QBrush(QPixmap(":images/res/level1_bg.png")));
     setScene(scene);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

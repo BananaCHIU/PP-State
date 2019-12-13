@@ -54,9 +54,8 @@ public:
     static double getWinWidth();
 
     double getVerticalAcceleration();
-    void startTimer();
 public slots:
-
+    void startTimer();
     void update();
     void gameOver();
     void gameWin();

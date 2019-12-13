@@ -104,12 +104,16 @@ void Menu::handlePlayButton()
     splash->setPixmap(QPixmap(":/images/res/icon.png")); // splash picture
     splash->show();
     Game* game = new Game();
-    QTimer::singleShot(3000, splash, SLOT(close())); // Timer
-    QTimer::singleShot(3000, game, SLOT(show()));
-    game->startTimer();
-    close();
+    //QTimer::singleShot(4000, splash, SLOT(close())); // Timer
+    //QTimer::singleShot(3000, game, SLOT(show()));
 
+    //close();
     //game->show();
+
+    //testing:
+    game->show();
+    QTimer::singleShot(100,game,SLOT(startTimer()));
+    QTimer::singleShot(200, this, SLOT(close()));
 }
 
 void Menu::handleInsButton()
