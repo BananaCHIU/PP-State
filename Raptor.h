@@ -15,7 +15,7 @@ public:
     void advance(int step) override;
     enum direction getMovingDirection();
     double getHorizontalAcceleration() const;
-    QPainterPath shape() const override;
+    //QPainterPath shape() const override;
 private:
     // maybe change to static later
     QPixmap sprites[4];

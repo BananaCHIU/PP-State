@@ -54,7 +54,7 @@ void Player::advance(int step)
     }
 
     // player die checking && interaction with trigger
-    QList<QGraphicsItem*> collidingitems = collidingItems(Qt::IntersectsItemBoundingRect);
+    QList<QGraphicsItem*> collidingitems = collidingItems(Qt::IntersectsItemShape);
     for (int i = 0; i < collidingitems.size(); ++i){
         if (collidingitems[i]->type() != Block::Type
             && collidingitems[i]->type() != Trigger::Type
@@ -111,10 +111,10 @@ void Player::setKeyValue(int key, bool value)
     keys[key] = value;
 }
 
-QPainterPath Player::shape() const
+/*QPainterPath Player::shape() const
 {
     QPainterPath path;
     path.addRect(0, 5, getWidth(), getHeight() - 5);
     return path;
 
-}
+}*/

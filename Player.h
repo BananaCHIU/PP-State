@@ -15,7 +15,7 @@ public:
     void advance(int step) override;
     QMap <int, bool> getKeyMap();
     void setKeyValue(int key, bool value);
-    QPainterPath shape() const override;
+    //QPainterPath shape() const override;
 private:
 
     int width;

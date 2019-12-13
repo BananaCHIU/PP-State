@@ -136,9 +136,9 @@ enum direction Raptor::getMovingDirection()
 }
 
 // override the shape of the character for better hitbox detection
-QPainterPath Raptor::shape() const
+/*QPainterPath Raptor::shape() const
 {
     QPainterPath path;
     path.addRect(56, 0, 133-56, getHeight());
     return path;
-}
+}*/

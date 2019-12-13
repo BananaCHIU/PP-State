@@ -10,6 +10,7 @@ Character::Character(QPixmap image,int width, int height) :
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
     QPixmapCache::setCacheLimit(102400);
     setPixmap(image);
+    this->setShapeMode(QGraphicsPixmapItem::MaskShape);
 }
 
 int Character::getWidth() const
@@ -63,8 +64,10 @@ bool Character::isOnGround()
     //QGraphicsItem *objectB = scene()->itemAt(pos().x() + shape().boundingRect().right() - 1, pos().y() + shape().boundingRect().bottom(), QTransform());
     QGraphicsItem *objectA = scene()->itemAt(pos().x() + 1, pos().y() + height, QTransform());
     QGraphicsItem *objectB = scene()->itemAt(pos().x() + width - 1, pos().y() + height, QTransform());
+    QGraphicsItem *objectC = scene()->itemAt(pos().x() + width/2, pos().y() + height, QTransform());
     if ((objectA != nullptr && objectA->type() == Block::Type)
-        || (objectB != nullptr && objectB->type() == Block::Type)) {
+        || (objectB != nullptr && objectB->type() == Block::Type)
+        || (objectC != nullptr && objectC->type() == Block::Type)) {
         setVerticalVelocity(0.0);
         return true;
     } else return false;
