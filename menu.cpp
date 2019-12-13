@@ -66,7 +66,7 @@ void Menu::createMenu()
     btn_play->setDefault(false); btn_play->setAutoDefault(false);
     // Connect button signal to appropriate slot
     connect(btn_play, SIGNAL (clicked()), this, SLOT (handlePlayButton()));
-
+    btn_play->setFocusPolicy(Qt::ClickFocus);
     // Create the instruction button, make "this" the parent
     btn_ins = new QPushButton(this);
     //Set image
@@ -80,7 +80,7 @@ void Menu::createMenu()
     btn_ins->setDefault(false); btn_ins->setAutoDefault(false);
     // Connect button signal to appropriate slot
     connect(btn_ins, SIGNAL (clicked()), this, SLOT (handleInsButton()));
-
+    btn_ins->setFocusPolicy(Qt::ClickFocus);
     // Create the quit button, make "this" the parent
     btn_quit = new QPushButton(this);
     //Set image
@@ -94,6 +94,7 @@ void Menu::createMenu()
     btn_quit->setGeometry(this->size().width()/2 - img_quit.rect().size().width()/2, this->size().height() - 200, img_quit.rect().size().width(), img_quit.rect().size().height());
     // Connect button signal to appropriate slot
     connect(btn_quit, SIGNAL (clicked()), this, SLOT (handleQuitButton()));
+    btn_quit->setFocusPolicy(Qt::ClickFocus);
 }
 
 void Menu::handlePlayButton()
