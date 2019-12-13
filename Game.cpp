@@ -22,7 +22,7 @@
 
 using namespace std;
 
-enum gameResult {WIN, LOSE, NOPE} static result = NOPE;
+static bool renamedPP = false;
 
 Game::Game(QWidget *parent) : QGraphicsView(){
     QGLFormat fmt;
@@ -74,12 +74,6 @@ Game::Game(QWidget *parent) : QGraphicsView(){
 
     connect(player, SIGNAL(backedHome()), this, SLOT(gameWin()));
 
-    timer = new QTimer();
-    connect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
-    timer->setInterval(10);
-    timer->start();
-    centerOn(player);
-
     gameMusic = new QMediaPlayer();
     gameMusic->setMedia(QUrl("qrc:/music/res/bgm_game.mp3"));
     gameMusic->setVolume(20);
@@ -93,6 +87,14 @@ Game::~Game(){
     delete gwMusic;
     delete gameMusic;
     delete house;
+}
+
+void Game::startTimer(){
+    timer = new QTimer();
+    connect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
+    timer->setInterval(10);
+    timer->start();
+    centerOn(player);
 }
 
 void Game::gravity()
@@ -306,13 +308,20 @@ void Game::gameWin(){
 void Game::keyPressEvent(QKeyEvent *e)
 {
     if (result == LOSE){
+        renamedPP = true;
         Menu* menu = new Menu(true);
         menu->show();
         close();
     }else if (result == WIN){
-        Menu* menu = new Menu();
-        menu->show();
-        close();
+        if (renamedPP){
+            Menu* menu = new Menu(true);
+            menu->show();
+            close();
+        }else{
+            Menu* menu = new Menu();
+            menu->show();
+            close();
+        }
     }
     if (player == nullptr) return;
     if (e->isAutoRepeat()) return;

@@ -99,10 +99,17 @@ void Menu::createMenu()
 
 void Menu::handlePlayButton()
 {
-    close();
     music->stop();
-    Game * game = new Game();
-    game->show();
+    QSplashScreen *splash = new QSplashScreen;
+    splash->setPixmap(QPixmap(":/images/res/icon.png")); // splash picture
+    splash->show();
+    Game* game = new Game();
+    QTimer::singleShot(3000, splash, SLOT(close())); // Timer
+    QTimer::singleShot(3000, game, SLOT(show()));
+    game->startTimer();
+    close();
+
+    //game->show();
 }
 
 void Menu::handleInsButton()

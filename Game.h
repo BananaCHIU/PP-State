@@ -27,6 +27,8 @@ private:
     void loadTrigChar(QString trigData);
     void placeAllBlock();
 
+    enum gameResult {WIN, LOSE, NOPE} result = NOPE;
+
     static const int WIN_WIDTH = 1400;
     static const int WIN_HEIGHT = 800;
     const int GAME_WIDTH = 6000;
@@ -52,7 +54,9 @@ public:
     static double getWinWidth();
 
     double getVerticalAcceleration();
+    void startTimer();
 public slots:
+
     void update();
     void gameOver();
     void gameWin();
