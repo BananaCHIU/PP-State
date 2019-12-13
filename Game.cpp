@@ -70,7 +70,6 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     player->setFocus();
     player->setPos(200, scene->height()/2);
     q_char->enqueue(player);
-    scene->addItem(player);
 
     connect(player, SIGNAL(playerIsDead()), this, SLOT(gameOver()));
 
@@ -92,6 +91,7 @@ Game::~Game(){
 }
 
 void Game::startTimer(){
+    scene->addItem(player);
     timer = new QTimer();
     connect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->setInterval(10);

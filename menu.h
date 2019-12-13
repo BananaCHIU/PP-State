@@ -25,6 +25,8 @@ private:
     QPushButton *btn_ins;
     QPushButton *btn_quit;
     QMediaPlayer *music;
+    QMovie *movie;
+    QLabel *processLabel;
 
     void createMenu();
 

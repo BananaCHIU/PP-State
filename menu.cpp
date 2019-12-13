@@ -36,6 +36,8 @@ Menu::~Menu()
     delete btn_quit;
     delete btn_play;
     delete btn_ins;
+    delete movie;
+    delete processLabel;
     delete ui;
 }
 
@@ -100,8 +102,8 @@ void Menu::createMenu()
 void Menu::handlePlayButton()
 {
     music->stop();
-    QSplashScreen *splash = new QSplashScreen;
-    splash->setPixmap(QPixmap(":/images/res/bg_load.png")); // splash picture
+    //QSplashScreen *splash = new QSplashScreen;
+    //splash->setPixmap(QPixmap(":/images/res/bg_load.png")); // splash picture
 
     Game* game = new Game();
 
@@ -109,13 +111,29 @@ void Menu::handlePlayButton()
 
     //close();
     //game->show();
+    movie = new QMovie(":/images/res/load.gif");
+    processLabel = new QLabel(nullptr);
+
+    processLabel->resize(1400,800);
+    processLabel->setMovie(movie);
+    processLabel->setWindowFlags(Qt::FramelessWindowHint);
+    processLabel->setStyleSheet("background-color: rgba(255,255,255,255);");
+
+    processLabel->setAlignment(Qt::AlignCenter);
+    processLabel->setGeometry(QStyle::alignedRect(Qt::LeftToRight,Qt::AlignCenter,processLabel->size(),qApp->desktop()->availableGeometry())         );
+
 
     //testing:
     game->show();
-    splash->show();
-    QTimer::singleShot(1300, splash, SLOT(close())); // Timer
-    QTimer::singleShot(1300,game,SLOT(startTimer()));
-    QTimer::singleShot(500, this, SLOT(close()));
+    //splash->show();
+    movie->start();
+    processLabel->show();
+
+    QTimer::singleShot(2000,processLabel,SLOT(close()));
+    QTimer::singleShot(2000,game,SLOT(startTimer()));
+    //QTimer::singleShot(1300, splash, SLOT(close())); // Timer
+
+    QTimer::singleShot(2000, this, SLOT(close()));
 }
 
 void Menu::handleInsButton()

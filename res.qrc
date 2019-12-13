@@ -35,6 +35,8 @@
         <file>res/house.png</file>
         <file>res/level1_bg.png</file>
         <file>res/bg_load.png</file>
+        <file>res/loading.gif</file>
+        <file>res/load.gif</file>
     </qresource>
     <qresource prefix="/background">
         <file>res/cloud.png</file>
