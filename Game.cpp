@@ -51,7 +51,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     //Game ground
     for (int i = 0; (i <= GAME_WIDTH/64); ++i){
         if(((i>=14) && (i<=16)) || ((i>=27) && (i<=30)) || ((i>=42) && (i<=44)) ||
-                ((i>=58) && (i<=66)) )continue;
+                ((i>=58) && (i<=68)) )continue;
         Block* brick = new Block(img_brick, i, 1);
         q_baseBrick->enqueue(brick);
     }
@@ -61,7 +61,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
 
     loadTrigger();
     //temp
-    house = new House();
+    house = new House(85, 2);
     scene->addItem(house);
 
     player = new Player();

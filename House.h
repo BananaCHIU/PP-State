@@ -6,7 +6,7 @@
 
 class House : public Block{
 public:
-    House();
+    House(int, int);
     enum type{Type = UserType + 7};
     int type() const override;
 };

@@ -70,7 +70,9 @@ void Raptor::move(direction dir)
             }
         }
         if (collide(LEFT)) {
-            jump();
+            flipMovingDirection();
+            //jump();
+
             return;
         }
         // out of scene prevention, remove later
@@ -93,7 +95,8 @@ void Raptor::move(direction dir)
             }
         }
         if (collide(RIGHT)) {
-            jump();
+            flipMovingDirection();
+            //jump();
             return;
         }
         // out of scene prevention, remove later
