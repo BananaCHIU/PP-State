@@ -57,8 +57,10 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     placeAllBlock();
 
     loadTrigger();
+    //temp
     House* house = new House();
     scene->addItem(house);
+
     player = new Player();
     player->setFlag(QGraphicsItem::ItemIsFocusable);
     player->setFocus();

@@ -59,7 +59,7 @@ void Player::advance(int step)
     for (int i = 0; i < collidingitems.size(); ++i){
         if (collidingitems[i]->type() != Block::Type
             && collidingitems[i]->type() != Trigger::Type
-                ){
+            && collidingitems[i]->type() != House::Type){
             emit playerIsDead();
             return;
         } else if (collidingitems[i]->type() == Trigger::Type){
