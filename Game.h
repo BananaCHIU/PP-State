@@ -8,6 +8,7 @@
 #include "Trigger.h"
 #include "Bullet.h"
 #include "Raptor.h"
+#include "House.h"
 
 #include <QTimer>
 #include <QGraphicsView>
@@ -29,7 +30,6 @@ private:
     static const int WIN_WIDTH = 1400;
     static const int WIN_HEIGHT = 800;
     const int GAME_WIDTH = 6000;
-    enum gameResult {WIN, LOSE, NOPE} result = NOPE;
 
     //Store the player's xy when it move to the left
     qreal prev_x = -1, prev_y = -1;
@@ -37,8 +37,9 @@ private:
 
     QGraphicsScene *scene;
     Player *player;
+    House* house;
     QTimer * timer;
-    QMediaPlayer* gwMusic;
+    QMediaPlayer* gwMusic, *gameMusic;
     QPixmap img_brick{":/background/res/brick_1.png"};
     Queue<Block>* q_block, *q_baseBrick;
     Queue<Character>* q_char;

@@ -22,6 +22,8 @@
 
 using namespace std;
 
+enum gameResult {WIN, LOSE, NOPE} static result = NOPE;
+
 Game::Game(QWidget *parent) : QGraphicsView(){
     QGLFormat fmt;
         fmt.setSampleBuffers(true);
@@ -58,7 +60,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
 
     loadTrigger();
     //temp
-    House* house = new House();
+    house = new House();
     scene->addItem(house);
 
     player = new Player();
@@ -77,6 +79,11 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     timer->setInterval(10);
     timer->start();
     centerOn(player);
+
+    gameMusic = new QMediaPlayer();
+    gameMusic->setMedia(QUrl("qrc:/music/res/bgm_game.mp3"));
+    gameMusic->setVolume(20);
+    gameMusic->play();
 }
 
 Game::~Game(){
@@ -84,6 +91,8 @@ Game::~Game(){
     delete q_baseBrick;
     delete player;
     delete gwMusic;
+    delete gameMusic;
+    delete house;
 }
 
 void Game::gravity()
@@ -221,6 +230,7 @@ void Game::loadTrigChar(QString trigData)
 void Game::gameOver(){
     disconnect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->stop();
+    gameMusic->stop();
     centerOn(0,0);
     result = LOSE;
     QSound::play(":/music/res/go.wav");
@@ -258,7 +268,7 @@ void Game::gameWin(){
     disconnect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->stop();
     centerOn(0,0);
-
+    gameMusic->stop();
     //If lose before, the game is lose forever
     if (result != LOSE) result = WIN;
 
