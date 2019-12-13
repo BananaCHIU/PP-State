@@ -19,6 +19,7 @@ class Game: public QGraphicsView{
 private:
     const double verticalAcceleration = 13/120.0;
 
+    void checkForDelete();
     void gravity();
     void keyPressEvent(QKeyEvent * event);
     void keyReleaseEvent(QKeyEvent * event);

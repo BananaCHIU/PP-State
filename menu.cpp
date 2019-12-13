@@ -27,6 +27,7 @@ Menu::Menu(bool state, QWidget *parent) :
         ui->label->setScaledContents(true);
     }
     createMenu();
+    this->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 Menu::~Menu()

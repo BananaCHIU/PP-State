@@ -41,6 +41,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(WIN_WIDTH, WIN_HEIGHT);
     centerOn(0,0);
+    this->setAttribute(Qt::WA_DeleteOnClose);
 
     q_block = new Queue<Block>();
     q_baseBrick = new Queue<Block>();
@@ -80,6 +81,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
 Game::~Game(){
     delete q_block;
     delete q_baseBrick;
+    delete q_char;
     delete player;
     delete gwMusic;
     delete goMusic;
@@ -94,6 +96,51 @@ void Game::startTimer(){
     timer->setInterval(10);
     timer->start();
     centerOn(player);
+}
+
+void Game::checkForDelete()
+{
+    foreach (QGraphicsItem *item, scene->items())
+    {
+        if(item == nullptr
+            || (item->type() != Block::Type
+            && item->type() != Bullet::Type
+            && item->type() != Dog::Type
+            && item->type() != Raptor::Type))
+            continue;
+
+        //Condition 1: Character fell out of the scene
+        //Condition 2: Character flew out of the scene
+        //Condition 3: The view has passed for a certain distance
+        if (item->pos().y() > scene->height()
+            || item->pos().y() + item->boundingRect().height() <= 0
+            || item->pos().x() <= (scene->views().first()->horizontalScrollBar()->value()) - 64) //current distance: 0 block
+        {
+            cout << "Exist item which should be deleted" << endl;
+            scene->removeItem(item);
+            switch (item->type())
+            {
+                case Block::Type:
+                    if(q_block->deleteNode(static_cast<Block*>(item)))
+                    {
+                        cout << "Non-base Block is deleted" << endl;
+                    }
+                    if(q_baseBrick->deleteNode(static_cast<Block*>(item)))
+                    {
+                        cout << "Base Block is deleted" << endl;
+                    }
+                    break;
+                case Bullet::Type:
+                case Dog::Type:
+                case Raptor::Type:
+                    if(q_char->deleteNode(static_cast<Character*>(item)))
+                    {
+                        cout << "Character is deleted" << endl;
+                    }
+                    break;
+            }
+        }
+    }
 }
 
 void Game::gravity()
@@ -127,6 +174,7 @@ void Game::gravity()
 
 void Game::update(){
 
+    checkForDelete();
     scene->advance();
     if (player == nullptr) return;
     gravity();
@@ -259,16 +307,20 @@ void Game::gameOver(){
     while(!q_baseBrick->isEmpty()){
         temp = q_baseBrick->dequeue();
         scene->removeItem(temp);
-
+        delete temp;
     }
+
     while(!q_block->isEmpty()){
         temp = q_block->dequeue();
         scene->removeItem(temp);
+        delete temp;
     }
+
     while(!q_char->isEmpty()){
-             temp = q_char->dequeue();
-             scene->removeItem(temp);
-         }
+        temp = q_char->dequeue();
+        scene->removeItem(temp);
+        delete temp;
+    }
 
     player = nullptr;
 
@@ -298,15 +350,21 @@ void Game::gameWin(){
     while(!q_baseBrick->isEmpty()){
         temp = q_baseBrick->dequeue();
         scene->removeItem(temp);
+        delete temp;
     }
+
     while(!q_block->isEmpty()){
         temp = q_block->dequeue();
         scene->removeItem(temp);
+        delete temp;
     }
+
     while(!q_char->isEmpty()){
         temp = q_char->dequeue();
         scene->removeItem(temp);
+        delete temp;
     }
+
     player = nullptr;
 
     scene->setBackgroundBrush(QBrush(QColor("#ffffff")));

@@ -7,6 +7,7 @@ Instruction::Instruction(QWidget *parent) :
     ui(new Ui::Instruction)
 {
     ui->setupUi(this);
+    this->setAttribute(Qt::WA_DeleteOnClose);
     //Background Image
     QPixmap bkgnd(":images/res/bg.jpg");
     bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
