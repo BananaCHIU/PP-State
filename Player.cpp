@@ -48,6 +48,7 @@ void Player::jump()
 
 void Player::advance(int step)
 {
+    if (step==0) return;
     if (y() > scene()->height()) {
 
         emit playerIsDead();
