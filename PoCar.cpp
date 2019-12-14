@@ -18,6 +18,7 @@ PoCar::~PoCar(){
 
 void PoCar::deleteBullet(){
     scene()->removeItem(bullet);
+    static_cast<Game*>(scene()->views().first())->getBulletList()->removeAll(bullet);
     delete bullet;
     bullet = nullptr;
 }
@@ -27,9 +28,9 @@ void PoCar::shoot(){
     bullet = new Bullet();
     bullet->setTransformOriginPoint(bullet->getWidth()/2, bullet->getHeight()/2);
             bullet->setRotation(-90);
-    bullet->setPos(this->x() - bullet->getWidth()/2, this->y());
+    bullet->setPos(this->x() - bullet->getWidth()/2, this->y() + this->getHeight()/6);
     connect(bullet, SIGNAL(hitBlock()), this, SLOT(deleteBullet()));
-    static_cast<Game>(scene()->views().first()).getCharQueue()->enqueue(bullet);
+    static_cast<Game*>(scene()->views().first())->getBulletList()->append(bullet);
     scene()->addItem(bullet);
 
 }

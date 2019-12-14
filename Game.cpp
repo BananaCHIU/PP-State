@@ -22,14 +22,13 @@ using namespace std;
 static bool renamedPP = false;
 
 Game::Game(QWidget *parent) : QGraphicsView(){
-    // openGL rendering format
     QGLFormat fmt;
-    // enable multisample buffer support
-    fmt.setSampleBuffers(true);
-    // set sample per pixel for multisampling antialising(MSAA)
-    fmt.setSamples(2);
+        fmt.setSampleBuffers(true);
+        fmt.setSamples(2);
+        setViewport(new QGLWidget(fmt));
+        fmt.setDirectRendering(true);
 
-    setViewport(new QGLWidget(fmt));
+
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     //this->setCacheMode(QGraphicsView::CacheBackground);
     setWindowTitle("Quick! Go Back Home!");
@@ -47,6 +46,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     q_block = new Queue<Block>();
     q_baseBrick = new Queue<Block>();
     q_char = new Queue<Character>();
+    list_bullet = new QList<Bullet*>();
 
     gameSoundInit();
 
@@ -83,6 +83,7 @@ Game::~Game(){
     delete q_block;
     delete q_baseBrick;
     delete q_char;
+    delete list_bullet;
     delete player;
     delete gwMusic;
     delete goMusic;
@@ -149,7 +150,6 @@ void Game::gravity()
 {
     // change player to the list/data structure that holds all the characters
     for (Node<Character>* p = q_char->getHead(); p != nullptr; p = p->next){
-        if ((p->data)->type() == Bullet::Type) continue;
         if (!p->data->isOnGround()){
             // in air:
             if(p->data->getVerticalVelocity() < 0){
@@ -189,17 +189,18 @@ void Game::update(){
     // have no idea why and what will happen in advance(0);
     // but we better keep it
 
-    // step==0
     for (Node<Character>* current = q_char->getHead(); current!=nullptr; current = current->next){
         current->data->advance(0);
     }
-    // step==1
+
     for (Node<Character>* current = q_char->getHead(); current!=nullptr; current = current->next){
         current->data->advance(1);
         // stops the method when gameover,
         // prevent nullptr accessing
         if (player == nullptr) return;
     }
+    for (int i = 0; i < list_bullet->size(); ++i) list_bullet->value(i)->advance(1);
+
 
     gravity();
 
@@ -223,6 +224,7 @@ void Game::update(){
             centerOn(player);
         }
     }else if(player->getKeyMap().value(Qt::Key_Space)){
+        player->setRotation(player->rotation()+2);
         //gameWin();
         //cout << static_cast<int>(player->x() / 64) << "  " << static_cast<int>(-(player->y() - WIN_HEIGHT) / 64 )<< endl;
     }
@@ -346,6 +348,11 @@ void Game::gameOver(){
         delete temp;
     }
 
+    for (int i = 0; i < list_bullet->size(); ++i) {
+        delete list_bullet->value(i);
+    }
+    list_bullet->clear();
+
     player = nullptr;
 
     scene->setBackgroundBrush(QBrush(QColor("#ffffff")));
@@ -358,6 +365,8 @@ void Game::gameOver(){
     QGraphicsPixmapItem* go2 = new QGraphicsPixmapItem (QPixmap(":/images/res/go_2.png"));
     go2->setPos(700 - go2->pixmap().width() /2 , 660);
     scene->addItem(go2);
+
+
 }
 
 void Game::gameWin(){
@@ -388,6 +397,11 @@ void Game::gameWin(){
         scene->removeItem(temp);
         delete temp;
     }
+
+    for (int i = 0; i < list_bullet->size(); ++i) {
+        delete list_bullet->value(i);
+    }
+    list_bullet->clear();
 
     player = nullptr;
 
@@ -436,6 +450,11 @@ void Game::keyReleaseEvent(QKeyEvent *e)
 Queue<Character>* Game::getCharQueue()
 {
     return q_char;
+}
+
+QList<Bullet*> *Game::getBulletList()
+{
+    return list_bullet;
 }
 
 double Game::getWinHeight(){

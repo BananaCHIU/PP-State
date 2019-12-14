@@ -4,7 +4,7 @@
 
 Bullet::Bullet() : Character(QPixmap(":/images/res/bullet.png"), 18, 38)
 {
-    setSpeed(1);
+    setSpeed(4);
 }
 
 void Bullet::move(direction dir)
@@ -19,8 +19,8 @@ void Bullet::move(direction dir)
         }
         // out of scene prevention, remove later
         if (x() - getSpeed() < 0)  {
-            scene()->removeItem(this);
-
+            emit hitBlock();
+            return;
         }
         else setPos(x()- getSpeed(), y());
     }
