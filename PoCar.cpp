@@ -12,8 +12,16 @@ PoCar::PoCar(): Character(QPixmap(":/images/res/car_0.png"), 217, 110)
     setSpeed(0.0);
 }
 
-PoCar::~PoCar(){
+PoCar::PoCar(direction facingDirection): Character(QPixmap(":/images/res/car_0.png"), 217, 110)
+{
+    setVerticalVelocity(0.0);
+    setSpeed(0.0);
+    this->facingDirection = facingDirection;
+}
 
+enum direction PoCar::getFacingDirection()
+{
+    return facingDirection;
 }
 
 void PoCar::deleteBullet(){
@@ -25,10 +33,17 @@ void PoCar::deleteBullet(){
 
 void PoCar::shoot(){
 
-    bullet = new Bullet();
-    bullet->setTransformOriginPoint(bullet->getWidth()/2, bullet->getHeight()/2);
-            bullet->setRotation(-90);
-    bullet->setPos(this->x() - bullet->getWidth()/2, this->y() + this->getHeight()/6);
+    bullet = new Bullet(facingDirection);
+    if (facingDirection == LEFT){
+        bullet->setTransformOriginPoint(bullet->getWidth()/2, bullet->getHeight()/2);
+                bullet->setRotation(-90);
+        bullet->setPos(this->x() - bullet->getWidth()/2, this->y() + this->getHeight()/6);
+    }else if(facingDirection == RIGHT){
+        bullet->setTransformOriginPoint(bullet->getWidth()/2, bullet->getHeight()/2);
+                bullet->setRotation(90);
+        bullet->setPos(this->x() + this->getWidth() + bullet->getWidth()/2, this->y() + this->getHeight()/6);
+    }
+
     connect(bullet, SIGNAL(hitBlock()), this, SLOT(deleteBullet()));
     static_cast<Game*>(scene()->views().first())->getBulletList()->append(bullet);
     scene()->addItem(bullet);
@@ -42,7 +57,7 @@ void PoCar::move(enum direction dir){
 void PoCar::advance(int step)
 {
     if (step == 0) return;
-
+    if(getFacing()!= getFacingDirection()) flipFacing();
     // handles the animation
         if (anim_count % (ANIM_RATIO * 2) == 0) {
              setPixmap(sprites[anim_count / (ANIM_RATIO * 2)]);

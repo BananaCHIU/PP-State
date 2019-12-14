@@ -10,8 +10,9 @@ class PoCar : public Character{
 public:
     enum type{Type = UserType + 8};
     PoCar();
-    ~PoCar();
+    PoCar(direction facingDirection);
 
+    enum direction getFacingDirection();
     int type() const override;
 
 public slots:
@@ -21,6 +22,7 @@ private:
     const int ANIM_RATIO = 3;
     int anim_count = 0;
     Bullet *bullet = nullptr;
+    enum direction facingDirection{RIGHT};
 
     void shoot();
     void advance(int step) override;
