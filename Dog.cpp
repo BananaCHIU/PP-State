@@ -4,14 +4,20 @@
 #include <iostream>
 using namespace std;
 
-Dog::Dog(): Character(QPixmap(":/images/res/dog.png"), 102, 60)
+Dog::Dog(): Character(QPixmap(":/images/res/dog_0.png"), 100, 59)
 {
+    for(int i = 0; i < 4; ++i){
+        sprites[i] = QPixmap(QString::fromStdString(":/images/res/dog_" + to_string(i)+ ".png"));
+    }
     setVerticalVelocity(0.0);
     setSpeed(3.0);
 }
 
-Dog::Dog(direction movingDirection): Character( QPixmap(":/images/res/dog.png"), 102, 60)
+Dog::Dog(direction movingDirection): Character( QPixmap(":/images/res/dog_0.png"), 100, 59)
 {
+    for(int i = 0; i < 4; ++i){
+        sprites[i] = QPixmap(QString::fromStdString(":/images/res/dog_" + to_string(i)+ ".png"));
+    }
     setVerticalVelocity(0.0);
     setSpeed(3.0);
     this->movingDirection = movingDirection;
@@ -71,24 +77,24 @@ void Dog::advance(int step)
 {
     if (step==0) return;
     // let the dog move
-    move(getMovingDirection());
+    move(movingDirection);
 
     // handle animation
-    /*if (movingDirection == LEFT){
-        if (anim_count % (anim_ratio * 4) == 0) {
-            string s = ":/images/res/green_raptor_" + to_string(anim_count / (anim_ratio * 4)) + ".png";
-            setPixmap(QPixmap(QString::fromStdString(s)).transformed(QTransform().scale(-1,1)));
+
+    if (movingDirection == LEFT){
+        if (anim_count % (ANIM_RATIO * 4) == 0) {
+            setPixmap(sprites[anim_count / (ANIM_RATIO * 4)].transformed(QTransform().scale(-1,1)));
         }
-        if (anim_count == (anim_ratio * 4 * 4) - 1) anim_count = 0;
+        if (anim_count == (ANIM_RATIO * 4 * 4) - 1) anim_count = 0;
         else ++anim_count;
     } else if (movingDirection == RIGHT) {
-        if (anim_count % (anim_ratio * 4) == 0) {
-            string s = ":/images/res/green_raptor_" + to_string(anim_count / (anim_ratio * 4)) + ".png";
-                        setPixmap(QPixmap(QString::fromStdString(s)));
+        if (anim_count % (ANIM_RATIO * 4) == 0) {
+             setPixmap(sprites[anim_count / (ANIM_RATIO * 4)]);
         }
-        if (anim_count == (anim_ratio * 4 * 4) - 1) anim_count = 0;
+        if (anim_count == (ANIM_RATIO * 4 * 4) - 1) anim_count = 0;
         else ++anim_count;
-    }*/
+    }
+
 }
 
 int Dog::type() const

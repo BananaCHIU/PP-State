@@ -204,6 +204,7 @@ void Game::update(){
         // prevent nullptr accessing
         if (player == nullptr) return;
     }
+
     for (int i = 0; i < list_bullet->size(); ++i) list_bullet->value(i)->advance(1);
 
 
@@ -328,11 +329,10 @@ void Game::loadTrigChar(QString trigData)
 void Game::gameOver(){
     disconnect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->stop();
+    goMusic->play();
     gameMusic->stop();
     centerOn(0,0);
     result = LOSE;
-
-    goMusic->play();
 
     QGraphicsItem* temp;
     while(!q_baseBrick->isEmpty()){
@@ -377,12 +377,11 @@ void Game::gameOver(){
 void Game::gameWin(){
     disconnect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->stop();
+    gwMusic->play();
     centerOn(0,0);
     gameMusic->stop();
     //If lose before, the game is lose forever
     if (result != LOSE) result = WIN;
-
-    gwMusic->play();
 
     QGraphicsItem* temp;
     while(!q_baseBrick->isEmpty()){
