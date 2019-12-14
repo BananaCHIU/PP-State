@@ -5,6 +5,8 @@
 #include "Bullet.h"
 #include "Queue.h"
 #include "Game.h"
+#include "PoCar.h"
+
 #include <iostream>
 using namespace std;
 
@@ -53,6 +55,11 @@ void Trigger::triggered()
             bullet->setPos(data[i].x * 64, 800 - data[i].y * 64);
             temp->enqueue(bullet);
             scene()->addItem(bullet);
+        } else if (!data[i].type.compare("POCAR")){
+            PoCar *poCar = new PoCar();
+            poCar->setPos(data[i].x * 64, 800 - data[i].y * 64 - poCar->getHeight()/2);
+            temp->enqueue(poCar);
+            scene()->addItem(poCar);
         }
     }
     scene()->removeItem(this);
