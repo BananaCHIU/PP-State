@@ -22,13 +22,14 @@ using namespace std;
 static bool renamedPP = false;
 
 Game::Game(QWidget *parent) : QGraphicsView(){
+    // openGL rendering format
     QGLFormat fmt;
-        fmt.setSampleBuffers(true);
-        fmt.setSamples(2);
-        setViewport(new QGLWidget(fmt));
-        fmt.setDirectRendering(true);
+    // enable multisample buffer support
+    fmt.setSampleBuffers(true);
+    // set sample per pixel for multisampling antialising(MSAA)
+    fmt.setSamples(2);
 
-
+    setViewport(new QGLWidget(fmt));
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     //this->setCacheMode(QGraphicsView::CacheBackground);
     setWindowTitle("Quick! Go Back Home!");
@@ -188,10 +189,11 @@ void Game::update(){
     // have no idea why and what will happen in advance(0);
     // but we better keep it
 
+    // step==0
     for (Node<Character>* current = q_char->getHead(); current!=nullptr; current = current->next){
         current->data->advance(0);
     }
-
+    // step==1
     for (Node<Character>* current = q_char->getHead(); current!=nullptr; current = current->next){
         current->data->advance(1);
         // stops the method when gameover,
@@ -221,7 +223,6 @@ void Game::update(){
             centerOn(player);
         }
     }else if(player->getKeyMap().value(Qt::Key_Space)){
-        player->setRotation(player->rotation()+2);
         //gameWin();
         //cout << static_cast<int>(player->x() / 64) << "  " << static_cast<int>(-(player->y() - WIN_HEIGHT) / 64 )<< endl;
     }
