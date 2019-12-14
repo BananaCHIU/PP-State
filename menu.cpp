@@ -37,8 +37,8 @@ Menu::~Menu()
     delete btn_quit;
     delete btn_play;
     delete btn_ins;
-    delete movie;
-    delete processLabel;
+    if(movie != nullptr) {delete movie;}
+    if(processLabel != nullptr) {delete processLabel;}
     delete ui;
 }
 
