@@ -134,6 +134,11 @@ void Game::checkForDelete()
                     }
                     break;
                 case Bullet::Type:
+                    if(list_bullet->removeOne(static_cast<Bullet*>(item)))
+                    {
+                        cout << "Bullet is deleted" << endl;
+                    }
+                    break;
                 case Dog::Type:
                 case Raptor::Type:
                     if(q_char->deleteNode(static_cast<Character*>(item)))
