@@ -102,11 +102,12 @@ void Game::checkForDelete()
 {
     foreach (QGraphicsItem *item, scene->items())
     {
-        if(item == nullptr
-            || (item->type() != Block::Type
+        // should split the if statement **nullptr
+        if (item == nullptr) continue;
+        if (item->type() != Block::Type
             && item->type() != Bullet::Type
             && item->type() != Dog::Type
-            && item->type() != Raptor::Type))
+            && item->type() != Raptor::Type)
             continue;
 
         //Condition 1: Character fell out of the scene
@@ -175,8 +176,29 @@ void Game::gravity()
 void Game::update(){
 
     checkForDelete();
-    scene->advance();
-    if (player == nullptr) return;
+
+    // advance all the characters only, since other
+    // items(block,trigger,etc.) do not need to be advanced
+
+    // scene.advance() calls all items QGraphics::advance(step)
+    // twice:
+    // step==0 to indicate items they are about to advance;
+    // step==1 advance the items
+    // checked qt source code and some other examples
+    // have no idea why and what will happen in advance(0);
+    // but we better keep it
+
+    for (Node<Character>* current = q_char->getHead(); current!=nullptr; current = current->next){
+        current->data->advance(0);
+    }
+
+    for (Node<Character>* current = q_char->getHead(); current!=nullptr; current = current->next){
+        current->data->advance(1);
+        // stops the method when gameover,
+        // prevent nullptr accessing
+        if (player == nullptr) return;
+    }
+
     gravity();
 
     if(player->getKeyMap().value(Qt::Key_A)){
@@ -199,7 +221,8 @@ void Game::update(){
             centerOn(player);
         }
     }else if(player->getKeyMap().value(Qt::Key_Space)){
-        gameWin();
+        player->setRotation(player->rotation()+2);
+        //gameWin();
         //cout << static_cast<int>(player->x() / 64) << "  " << static_cast<int>(-(player->y() - WIN_HEIGHT) / 64 )<< endl;
     }
 }
