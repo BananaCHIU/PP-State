@@ -67,6 +67,7 @@ void Player::advance(int step)
             static_cast<Trigger*>(collidingitems[i])->triggered();
         }else if (collidingitems[i]->type() == House::Type){
             emit backedHome();
+            return;
         }
     }
 

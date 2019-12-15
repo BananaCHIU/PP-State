@@ -230,7 +230,6 @@ void Game::update(){
             centerOn(player);
         }
     }else if(player->getKeyMap().value(Qt::Key_Space)){
-        player->setRotation(player->rotation()+2);
         //gameWin();
         //cout << static_cast<int>(player->x() / 64) << "  " << static_cast<int>(-(player->y() - WIN_HEIGHT) / 64 )<< endl;
     }
