@@ -7,8 +7,6 @@
 #include "Trigger.h"
 
 #include "QGraphicsScene"
-#include <iostream>
-using namespace std;
 
 Trigger::Trigger(int size, int x, int y): Block(QPixmap(":/images/res/trigger.png"),x, y)
 {
@@ -34,14 +32,12 @@ void Trigger::triggered()
 {
     int winHeight = static_cast<Game*>(scene()->views().first())->getWinHeight();
     Queue<Character>* temp = static_cast<Game*>(scene()->views().first())->getCharQueue();
-    // add character to the scene according
+    // add character(s) to the scene
     for (int i = 0; i < dataSize; ++i){
-        // confirm character type
         Character *character = nullptr;
+        // spawn character) according to its type
         if (!data[i].type.compare("DOG")){
             character = new Dog(data[i].dir);
-            // change the hard coded 64 to block width & height
-            // change the hard coded 800 to win height
             character->setPos(data[i].x * WIDTH, winHeight - data[i].y * HEIGHT);
         } else if (!data[i].type.compare("RAPTOR")){
             character = new Raptor(data[i].dir);
@@ -55,6 +51,7 @@ void Trigger::triggered()
         }
 
         if (character != nullptr){
+            // add the character to the scene and the data structure
             temp->enqueue(character);
             scene()->addItem(character);
         }
