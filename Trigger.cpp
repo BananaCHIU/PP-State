@@ -1,20 +1,19 @@
-#include "Trigger.h"
-#include "QGraphicsScene"
-#include "Dog.h"
-#include "Raptor.h"
 #include "Bullet.h"
-#include "Queue.h"
+#include "Dog.h"
 #include "Game.h"
 #include "PoCar.h"
+#include "Queue.h"
+#include "Raptor.h"
+#include "Trigger.h"
 
+#include "QGraphicsScene"
 #include <iostream>
 using namespace std;
 
 Trigger::Trigger(int size, int x, int y): Block(QPixmap(":/images/res/trigger.png"),x, y)
 {
-    // comment the setOpacity(0.0) line or change to
-    // setOpacity(1.0) to view trigger image
-    // for debug purpose :P
+    // comment the setOpacity(0.0) line or change to setOpacity(1.0)
+    // to view trigger image for debug purpose :P
     setOpacity(0.0);
     data = new struct characterData[size];
     dataSize = size;
@@ -33,41 +32,34 @@ void Trigger::setDataAt(int index, characterData data)
 
 void Trigger::triggered()
 {
+    int winHeight = static_cast<Game*>(scene()->views().first())->getWinHeight();
     Queue<Character>* temp = static_cast<Game*>(scene()->views().first())->getCharQueue();
-    // add character to teh scene according
-    // to the character data stored
+    // add character to the scene according
     for (int i = 0; i < dataSize; ++i){
         // confirm character type
+        Character *character = nullptr;
         if (!data[i].type.compare("DOG")){
-            Dog *dog = new Dog(data[i].dir);
+            character = new Dog(data[i].dir);
             // change the hard coded 64 to block width & height
             // change the hard coded 800 to win height
-            dog->setPos(data[i].x * 64, 800 - data[i].y * 64);
-            temp->enqueue(dog);
-            scene()->addItem(dog);
+            character->setPos(data[i].x * WIDTH, winHeight - data[i].y * HEIGHT);
         } else if (!data[i].type.compare("RAPTOR")){
-            Raptor *raptor = new Raptor(data[i].dir);
-            raptor->setPos(data[i].x * 64, 800 - data[i].y * 64);
-            temp->enqueue(raptor);
-            scene()->addItem(raptor);
+            character = new Raptor(data[i].dir);
+            character->setPos(data[i].x * WIDTH, winHeight - data[i].y * HEIGHT);
         } else if (!data[i].type.compare("BULLET")){
-            Bullet *bullet = new Bullet();
-            bullet->setPos(data[i].x * 64, 800 - data[i].y * 64);
-            temp->enqueue(bullet);
-            scene()->addItem(bullet);
+            character = new Bullet();
+            character->setPos(data[i].x * WIDTH, winHeight - data[i].y * HEIGHT);
         } else if (!data[i].type.compare("POCAR")){
-            PoCar *poCar = new PoCar();
-            poCar->setPos(data[i].x * 64, 800 - data[i].y * 64 - poCar->getHeight()/2);
-            temp->enqueue(poCar);
-            scene()->addItem(poCar);
+            character = new PoCar();
+            character->setPos(data[i].x * WIDTH, winHeight - data[i].y * HEIGHT - character->getHeight()/2);
+        }
+
+        if (character != nullptr){
+            temp->enqueue(character);
+            scene()->addItem(character);
         }
     }
     scene()->removeItem(this);
-}
-
-QRectF Trigger::boundingRect() const{
-    QRectF rect = QRect(0, 0, 64, 64);
-    return rect;
 }
 
 int Trigger::type() const

@@ -7,24 +7,31 @@
 class Trigger : public Block{
     Q_OBJECT
 public:
+    // userType for distinguishing custom pixmap items
     enum type{Type = UserType + 6};
-    struct characterData{
-        int x;
-        int y;
-        QString type;
-        direction dir = RIGHT;
-    };
 
+    // holds everything needed to spawn a character
+    struct characterData{
+        int x;  // x-coor
+        int y;  // y-coord
+        QString type;   // character type
+        direction dir = RIGHT;  // character direction
+    };
+    // constructor
     Trigger(int size, int x, int y);
+    // destructor
     ~Trigger() override;
+    // accessor
+    int type() const override;
+    // other methods
     void setDataAt(int index, characterData data);
-        int type() const override;
+
 public slots:
-    void triggered();
+    void triggered(); // spawn enemy when connected signal is emitted
+
 private:
     int dataSize;
     struct characterData* data;
-    QRectF boundingRect() const override;
 };
 
 #endif // TRIGGER_H
