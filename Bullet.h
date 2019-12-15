@@ -23,7 +23,7 @@ public:
     enum direction getMovingDirection();
     int type() const override;
     // other methods
-    void move(enum direction dir) override; // move the bullet
+    void move(enum direction dir) override; // update bullet position
     virtual void advance(int step) override; // called by Game, updates the bullet
 
 private:
