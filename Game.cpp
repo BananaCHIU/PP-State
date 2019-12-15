@@ -22,14 +22,13 @@ using namespace std;
 static bool renamedPP = false;
 
 Game::Game(QWidget *parent) : QGraphicsView(){
-    // openGL rendering format
     QGLFormat fmt;
-    // enable multisample buffer support
-    fmt.setSampleBuffers(true);
-    // set sample per pixel for multisampling antialising(MSAA)
-    fmt.setSamples(2);
+        fmt.setSampleBuffers(true);
+        fmt.setSamples(2);
+        setViewport(new QGLWidget(fmt));
+        fmt.setDirectRendering(true);
 
-    setViewport(new QGLWidget(fmt));
+
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     //this->setCacheMode(QGraphicsView::CacheBackground);
     setWindowTitle("Quick! Go Back Home!");
@@ -47,6 +46,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     q_block = new Queue<Block>();
     q_baseBrick = new Queue<Block>();
     q_char = new Queue<Character>();
+    list_bullet = new QList<Bullet*>();
 
     gameSoundInit();
 
@@ -83,6 +83,7 @@ Game::~Game(){
     delete q_block;
     delete q_baseBrick;
     delete q_char;
+    delete list_bullet;
     delete player;
     delete gwMusic;
     delete goMusic;
@@ -133,6 +134,11 @@ void Game::checkForDelete()
                     }
                     break;
                 case Bullet::Type:
+                    if(list_bullet->removeOne(static_cast<Bullet*>(item)))
+                    {
+                        cout << "Bullet is deleted" << endl;
+                    }
+                    break;
                 case Dog::Type:
                 case Raptor::Type:
                     if(q_char->deleteNode(static_cast<Character*>(item)))
@@ -149,7 +155,6 @@ void Game::gravity()
 {
     // change player to the list/data structure that holds all the characters
     for (Node<Character>* p = q_char->getHead(); p != nullptr; p = p->next){
-        if ((p->data)->type() == Bullet::Type) continue;
         if (!p->data->isOnGround()){
             // in air:
             if(p->data->getVerticalVelocity() < 0){
@@ -189,17 +194,19 @@ void Game::update(){
     // have no idea why and what will happen in advance(0);
     // but we better keep it
 
-    // step==0
     for (Node<Character>* current = q_char->getHead(); current!=nullptr; current = current->next){
         current->data->advance(0);
     }
-    // step==1
+
     for (Node<Character>* current = q_char->getHead(); current!=nullptr; current = current->next){
         current->data->advance(1);
         // stops the method when gameover,
         // prevent nullptr accessing
         if (player == nullptr) return;
     }
+
+    for (int i = 0; i < list_bullet->size(); ++i) list_bullet->value(i)->advance(1);
+
 
     gravity();
 
@@ -321,11 +328,10 @@ void Game::loadTrigChar(QString trigData)
 void Game::gameOver(){
     disconnect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->stop();
+    goMusic->play();
     gameMusic->stop();
     centerOn(0,0);
     result = LOSE;
-
-    goMusic->play();
 
     QGraphicsItem* temp;
     while(!q_baseBrick->isEmpty()){
@@ -345,6 +351,11 @@ void Game::gameOver(){
         scene->removeItem(temp);
         delete temp;
     }
+
+    for (int i = 0; i < list_bullet->size(); ++i) {
+        delete list_bullet->value(i);
+    }
+    list_bullet->clear();
 
     player = nullptr;
 
@@ -358,17 +369,18 @@ void Game::gameOver(){
     QGraphicsPixmapItem* go2 = new QGraphicsPixmapItem (QPixmap(":/images/res/go_2.png"));
     go2->setPos(700 - go2->pixmap().width() /2 , 660);
     scene->addItem(go2);
+
+
 }
 
 void Game::gameWin(){
     disconnect(this->timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->stop();
+    gwMusic->play();
     centerOn(0,0);
     gameMusic->stop();
     //If lose before, the game is lose forever
     if (result != LOSE) result = WIN;
-
-    gwMusic->play();
 
     QGraphicsItem* temp;
     while(!q_baseBrick->isEmpty()){
@@ -388,6 +400,11 @@ void Game::gameWin(){
         scene->removeItem(temp);
         delete temp;
     }
+
+    for (int i = 0; i < list_bullet->size(); ++i) {
+        delete list_bullet->value(i);
+    }
+    list_bullet->clear();
 
     player = nullptr;
 
@@ -438,11 +455,16 @@ Queue<Character>* Game::getCharQueue()
     return q_char;
 }
 
-double Game::getWinHeight(){
+QList<Bullet*> *Game::getBulletList()
+{
+    return list_bullet;
+}
+
+int Game::getWinHeight(){
     return WIN_HEIGHT;
 }
 
-double Game::getWinWidth(){
+int Game::getWinWidth(){
     return WIN_HEIGHT;
 }
 

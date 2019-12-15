@@ -15,8 +15,9 @@ public:
     virtual void advance(int step) override;
     int type() const override;
 private:
+    QPixmap sprites[4];
     enum direction movingDirection{RIGHT};
-    const int anim_ratio = 2;
+    const int ANIM_RATIO = 2;
     int anim_count = 0;
 };
 

@@ -26,6 +26,7 @@ SOURCES += \
     Game.cpp \
     House.cpp \
     Player.cpp \
+    PoCar.cpp \
     Raptor.cpp \
     Trigger.cpp \
     instruction.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     Node.h \
     Node.tpp \
     Player.h \
+    PoCar.h \
     Queue.h \
     Queue.tpp \
     Raptor.h \

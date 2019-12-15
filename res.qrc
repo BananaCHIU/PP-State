@@ -16,7 +16,6 @@
         <file>res/ins_3.png</file>
         <file>res/btn_back.png</file>
         <file>res/btn_quit.png</file>
-        <file>res/dog.png</file>
         <file>res/green_raptor_0.png</file>
         <file>res/green_raptor_1.png</file>
         <file>res/green_raptor_2.png</file>
@@ -37,6 +36,12 @@
         <file>res/bg_load.png</file>
         <file>res/loading.gif</file>
         <file>res/load.gif</file>
+        <file>res/car_0.png</file>
+        <file>res/car_1.png</file>
+        <file>res/dog_0.png</file>
+        <file>res/dog_1.png</file>
+        <file>res/dog_2.png</file>
+        <file>res/dog_3.png</file>
     </qresource>
     <qresource prefix="/background">
         <file>res/cloud.png</file>
