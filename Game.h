@@ -54,8 +54,8 @@ public:
     ~Game();
     Queue<Character>* getCharQueue();
     QList<Bullet*>* getBulletList();
-    static double getWinHeight();
-    static double getWinWidth();
+    static int getWinHeight();
+    static int getWinWidth();
 
     double getVerticalAcceleration();
 public slots:

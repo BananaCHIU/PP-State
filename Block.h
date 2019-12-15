@@ -23,11 +23,11 @@ public :
     int getHeight();
     int type() const override;
 
-private:
+protected:
     // constant width and height of a block
     // should be static?
-    const int WIDTH = 64;
-    const int HEIGHT = 64;
+    static const int WIDTH = 64;
+    static const int HEIGHT = 64;
 };
 
 #endif // BLOCK_H

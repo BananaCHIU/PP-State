@@ -460,11 +460,11 @@ QList<Bullet*> *Game::getBulletList()
     return list_bullet;
 }
 
-double Game::getWinHeight(){
+int Game::getWinHeight(){
     return WIN_HEIGHT;
 }
 
-double Game::getWinWidth(){
+int Game::getWinWidth(){
     return WIN_HEIGHT;
 }
 
