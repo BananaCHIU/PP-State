@@ -36,10 +36,10 @@ public:
 
 public slots:
     // slots
-    void startTimer();
-    void update();
     void gameOver();
     void gameWin();
+    void startTimer();
+    void update();
 
 private:
     // other methods

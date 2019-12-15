@@ -18,34 +18,22 @@ Player::Player() : Character(QPixmap(":/images/res/sprite_0.png"), 65, 68){
     sound_jump.setVolume(5);
 }
 
-void Player::move(enum direction dir)
-{
-    // left
-    if (dir == LEFT) {
-        if (collide(LEFT)) return;
-        if ((x() - getSpeed()) < 0)  setPos(0, y());
-        else setPos(x()- getSpeed(), y());
-    }
-
-    //right
-    if (dir == RIGHT) {
-        if (collide(RIGHT)) return;
-        if (x() + getWidth() + getSpeed() > scene()->width())  setPos(scene()->width() - getWidth(), y());
-        else setPos(x()+ getSpeed(), y());
-    }
-
+// accessor
+QMap<int, bool> Player::getKeyMap(){
+    return keys;
 }
 
-void Player::jump()
-{
-    if (isOnGround()){
-        if (sound_jump.state() == QMediaPlayer::PlayingState) sound_jump.setPosition(0);
-        else if(sound_jump.state() == QMediaPlayer::StoppedState) sound_jump.play();
-        setVerticalVelocity(jumpVelocity);
-        setPos(x(), y()-1);
-    }
+int Player::type() const{
+    return Type;
 }
 
+// mutator
+void Player::setKeyValue(int key, bool value)
+{
+    keys[key] = value;
+}
+
+// other methods
 void Player::advance(int step)
 {
     if (step==0) return;
@@ -107,23 +95,30 @@ void Player::advance(int step)
     }
 }
 
-QMap<int, bool> Player::getKeyMap(){
-    return keys;
+void Player::jump()
+{
+    if (isOnGround()){
+        if (sound_jump.state() == QMediaPlayer::PlayingState) sound_jump.setPosition(0);
+        else if(sound_jump.state() == QMediaPlayer::StoppedState) sound_jump.play();
+        setVerticalVelocity(jumpVelocity);
+        setPos(x(), y()-1);
+    }
 }
 
-void Player::setKeyValue(int key, bool value)
+void Player::move(enum direction dir)
 {
-    keys[key] = value;
-}
+    // left
+    if (dir == LEFT) {
+        if (collide(LEFT)) return;
+        if ((x() - getSpeed()) < 0)  setPos(0, y());
+        else setPos(x()- getSpeed(), y());
+    }
 
-/*QPainterPath Player::shape() const
-{
-    QPainterPath path;
-    path.addRect(0, 5, getWidth(), getHeight() - 5);
-    return path;
+    //right
+    if (dir == RIGHT) {
+        if (collide(RIGHT)) return;
+        if (x() + getWidth() + getSpeed() > scene()->width())  setPos(scene()->width() - getWidth(), y());
+        else setPos(x()+ getSpeed(), y());
+    }
 
-}*/
-
-int Player::type() const{
-    return Type;
 }

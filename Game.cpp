@@ -28,7 +28,6 @@ Game::Game(QWidget *parent) : QGraphicsView(){
         setViewport(new QGLWidget(fmt));
         fmt.setDirectRendering(true);
 
-
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     //this->setCacheMode(QGraphicsView::CacheBackground);
     setWindowTitle("Quick! Go Back Home!");
