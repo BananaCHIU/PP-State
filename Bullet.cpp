@@ -1,12 +1,6 @@
 #include  "Bullet.h"
 #include <QGraphicsScene>
 
-
-Bullet::Bullet() : Character(QPixmap(":/images/res/bullet.png"), 18, 38)
-{
-    setSpeed(4);
-}
-
 Bullet::Bullet(direction movingDirection): Character(QPixmap(":/images/res/bullet.png"), 18, 38)
 {
     setSpeed(4);

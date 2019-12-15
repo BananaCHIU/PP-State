@@ -43,7 +43,7 @@ void Trigger::triggered()
             character = new Raptor(data[i].dir);
             character->setPos(data[i].x * WIDTH, winHeight - data[i].y * HEIGHT);
         } else if (!data[i].type.compare("BULLET")){
-            character = new Bullet();
+            character = new Bullet(data[i].dir);
             character->setPos(data[i].x * WIDTH, winHeight - data[i].y * HEIGHT);
         } else if (!data[i].type.compare("POCAR")){
             character = new PoCar();
