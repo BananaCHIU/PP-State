@@ -12,7 +12,7 @@
 
 class Block :  public QGraphicsPixmapItem, public QObject{
 public :
-    // userType for distinguishing custom pixmap items
+    // used to distinguish custom pixmap items
     enum type{Type = UserType + 1 };
 
     // constructors

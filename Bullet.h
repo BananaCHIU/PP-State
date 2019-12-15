@@ -5,7 +5,7 @@
 #include <QObject>
 
 /*
- * A Bullet is a character.
+ * A Bullet is a non-player-control character.
  * It moves constantly towards one direction.
  * It kills player when they collides.
  * It will be destroyed when it collides a block.
@@ -15,7 +15,7 @@
 class Bullet : public Character{
     Q_OBJECT
 public:
-    // userType for distinguishing custom pixmap items
+    // used to distinguish custom pixmap items
     enum type{Type = UserType + 5};
     // constructor
     Bullet(direction movingDirection);

@@ -54,7 +54,7 @@ void Bullet::move(direction dir)
 
 void Bullet::advance(int step)
 {
-    if (step == 0) return; // ignore indication step
+    if (step == 0) return;      // ignore indication step
     move(getMovingDirection()); // update position
 }
 
