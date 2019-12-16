@@ -27,6 +27,7 @@ Menu::Menu(bool state, QWidget *parent) :
         ui->label->setScaledContents(true);
     }
     createMenu();
+    this->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 Menu::~Menu()
@@ -36,6 +37,8 @@ Menu::~Menu()
     delete btn_quit;
     delete btn_play;
     delete btn_ins;
+    if(movie != nullptr) {delete movie;}
+    if(processLabel != nullptr) {delete processLabel;}
     delete ui;
 }
 
@@ -51,6 +54,7 @@ void Menu::createMenu()
     //BGM
     music = new QMediaPlayer();
     music->setMedia(QUrl("qrc:/music/res/bgm_menu.mp3"));
+    music->setVolume(40);
     music->play();
 
     // Create the playbutton, make "this" the parent
@@ -63,9 +67,10 @@ void Menu::createMenu()
     btn_play->setIconSize(img_play.rect().size());
     // set size and location of the button
     btn_play->setGeometry(this->size().width()/2 - img_play.rect().size().width()/2, this->size().height() - 400, img_play.rect().size().width(), img_play.rect().size().height());
+    btn_play->setDefault(false); btn_play->setAutoDefault(false);
     // Connect button signal to appropriate slot
-    connect(btn_play, SIGNAL (released()), this, SLOT (handlePlayButton()));
-
+    connect(btn_play, SIGNAL (clicked()), this, SLOT (handlePlayButton()));
+    btn_play->setFocusPolicy(Qt::ClickFocus);
     // Create the instruction button, make "this" the parent
     btn_ins = new QPushButton(this);
     //Set image
@@ -76,9 +81,10 @@ void Menu::createMenu()
     btn_ins->setIconSize(img_ins.rect().size());
     // set size and location of the button
     btn_ins->setGeometry(this->size().width()/2 - img_ins.rect().size().width()/2, this->size().height() - 300, img_ins.rect().size().width(), img_ins.rect().size().height());
+    btn_ins->setDefault(false); btn_ins->setAutoDefault(false);
     // Connect button signal to appropriate slot
-    connect(btn_ins, SIGNAL (released()), this, SLOT (handleInsButton()));
-
+    connect(btn_ins, SIGNAL (clicked()), this, SLOT (handleInsButton()));
+    btn_ins->setFocusPolicy(Qt::ClickFocus);
     // Create the quit button, make "this" the parent
     btn_quit = new QPushButton(this);
     //Set image
@@ -88,17 +94,48 @@ void Menu::createMenu()
     btn_quit->setIcon(QuitIcon);
     btn_quit->setIconSize(img_quit.rect().size());
     // set size and location of the button
+    btn_quit->setDefault(false); btn_quit->setAutoDefault(false);
     btn_quit->setGeometry(this->size().width()/2 - img_quit.rect().size().width()/2, this->size().height() - 200, img_quit.rect().size().width(), img_quit.rect().size().height());
     // Connect button signal to appropriate slot
-    connect(btn_quit, SIGNAL (released()), this, SLOT (handleQuitButton()));
+    connect(btn_quit, SIGNAL (clicked()), this, SLOT (handleQuitButton()));
+    btn_quit->setFocusPolicy(Qt::ClickFocus);
 }
 
 void Menu::handlePlayButton()
 {
-    close();
     music->stop();
-    Game * game = new Game();
+    //QSplashScreen *splash = new QSplashScreen;
+    //splash->setPixmap(QPixmap(":/images/res/bg_load.png")); // splash picture
+
+    Game* game = new Game();
+
+    //QTimer::singleShot(3000, game, SLOT(show()));
+
+    //close();
+    //game->show();
+    movie = new QMovie(":/images/res/load.gif");
+    processLabel = new QLabel(nullptr);
+
+    processLabel->resize(1400,800);
+    processLabel->setMovie(movie);
+    processLabel->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    processLabel->setStyleSheet("background-color: rgba(255,255,255,255);");
+
+    processLabel->setAlignment(Qt::AlignCenter);
+    processLabel->setGeometry(QStyle::alignedRect(Qt::LeftToRight,Qt::AlignCenter,processLabel->size(),qApp->desktop()->availableGeometry())         );
+
+
+    //testing:
     game->show();
+    //splash->show();
+    movie->start();
+    processLabel->show();
+
+    QTimer::singleShot(1950,processLabel,SLOT(close()));
+    QTimer::singleShot(2000,game,SLOT(startTimer()));
+    //QTimer::singleShot(1300, splash, SLOT(close())); // Timer
+
+    QTimer::singleShot(1950, this, SLOT(close()));
 }
 
 void Menu::handleInsButton()

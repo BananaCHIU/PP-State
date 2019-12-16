@@ -18,6 +18,7 @@ public:
     bool isEmpty();
     void enqueue(type* data);
     type* dequeue();
+    bool deleteNode(type*);
 
     Node<type>* getHead();
     Node<type>* getTail();

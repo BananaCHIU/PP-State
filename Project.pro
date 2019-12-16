@@ -1,5 +1,6 @@
 QT       += core gui
 QT += multimedia multimediawidgets
+QT += opengl
 win32:RC_ICONS += res/icon.ico
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -19,26 +20,34 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     Block.cpp \
+    Bullet.cpp \
     Character.cpp \
     Dog.cpp \
     Game.cpp \
+    House.cpp \
     Player.cpp \
+    PoCar.cpp \
     Raptor.cpp \
+    Trigger.cpp \
     instruction.cpp \
     main.cpp \
     menu.cpp
 
 HEADERS += \
     Block.h \
+    Bullet.h \
     Character.h \
     Dog.h \
     Game.h \
+    House.h \
     Node.h \
     Node.tpp \
     Player.h \
+    PoCar.h \
     Queue.h \
     Queue.tpp \
     Raptor.h \
+    Trigger.h \
     instruction.h \
     menu.h
 

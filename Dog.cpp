@@ -4,16 +4,22 @@
 #include <iostream>
 using namespace std;
 
-Dog::Dog(): Character(QPixmap(":/images/res/dog.png"), 102, 60)
+Dog::Dog(): Character(QPixmap(":/images/res/dog_0.png"), 100, 59)
 {
+    for(int i = 0; i < 4; ++i){
+        sprites[i] = QPixmap(QString::fromStdString(":/images/res/dog_" + to_string(i)+ ".png"));
+    }
+    // initialize vertical velocity
     setVerticalVelocity(0.0);
-    setSpeed(3.0);
 }
 
-Dog::Dog(direction movingDirection): Character( QPixmap(":/images/res/dog.png"), 102, 60)
+Dog::Dog(direction movingDirection): Character( QPixmap(":/images/res/dog_0.png"), 100, 59)
 {
+    for(int i = 0; i < 4; ++i){
+        sprites[i] = QPixmap(QString::fromStdString(":/images/res/dog_" + to_string(i)+ ".png"));
+    }
+    // initialize vertical velocity
     setVerticalVelocity(0.0);
-    setSpeed(3.0);
     this->movingDirection = movingDirection;
 }
 
@@ -22,65 +28,73 @@ enum direction Dog::getMovingDirection()
     return movingDirection;
 }
 
-// change the moving direction of the dog
 void Dog::flipMovingDirection()
 {
+    // change the moving direction of the dog
     movingDirection = movingDirection == LEFT? RIGHT : LEFT;
 }
 
-// handles dog movement and behaviors
 void Dog::move(enum direction dir)
 {
-    // move horizontally, change moving direction while hitting blocks
+    // behaviour: move horizontally, change moving direction when colliding with blocks
 
     // flip facing and the pixmap if the facing and moving direction are not the same
     if(getFacing()!= getMovingDirection()) flipFacing();
 
-    // in case moving leftward:
+    // moving leftward:
     if(dir == LEFT){
         if (collide(LEFT)) {
             // change the moving direction if collides with block
             flipMovingDirection();
             return;
         }
-        // out of scene prevention, remove later
-        if (x() - getSpeed() < 0)  setPos(0, y());
-        else setPos(x()- getSpeed(), y());
+        // flip direction when colliding with scene boundary
+        if (x() - getSpeed() < 0)  {
+            setPos(0, y());
+            flipMovingDirection();
+        }
+        else setPos(x()- getSpeed(), y()); // normal case, just move
 
-    // in case moving rightward:
+    // moving rightward:
     } else {
         if (collide(RIGHT)) {
             // change the moving direction if collides with block
             flipMovingDirection();
             return;
         }
-        // out of scene prevention, remove later
-        if (x() + getWidth() + getSpeed() > scene()->width())  setPos(scene()->width() - getWidth(), y());
-        else setPos(x()+ getSpeed(), y());
+        // flip direction when colliding with scene boundary
+        if (x() + getWidth() + getSpeed() > scene()->width()) {
+            setPos(scene()->width() - getWidth(), y());
+            flipMovingDirection();
+        }
+        else setPos(x()+ getSpeed(), y());  // normal case, just move
     }
 }
 
-// called by scene->advance(), handles dog movement and animation
 void Dog::advance(int step)
 {
-    if (step==0) return;
-    // let the dog move
-    move(getMovingDirection());
+    if (step==0) return;    // ignore indication step
+    // move character
+    move(movingDirection);
 
     // handle animation
-    /*if (movingDirection == LEFT){
-        if (anim_count % (anim_ratio * 4) == 0) {
-            string s = ":/images/res/green_raptor_" + to_string(anim_count / (anim_ratio * 4)) + ".png";
-            setPixmap(QPixmap(QString::fromStdString(s)).transformed(QTransform().scale(-1,1)));
+    if (movingDirection == LEFT){
+        if (anim_count % (ANIM_RATIO * 4) == 0) {
+            setPixmap(sprites[anim_count / (ANIM_RATIO * 4)].transformed(QTransform().scale(-1,1)));
         }
-        if (anim_count == (anim_ratio * 4 * 4) - 1) anim_count = 0;
+        if (anim_count == (ANIM_RATIO * 4 * 4) - 1) anim_count = 0;
         else ++anim_count;
     } else if (movingDirection == RIGHT) {
-        if (anim_count % (anim_ratio * 4) == 0) {
-            string s = ":/images/res/green_raptor_" + to_string(anim_count / (anim_ratio * 4)) + ".png";
-                        setPixmap(QPixmap(QString::fromStdString(s)));
+        if (anim_count % (ANIM_RATIO * 4) == 0) {
+             setPixmap(sprites[anim_count / (ANIM_RATIO * 4)]);
         }
-        if (anim_count == (anim_ratio * 4 * 4) - 1) anim_count = 0;
+        if (anim_count == (ANIM_RATIO * 4 * 4) - 1) anim_count = 0;
         else ++anim_count;
-    }*/
+    }
+
+}
+
+int Dog::type() const
+{
+    return Type;
 }

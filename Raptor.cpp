@@ -10,6 +10,7 @@ Raptor::Raptor() : Character(QPixmap(":/images/res/green_raptor_0.png"), 154, 92
     for(int i = 0; i < 4; ++i){
         sprites[i] = QPixmap(QString::fromStdString(":/images/res/green_raptor_" + to_string(i)+ ".png"));
     }
+    this->setSpeed(1.5);
 }
 
 Raptor::Raptor(direction movingDirection) : Character(QPixmap(":/images/res/green_raptor_0.png"), 154, 92)
@@ -18,6 +19,7 @@ Raptor::Raptor(direction movingDirection) : Character(QPixmap(":/images/res/gree
         sprites[i] = QPixmap(QString::fromStdString(":/images/res/green_raptor_" + to_string(i)+ ".png"));
     }
     this->movingDirection = movingDirection;
+    this->setSpeed(1.5);
 }
 
 void Raptor::flipMovingDirection()
@@ -31,7 +33,7 @@ void Raptor::jump()
     if (isOnGround()){
         setVerticalVelocity(jumpVelocity);
         // makes further checking of isOnGround() to false in the same tick
-        setPos(x(), y()-1);
+        setPos(x(), y()-1);this->setSpeed(1.0);
     }
 }
 // handles raptor's moving behaviors
@@ -68,7 +70,9 @@ void Raptor::move(direction dir)
             }
         }
         if (collide(LEFT)) {
-            jump();
+            flipMovingDirection();
+            //jump();
+
             return;
         }
         // out of scene prevention, remove later
@@ -91,7 +95,8 @@ void Raptor::move(direction dir)
             }
         }
         if (collide(RIGHT)) {
-            jump();
+            flipMovingDirection();
+            //jump();
             return;
         }
         // out of scene prevention, remove later
@@ -134,9 +139,13 @@ enum direction Raptor::getMovingDirection()
 }
 
 // override the shape of the character for better hitbox detection
-QPainterPath Raptor::shape() const
+/*QPainterPath Raptor::shape() const
 {
     QPainterPath path;
     path.addRect(56, 0, 133-56, getHeight());
     return path;
+}*/
+
+int Raptor::type() const{
+    return Type;
 }

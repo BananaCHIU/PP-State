@@ -1,9 +1,15 @@
 #include "Block.h"
+#include "Game.h"
 
-Block::Block(QPixmap image, double winHeight, int x, int y): coor_x(x), coor_y(y)
+#include <QPixmapCache>
+
+Block::Block(QPixmap image, int x, int y)
 {
+    //setCacheMode(QGraphicsItem::DeviceCoordinateCache);
+    //QPixmapCache::setCacheLimit(102400);
+    //seems we are not using cache right?
     setPixmap(image);
-    setPos(coor_x * WIDTH, winHeight - HEIGHT * coor_y);
+    setPos(x * WIDTH, Game::getWinHeight() - HEIGHT * y);
 }
 
 int Block::getWidth()

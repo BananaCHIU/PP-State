@@ -56,7 +56,6 @@ type* Queue<type>::dequeue()
         //delete temp;
     }
     --size;
-    cout << "dequeue" << endl;
     return result;
 }
 
@@ -66,6 +65,32 @@ void Queue<type>::print(){
     for(const Node<type>* p = head; p != nullptr; p = p->next){
         cout << p->data << endl;
     }
+}
+
+template<typename type>
+bool Queue<type>::deleteNode(type* data)
+{
+    Node<type>* prev = nullptr;
+    Node<type>* current;
+    for(current = head; current != nullptr; prev = current, current = current->next)
+    {
+        if(current->data == data)
+        {
+            if (current == head)
+            {
+                head = head->next;
+            }
+            else
+            {
+                prev->next = current->next;
+            }
+            cout << current->data << " will be deleted" << endl;
+            delete current;
+            --size;
+            return true;
+        }
+    }
+    return false;
 }
 
 template<typename type>
