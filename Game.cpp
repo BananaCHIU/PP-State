@@ -63,7 +63,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     placeAllBlock();
 
     loadTrigger();
-    //temp
+
     house = new House(121, 2);
     scene->addItem(house);
 
@@ -188,6 +188,8 @@ void Game::gravity()
 
 void Game::update(){
 
+    if(gameMusic->state() == QMediaPlayer::StoppedState) gameMusic->play();
+
     checkForDelete();
 
     // advance all the characters only, since other
@@ -236,10 +238,7 @@ void Game::update(){
         }else {
             centerOn(player);
         }
-    }else if(player->getKeyMap().value(Qt::Key_Space)){
-        // temp
-
-        }
+    }
 }
 
 void Game::gameSoundInit(){

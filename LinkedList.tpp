@@ -48,11 +48,11 @@ type* Linkedlist<type>::removehead()
     Node<type>* temp = head;
     type* result = temp->data;
     if (head == tail) {
-        //delete temp;
+
         head = tail = nullptr;
     } else {
         head = head->next;
-        //delete temp;
+
     }
     --size;
     return result;
