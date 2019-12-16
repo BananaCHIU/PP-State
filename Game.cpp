@@ -17,6 +17,7 @@
 #include <QTimer>
 #include <QScrollBar>
 #include <QGLFormat>
+#include <QObject>
 
 using namespace std;
 
@@ -327,6 +328,12 @@ void Game::loadTrigChar(QString trigData)
     }
     scene->addItem(trigger);
     trigCharFile.close();
+}
+
+void Game::deleteBullet(){
+    scene->removeItem(qobject_cast<Bullet*>(sender()));
+    list_bullet->removeAll(qobject_cast<Bullet*>(sender()));
+    delete qobject_cast<Bullet*>(sender());
 }
 
 void Game::gameOver(){

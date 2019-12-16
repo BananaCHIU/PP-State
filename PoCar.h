@@ -13,22 +13,21 @@ public:
     // constructors
     PoCar();
     PoCar(direction movingDirection);
+    // destructor
+    ~PoCar() override;
     // accessors
     int type() const override;
-// slots
 public slots:
-    void deleteBullet();    // deletes the bullet it shooted
-
+    void shoot();   // shoots a Bullet object
 private:
     void advance(int step) override;    // updates character every game tick
     void move(enum direction dir) override; // empty function, just to get rid of abstract class
-    void shoot();   // shoots a Bullet object
-
+    // data members
     QPixmap sprites[2];         // animation sprites
     const int ANIM_RATIO = 3;   // for animation
     int anim_count = 0;         // for animation
-    Bullet *bullet = nullptr;   // pointer to the bullet it shoots
     enum direction facingDirection{RIGHT};
+    QTimer * shootTimer;
 };
 
 #endif // POCAR_H

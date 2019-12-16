@@ -20,18 +20,21 @@ PoCar::PoCar(direction facing): Character(QPixmap(":/images/res/car_0.png"), 217
     setVerticalVelocity(0.0);
     setSpeed(0.0);
     this->facingDirection = facing;
+    shootTimer = new QTimer();
+    connect(shootTimer, SIGNAL(timeout()), this, SLOT(shoot()));
+    shootTimer->setInterval(2000);
+    shootTimer->start();
 }
 
-void PoCar::deleteBullet(){
-    scene()->removeItem(bullet);
-    static_cast<Game*>(scene()->views().first())->getBulletList()->removeAll(bullet);
-    delete bullet;
-    bullet = nullptr;
+PoCar::~PoCar(){
+    disconnect(shootTimer, SIGNAL(timeout()), this, SLOT(shoot()));
+    shootTimer->stop();
+    delete shootTimer;
 }
 
 void PoCar::shoot(){
 
-    bullet = new Bullet(facingDirection);
+    Bullet* bullet = new Bullet(facingDirection); // shoot a bullet
     if (facingDirection == LEFT){
         bullet->setTransformOriginPoint(bullet->getWidth()/2, bullet->getHeight()/2);
                 bullet->setRotation(-90);
@@ -42,10 +45,9 @@ void PoCar::shoot(){
         bullet->setPos(this->x() + this->getWidth() + bullet->getWidth()/2, this->y() + this->getHeight()/6);
     }
 
-    connect(bullet, SIGNAL(hitBlock()), this, SLOT(deleteBullet()));
+    connect(bullet, SIGNAL(hitBlock()), static_cast<Game*>(scene()->views().first()), SLOT(deleteBullet()));
     static_cast<Game*>(scene()->views().first())->getBulletList()->append(bullet);
     scene()->addItem(bullet);
-
 }
 
 void PoCar::move(enum direction dir){
@@ -73,7 +75,6 @@ void PoCar::advance(int step)
         else ++anim_count;
         }
     }
-    if (bullet == nullptr) shoot();
 }
 
 int PoCar::type() const

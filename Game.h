@@ -36,6 +36,7 @@ public:
 
 public slots:
     // slots
+    void deleteBullet();
     void gameOver();
     void gameWin();
     void startTimer();
