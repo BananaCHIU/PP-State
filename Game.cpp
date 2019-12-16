@@ -62,8 +62,8 @@ Game::Game(QWidget *parent) : QGraphicsView(){
 
     loadTrigger();
     //temp
-    house = new House(85, 2);
-    scene->addItem(house);
+    //house = new House(85, 2);
+    //scene->addItem(house);
 
     player = new Player();
     player->setFlag(QGraphicsItem::ItemIsFocusable);
@@ -230,7 +230,7 @@ void Game::update(){
         }
     }else if(player->getKeyMap().value(Qt::Key_Space)){
         //gameWin();
-        //cout << static_cast<int>(player->x() / 64) << "  " << static_cast<int>(-(player->y() - WIN_HEIGHT) / 64 )<< endl;
+        cout << static_cast<int>(player->x() / 64) << "  " << static_cast<int>(-(player->y() - WIN_HEIGHT) / 64 )<< endl;
     }
 }
 
