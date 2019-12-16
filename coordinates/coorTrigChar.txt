@@ -2,7 +2,7 @@
 1 18 2 dog right
 1 20 2 dog left
 1 24 6 pocar left
-2 29 10 raptor left
+2 29 12 raptor left
 2 38 2 dog right
 3 43 12 raptor left
 3 56 7 dog left
@@ -10,7 +10,12 @@
 4 55 13 raptor left
 4 69 2 dog right
 4 80 2 dog left
-5 65 13 raptor right
+5 64 13 raptor right
 5 85 2 dog left
 5 85 2 dog right
-5 75 7 pocar left
+5 75 8 pocar left
+6 93 3 pocar right
+6 97 3 pocar right
+7 91 12 raptor right
+7 93 12 dog right
+7 114 2 raptor left

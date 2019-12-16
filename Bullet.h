@@ -20,14 +20,12 @@ public:
     // constructor
     Bullet(direction movingDirection);
     // accessor
-    enum direction getMovingDirection();
     int type() const override;
     // other methods
     void move(enum direction dir) override; // update bullet position
     virtual void advance(int step) override; // called by Game, updates the bullet
 
 private:
-    enum direction movingDirection{RIGHT};
 
 signals:
     void hitBlock(); // emits signal asking for deleteion

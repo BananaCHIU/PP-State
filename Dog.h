@@ -17,7 +17,6 @@ public:
     Dog();
     Dog(direction movingDirection);
     // accessors
-    enum direction getMovingDirection();
     int type() const override;
     // mutators
     void flipMovingDirection();
@@ -26,7 +25,6 @@ public:
     void move(enum direction dir) override; // handles character movement
 private:
     QPixmap sprites[4];     // sprites for animation
-    enum direction movingDirection{RIGHT};
     const int ANIM_RATIO = 2;   // for animation
     int anim_count = 0;         // for animation
 };

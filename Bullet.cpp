@@ -1,17 +1,14 @@
 #include  "Bullet.h"
+#include "Game.h"
 #include <QGraphicsScene>
+#include <QScrollBar>
 
 Bullet::Bullet(direction movingDirection): Character(QPixmap(":/images/res/bullet.png"), 18, 38)
 {
     // modify horizontal movement speed
-    setSpeed(4);
+    setSpeed(4.2);
     // set the moving direction
     this->movingDirection = movingDirection;
-}
-
-enum direction Bullet::getMovingDirection()
-{
-    return movingDirection;
 }
 
 int Bullet::type() const
@@ -31,7 +28,7 @@ void Bullet::move(direction dir)
             return;
         }
         // out of scene case
-        if (x() - getSpeed() < 0)  {
+        if (x() - getSpeed() < scene()->views().first()->horizontalScrollBar()->value())  {
             // emit signal for deletion upon collision
             emit hitBlock();
             return;
@@ -44,7 +41,11 @@ void Bullet::move(direction dir)
             return;
         }
         // out of scene case
-        if (x() + getSpeed() < 0)  {
+        if (x() + getSpeed() > scene()->views().first()->horizontalScrollBar()->value() + static_cast<Game*>(scene()->views().first())->getWinWidth())  {
+            cout << "bullet x:" << x() << endl;
+            cout << "bullet x + speed:" << x() + getSpeed() << endl;
+            cout << "win wdith:" << static_cast<Game*>(scene()->views().first())->getWinWidth() << endl;
+            cout << scene()->views().first()->horizontalScrollBar()->value() + static_cast<Game*>(scene()->views().first())->getWinWidth() << endl;
             emit hitBlock();
             return;
         }

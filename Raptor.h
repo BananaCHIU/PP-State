@@ -20,7 +20,6 @@ public:
     Raptor(direction facing);
     // accessors
     double getHorizontalAcceleration() const;
-    enum direction getMovingDirection();
     int type() const override;
 
 private:
@@ -33,9 +32,8 @@ private:
     QPixmap sprites[4];     // animation sprites
     const int ANIM_RATIO = 2;   // for animtaion
     int anim_count = 0;     // for animation
-    const double horizontalAcceleration = 0.7/120.0;
+    const double horizontalAcceleration = 0.75/120.0;
     const double jumpVelocity{-375/120.0};
-    enum direction movingDirection{RIGHT};
-    const double MAX_SPEED{4.0};
+    const double MAX_SPEED{4};
 };
 #endif // RAPTOR_H

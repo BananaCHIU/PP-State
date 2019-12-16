@@ -44,7 +44,9 @@ public:
     void flipFacing(); // flip character facing(variable and image)
     bool isOnGround(); // return whether the character is on ground(not floating/falling)
     virtual void move(enum direction dir) =0; // virtual method to handle character movement
-
+    enum direction getMovingDirection();
+protected:
+    enum direction movingDirection{RIGHT};
 private:
     int width;
     int height;

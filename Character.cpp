@@ -29,6 +29,11 @@ int Character::getHeight() const
     return height;
 }
 
+enum direction Character::getMovingDirection()
+{
+    return movingDirection;
+}
+
 double Character::getSpeed() const
 {
     return speed;
@@ -79,9 +84,9 @@ bool Character::collide(enum direction dir){
             // check 3 points on the left of the character with top, bottom and centered y-coordinate
             // the methods checks x-coordinate on which the player is going to move to
             // if any of the coordinate hits a block, return true.
-            QGraphicsItem *objectA = (scene()->itemAt(pos().x() - getSpeed() + boundingRect().left(), pos().y() + shape().boundingRect().top() + 1, QTransform()));
-            QGraphicsItem *objectB = (scene()->itemAt(pos().x() - getSpeed() + boundingRect().left(), pos().y() + shape().boundingRect().bottom() - 1, QTransform()));
-            QGraphicsItem *objectC = (scene()->itemAt(pos().x() - getSpeed() + boundingRect().left(), pos().y() + shape().boundingRect().center().y(), QTransform()));
+            QGraphicsItem *objectA = (scene()->itemAt(pos().x() - getSpeed() + boundingRect().left(), pos().y() + boundingRect().top() + 1, QTransform()));
+            QGraphicsItem *objectB = (scene()->itemAt(pos().x() - getSpeed() + boundingRect().left(), pos().y() + boundingRect().bottom() - 1, QTransform()));
+            QGraphicsItem *objectC = (scene()->itemAt(pos().x() - getSpeed() + boundingRect().left(), pos().y() + boundingRect().center().y(), QTransform()));
 
             // if there is a block in any of the point return true;
             if (objectA != nullptr && objectA->type()==Block::Type){
@@ -101,9 +106,9 @@ bool Character::collide(enum direction dir){
 
     case RIGHT:
         {
-            QGraphicsItem *objectA = (scene()->itemAt(pos().x() + getSpeed() + boundingRect().right(), pos().y() + shape().boundingRect().top() + 1, QTransform()));
-            QGraphicsItem *objectB = (scene()->itemAt(pos().x() + getSpeed() + boundingRect().right(), pos().y() + shape().boundingRect().bottom() - 1, QTransform()));
-            QGraphicsItem *objectC = (scene()->itemAt(pos().x() + getSpeed() + boundingRect().right(), pos().y() + shape().boundingRect().center().y(), QTransform()));
+            QGraphicsItem *objectA = (scene()->itemAt(pos().x() + getSpeed() + boundingRect().right(), pos().y() + boundingRect().top() + 1, QTransform()));
+            QGraphicsItem *objectB = (scene()->itemAt(pos().x() + getSpeed() + boundingRect().right(), pos().y() + boundingRect().bottom() - 1, QTransform()));
+            QGraphicsItem *objectC = (scene()->itemAt(pos().x() + getSpeed() + boundingRect().right(), pos().y() + boundingRect().center().y(), QTransform()));
 
             if (objectA != nullptr && objectA->type()==Block::Type){
                 setPos(objectA->pos().x() - getWidth(), y());
@@ -142,8 +147,8 @@ bool Character::collide(enum direction dir){
 
     case DOWNWARD:
         {
-            QGraphicsItem *objectA = (scene()->itemAt(pos().x() + shape().boundingRect().left() + 1, pos().y() + getHeight() + getVerticalVelocity(), QTransform()));
-            QGraphicsItem *objectB = (scene()->itemAt(pos().x() + + shape().boundingRect().right() - 1, pos().y() + getHeight() + getVerticalVelocity(), QTransform()));
+            QGraphicsItem *objectA = (scene()->itemAt(pos().x() + boundingRect().left() + 1, pos().y() + getHeight() + getVerticalVelocity(), QTransform()));
+            QGraphicsItem *objectB = (scene()->itemAt(pos().x() + + boundingRect().right() - 1, pos().y() + getHeight() + getVerticalVelocity(), QTransform()));
 
             if (objectA != nullptr && objectA->type()==Block::Type){
                 setPos(pos().x(), objectA->y() - getHeight());

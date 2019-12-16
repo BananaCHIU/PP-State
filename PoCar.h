@@ -12,9 +12,8 @@ public:
     enum type{Type = UserType + 8};
     // constructors
     PoCar();
-    PoCar(direction facingDirection);
+    PoCar(direction movingDirection);
     // accessors
-    enum direction getFacingDirection();
     int type() const override;
 // slots
 public slots:

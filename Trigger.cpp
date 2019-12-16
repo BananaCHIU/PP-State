@@ -46,7 +46,7 @@ void Trigger::triggered()
             character = new Bullet(data[i].dir);
             character->setPos(data[i].x * WIDTH, winHeight - data[i].y * HEIGHT);
         } else if (!data[i].type.compare("POCAR")){
-            character = new PoCar();
+            character = new PoCar(data[i].dir);
             character->setPos(data[i].x * WIDTH, winHeight - data[i].y * HEIGHT - character->getHeight()/2);
         }
 

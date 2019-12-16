@@ -52,7 +52,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     //Game ground
     for (int i = 0; (i <= GAME_WIDTH/64); ++i){
         if(((i>=14) && (i<=16)) || ((i>=27) && (i<=30)) || ((i>=42) && (i<=44)) ||
-                ((i>=58) && (i<=68)) )continue;
+                ((i>=58) && (i<=68)) || ((i>=88) && (i<=91))) continue;
         Block* brick = new Block(img_brick, i, 1);
         q_baseBrick->enqueue(brick);
     }
@@ -62,13 +62,13 @@ Game::Game(QWidget *parent) : QGraphicsView(){
 
     loadTrigger();
     //temp
-    //house = new House(85, 2);
-    //scene->addItem(house);
+    house = new House(121, 2);
+    scene->addItem(house);
 
     player = new Player();
     player->setFlag(QGraphicsItem::ItemIsFocusable);
     player->setFocus();
-    player->setPos(200, scene->height()/2);
+    player->setPos(200, scene->width() / 2);
     q_char->enqueue(player);
 
     connect(player, SIGNAL(playerIsDead()), this, SLOT(gameOver()));
@@ -116,7 +116,7 @@ void Game::checkForDelete()
         //Condition 3: The view has passed for a certain distance
         if (item->pos().y() > scene->height()
             || item->pos().y() + item->boundingRect().height() <= 0
-            || item->pos().x() <= (scene->views().first()->horizontalScrollBar()->value()) - 64) //current distance: 0 block
+            || item->pos().x() <= (scene->views().first()->horizontalScrollBar()->value()) - 64 * 3) //current distance: 0 block
         {
             cout << "Exist item which should be deleted" << endl;
             scene->removeItem(item);
@@ -135,6 +135,7 @@ void Game::checkForDelete()
                 case Bullet::Type:
                     if(list_bullet->removeOne(static_cast<Bullet*>(item)))
                     {
+                        //static_cast<Bullet*>(item)->emit hitBlock();
                         cout << "Bullet is deleted" << endl;
                     }
                     break;
@@ -159,20 +160,20 @@ void Game::gravity()
             if(p->data->getVerticalVelocity() < 0){
                 //upward
                 if (p->data->collide(UPWARD)) {
-
+                    player->setVerticalVelocity(0.0);
                 } else {
                     p->data->setPos(p->data->x(),p->data->y() + p->data->getVerticalVelocity());
+                    p->data->setVerticalVelocity(p->data->getVerticalVelocity() + verticalAcceleration);
                     //cout << player->getVerticalVelocity() << endl;
                 }
-                p->data->setVerticalVelocity(p->data->getVerticalVelocity() + verticalAcceleration);
-
             } else if (p->data->getVerticalVelocity() >= 0){
                 if (p->data->collide(DOWNWARD)){
 
                 } else {
                     p->data->setPos(p->data->x(),p->data->y() + p->data->getVerticalVelocity());
+                    p->data->setVerticalVelocity(p->data->getVerticalVelocity() + verticalAcceleration);
                 }
-                p->data->setVerticalVelocity(p->data->getVerticalVelocity() + verticalAcceleration);
+
             }
         }
     }
@@ -230,6 +231,7 @@ void Game::update(){
         }
     }else if(player->getKeyMap().value(Qt::Key_Space)){
         //gameWin();
+        cout << horizontalScrollBar()->value() + getWinWidth() << endl;
         cout << static_cast<int>(player->x() / 64) << "  " << static_cast<int>(-(player->y() - WIN_HEIGHT) / 64 )<< endl;
     }
 }
@@ -464,7 +466,7 @@ int Game::getWinHeight(){
 }
 
 int Game::getWinWidth(){
-    return WIN_HEIGHT;
+    return WIN_WIDTH;
 }
 
 double Game::getVerticalAcceleration()

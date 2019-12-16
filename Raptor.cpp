@@ -76,7 +76,10 @@ void Raptor::move(direction dir)
             return;
         }
         // out of scene prevention, remove later
-        if (x() - getSpeed() < 0)  setPos(0, y());
+        if (x() - getSpeed() < 0) {
+            setPos(0, y());
+            flipMovingDirection();
+        }
         else setPos(x()- getSpeed(), y());
 
         // in case moving rightward:
@@ -100,7 +103,10 @@ void Raptor::move(direction dir)
             return;
         }
         // out of scene prevention, remove later
-        if (x() + getWidth() + getSpeed() > scene()->width())  setPos(scene()->width() - getWidth(), y());
+        if (x() + getWidth() + getSpeed() > scene()->width()) {
+            setPos(scene()->width() - getWidth(), y());
+            flipMovingDirection();
+        }
         else setPos(x()+ getSpeed(), y());
     }
 }
@@ -131,20 +137,6 @@ void Raptor::advance(int step)
     if (getSpeed() < MAX_SPEED) setSpeed(getSpeed() + horizontalAcceleration);
 
 }
-
-// returns the direction that the raptor is moving towards
-enum direction Raptor::getMovingDirection()
-{
- return movingDirection;
-}
-
-// override the shape of the character for better hitbox detection
-/*QPainterPath Raptor::shape() const
-{
-    QPainterPath path;
-    path.addRect(56, 0, 133-56, getHeight());
-    return path;
-}*/
 
 int Raptor::type() const{
     return Type;

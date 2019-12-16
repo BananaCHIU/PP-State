@@ -23,11 +23,6 @@ Dog::Dog(direction movingDirection): Character( QPixmap(":/images/res/dog_0.png"
     this->movingDirection = movingDirection;
 }
 
-enum direction Dog::getMovingDirection()
-{
-    return movingDirection;
-}
-
 void Dog::flipMovingDirection()
 {
     // change the moving direction of the dog
