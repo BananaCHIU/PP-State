@@ -4,6 +4,7 @@
 #include "Character.h"
 #include "Bullet.h"
 #include <QObject>
+#include <QMediaPlayer>
 
 class PoCar : public Character{
     Q_OBJECT
@@ -28,6 +29,7 @@ private:
     int anim_count = 0;         // for animation
     enum direction facingDirection{RIGHT};
     QTimer * shootTimer;
+    QMediaPlayer sound;
 };
 
 #endif // POCAR_H

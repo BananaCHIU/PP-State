@@ -72,8 +72,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     player->setFocus();
     player->setPos(200, scene->height() / 2);
     q_char->enqueue(player);
-    // temp
-    cout << q_char->getSize() << endl;
+
     connect(player, SIGNAL(playerIsDead()), this, SLOT(gameOver()));
 
     connect(player, SIGNAL(backedHome()), this, SLOT(gameWin()));
@@ -122,25 +121,23 @@ void Game::checkForDelete()
             || item->pos().y() + item->boundingRect().height() <= 0
             || item->pos().x() <= (scene->views().first()->horizontalScrollBar()->value()) - 64 * 3) //current distance: 0 block
         {
-            cout << "Exist item which should be deleted" << endl;
             scene->removeItem(item);
             switch (item->type())
             {
                 case Block::Type:
                     if(q_block->deleteNode(static_cast<Block*>(item)))
                     {
-                        cout << "Non-base Block is deleted" << endl;
+
                     }
                     if(q_baseBrick->deleteNode(static_cast<Block*>(item)))
                     {
-                        cout << "Base Block is deleted" << endl;
+
                     }
                     break;
                 case Bullet::Type:
                     if(list_bullet->removeOne(static_cast<Bullet*>(item)))
                     {
-                        //static_cast<Bullet*>(item)->emit hitBlock();
-                        cout << "Bullet is deleted" << endl;
+
                     }
                     break;
                 case Dog::Type:
@@ -148,7 +145,7 @@ void Game::checkForDelete()
                 case PoCar::Type:
                     if(q_char->deleteNode(static_cast<Character*>(item)))
                     {
-                        cout << "Character is deleted" << endl;
+
                     }
                     break;
             }
@@ -169,7 +166,7 @@ void Game::gravity()
                 } else {
                     p->data->setPos(p->data->x(),p->data->y() + p->data->getVerticalVelocity());
                     p->data->setVerticalVelocity(p->data->getVerticalVelocity() + verticalAcceleration);
-                    //cout << player->getVerticalVelocity() << endl;
+
                 }
             } else if (p->data->getVerticalVelocity() >= 0){
                 if (p->data->collide(DOWNWARD)){
@@ -236,7 +233,7 @@ void Game::update(){
         }
     }else if(player->getKeyMap().value(Qt::Key_Space)){
         // temp
-        cout << q_char->getSize() << endl;
+
         }
 }
 

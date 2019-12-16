@@ -60,6 +60,7 @@
         <file>res/jump.wav</file>
         <file>res/jump.mp3</file>
         <file>res/bgm_game.mp3</file>
+        <file>res/shooting.wav</file>
     </qresource>
     <qresource prefix="/coordinates">
         <file>coordinates/coorBrick.txt</file>
