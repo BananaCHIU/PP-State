@@ -15,7 +15,7 @@ Player::Player() : Character(QPixmap(":/images/res/sprite_0.png"), 65, 68){
         sprites[i] = QPixmap(QString::fromStdString(":/images/res/sprite_" + to_string(i)+ ".png"));
     }
     sound_jump.setMedia(QUrl("qrc:/music/res/jump.mp3"));
-    sound_jump.setVolume(5);
+    sound_jump.setVolume(10);
 }
 
 // accessor

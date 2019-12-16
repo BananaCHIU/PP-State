@@ -17,9 +17,8 @@ Queue<type>::Queue(type* x) {
 template<typename type>
 Queue<type>::~Queue()
 {
-    while(!isEmpty())
-    {
-        dequeue();
+    for(Node<type>* p = head; p != nullptr; p = p->next){
+        delete p;
     }
 }
 

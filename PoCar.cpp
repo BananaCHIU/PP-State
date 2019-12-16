@@ -19,7 +19,7 @@ PoCar::PoCar(direction facing): Character(QPixmap(":/images/res/car_0.png"), 217
     sprites[1] = QPixmap(QString::fromStdString(":/images/res/car_1.png"));
 
     sound.setMedia(QUrl("qrc:/music/res/shooting.wav"));
-    sound.setVolume(1);
+    sound.setVolume(2);
 
     setVerticalVelocity(0.0);
     setSpeed(0.0);

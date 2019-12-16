@@ -54,7 +54,7 @@ void Menu::createMenu()
     //BGM
     music = new QMediaPlayer();
     music->setMedia(QUrl("qrc:/music/res/bgm_menu.mp3"));
-    music->setVolume(40);
+    music->setVolume(70);
     music->play();
 
     // Create the playbutton, make "this" the parent
@@ -104,15 +104,10 @@ void Menu::createMenu()
 void Menu::handlePlayButton()
 {
     music->stop();
-    //QSplashScreen *splash = new QSplashScreen;
-    //splash->setPixmap(QPixmap(":/images/res/bg_load.png")); // splash picture
+
 
     Game* game = new Game();
 
-    //QTimer::singleShot(3000, game, SLOT(show()));
-
-    //close();
-    //game->show();
     movie = new QMovie(":/images/res/load.gif");
     processLabel = new QLabel(nullptr);
 

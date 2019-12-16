@@ -81,15 +81,20 @@ Game::Game(QWidget *parent) : QGraphicsView(){
 }
 
 Game::~Game(){
+    delete scene;
+    //queue
     delete q_block;
     delete q_baseBrick;
     delete q_char;
     delete list_bullet;
     delete player;
+    //music
     delete gwMusic;
     delete goMusic;
     delete gameMusic;
-    delete house;
+    //game item
+
+    delete timer;
 }
 
 void Game::startTimer(){
@@ -241,17 +246,17 @@ void Game::gameSoundInit(){
     //bgm
     gameMusic = new QMediaPlayer();
     gameMusic->setMedia(QUrl("qrc:/music/res/bgm_game.mp3"));
-    gameMusic->setVolume(20);
+    gameMusic->setVolume(40);
 
     //Game Over
     goMusic = new QMediaPlayer();
     goMusic->setMedia(QUrl("qrc:/music/res/go.wav"));
-    goMusic->setVolume(20);
+    goMusic->setVolume(40);
 
     //Game Win
     gwMusic = new QMediaPlayer();
     gwMusic->setMedia(QUrl("qrc:/music/res/gw.wav"));
-    gwMusic->setVolume(10);
+    gwMusic->setVolume(20);
 }
 
 void Game::loadBrick(){
@@ -282,6 +287,7 @@ void Game::loadTrigger(){
     foreach (QString trigData,QString(triggerFile.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
         loadTrigChar(trigData);
     }
+    triggerFile.close();
 }
 
 void Game::loadTrigChar(QString trigData)

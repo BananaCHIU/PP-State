@@ -57,6 +57,7 @@ void Trigger::triggered()
         }
     }
     scene()->removeItem(this);
+    delete this;
 }
 
 int Trigger::type() const
