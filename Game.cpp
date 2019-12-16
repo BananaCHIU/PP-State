@@ -7,6 +7,7 @@
 #include "Character.h"
 #include "menu.h"
 #include "House.h"
+#include "PoCar.h"
 
 #include <math.h>
 #include <iostream>
@@ -70,7 +71,8 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     player->setFocus();
     player->setPos(200, scene->height() / 2);
     q_char->enqueue(player);
-
+    // temp
+    cout << q_char->getSize() << endl;
     connect(player, SIGNAL(playerIsDead()), this, SLOT(gameOver()));
 
     connect(player, SIGNAL(backedHome()), this, SLOT(gameWin()));
@@ -108,7 +110,8 @@ void Game::checkForDelete()
         if (item->type() != Block::Type
             && item->type() != Bullet::Type
             && item->type() != Dog::Type
-            && item->type() != Raptor::Type)
+            && item->type() != Raptor::Type
+            && item->type() != PoCar::Type)
             continue;
 
         //Condition 1: Character fell out of the scene
@@ -141,6 +144,7 @@ void Game::checkForDelete()
                     break;
                 case Dog::Type:
                 case Raptor::Type:
+                case PoCar::Type:
                     if(q_char->deleteNode(static_cast<Character*>(item)))
                     {
                         cout << "Character is deleted" << endl;
@@ -230,10 +234,9 @@ void Game::update(){
             centerOn(player);
         }
     }else if(player->getKeyMap().value(Qt::Key_Space)){
-        //gameWin();
-        cout << horizontalScrollBar()->value() + getWinWidth() << endl;
-        cout << static_cast<int>(player->x() / 64) << "  " << static_cast<int>(-(player->y() - WIN_HEIGHT) / 64 )<< endl;
-    }
+        // temp
+        cout << q_char->getSize() << endl;
+        }
 }
 
 void Game::gameSoundInit(){
@@ -291,7 +294,7 @@ void Game::loadTrigChar(QString trigData)
     // count data with matching index
     int size = 0;
     foreach (QString characterData,QString(trigCharFile.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
-        ++size;
+        if (trigData.section(" ",2,2).toInt() == characterData.section(" ",0,0).toInt()) ++size;
     }
     trigCharFile.close();
 

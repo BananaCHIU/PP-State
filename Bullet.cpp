@@ -42,10 +42,6 @@ void Bullet::move(direction dir)
         }
         // out of scene case
         if (x() + getSpeed() > scene()->views().first()->horizontalScrollBar()->value() + static_cast<Game*>(scene()->views().first())->getWinWidth())  {
-            cout << "bullet x:" << x() << endl;
-            cout << "bullet x + speed:" << x() + getSpeed() << endl;
-            cout << "win wdith:" << static_cast<Game*>(scene()->views().first())->getWinWidth() << endl;
-            cout << scene()->views().first()->horizontalScrollBar()->value() + static_cast<Game*>(scene()->views().first())->getWinWidth() << endl;
             emit hitBlock();
             return;
         }

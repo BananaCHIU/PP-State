@@ -50,7 +50,7 @@ void Trigger::triggered()
             character->setPos(data[i].x * WIDTH, winHeight - data[i].y * HEIGHT - character->getHeight()/2);
         }
 
-        if (character != nullptr){
+       if (character != nullptr){
             // add the character to the scene and the data structure
             temp->enqueue(character);
             scene()->addItem(character);
