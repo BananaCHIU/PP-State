@@ -68,7 +68,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     player = new Player();
     player->setFlag(QGraphicsItem::ItemIsFocusable);
     player->setFocus();
-    player->setPos(200, scene->width() / 2);
+    player->setPos(200, scene->height() / 2);
     q_char->enqueue(player);
 
     connect(player, SIGNAL(playerIsDead()), this, SLOT(gameOver()));
