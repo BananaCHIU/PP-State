@@ -37,8 +37,8 @@ PoCar::~PoCar(){
 }
 
 void PoCar::shoot(){
-
-    Bullet* bullet = new Bullet(facingDirection); // shoot a bullet
+    // shoot a bullet
+    Bullet* bullet = new Bullet(facingDirection);
     if (sound.state() == QMediaPlayer::PlayingState) sound.setPosition(0);
     else if(sound.state() == QMediaPlayer::StoppedState) sound.play();
     if (facingDirection == LEFT){
@@ -50,9 +50,11 @@ void PoCar::shoot(){
                 bullet->setRotation(90);
         bullet->setPos(this->x() + this->getWidth() + bullet->getWidth()/2, this->y() + this->getHeight()/6);
     }
-
+    // signal and slot connection
     connect(bullet, SIGNAL(hitBlock()), static_cast<Game*>(scene()->views().first()), SLOT(deleteBullet()));
+    // add the bullet to the data structure for updates and management
     static_cast<Game*>(scene()->views().first())->getBulletList()->append(bullet);
+    // add the bullet to scene
     scene()->addItem(bullet);
 }
 

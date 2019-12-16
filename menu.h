@@ -6,6 +6,10 @@
 #include <QtMultimedia>
 #include <QtMultimediaWidgets>
 
+/*
+ * Menu page class
+ */
+
 namespace Ui {
 class Menu;
 }
@@ -31,9 +35,10 @@ private:
     void createMenu();
 
 private slots:
-    void handlePlayButton();
-    void handleInsButton();
-    void handleQuitButton();
+    // handles different buttons' on-click event
+    void handlePlayButton();    // play button
+    void handleInsButton();     // instruction button
+    void handleQuitButton();    // quit button
 };
 
 #endif // MENU_H

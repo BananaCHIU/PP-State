@@ -96,7 +96,9 @@ void Player::advance(int step)
 
 void Player::jump()
 {
+    // prevent in-air jumping/ infinite jumping
     if (isOnGround()){
+        // play jump sound effect
         if (sound_jump.state() == QMediaPlayer::PlayingState) sound_jump.setPosition(0);
         else if(sound_jump.state() == QMediaPlayer::StoppedState) sound_jump.play();
         setVerticalVelocity(jumpVelocity);
@@ -106,16 +108,20 @@ void Player::jump()
 
 void Player::move(enum direction dir)
 {
-    // left
+    // case moving leftwards
     if (dir == LEFT) {
+        // stops player moving when hitting blocks
         if (collide(LEFT)) return;
+        // out of scene prevention
         if ((x() - getSpeed()) < 0)  setPos(0, y());
         else setPos(x()- getSpeed(), y());
     }
 
-    //right
+    // case moving rightwards
     if (dir == RIGHT) {
+        // stops player moving when hitting blocks
         if (collide(RIGHT)) return;
+        // out of scene prevention
         if (x() + getWidth() + getSpeed() > scene()->width())  setPos(scene()->width() - getWidth(), y());
         else setPos(x()+ getSpeed(), y());
     }

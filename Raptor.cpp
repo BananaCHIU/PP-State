@@ -33,7 +33,9 @@ void Raptor::jump()
     if (isOnGround()){
         setVerticalVelocity(jumpVelocity);
         // makes further checking of isOnGround() to false in the same tick
-        setPos(x(), y()-1);this->setSpeed(1.0);
+        setPos(x(), y()-1);
+        // reset its speed
+        this->setSpeed(1.0);
     }
 }
 // handles raptor's moving behaviors
@@ -69,13 +71,12 @@ void Raptor::move(direction dir)
                 jump();
             }
         }
+        // change direction when collides with blocks
         if (collide(LEFT)) {
             flipMovingDirection();
-            //jump();
-
             return;
         }
-        // out of scene prevention, remove later
+        // out of scene cases
         if (x() - getSpeed() < 0) {
             setPos(0, y());
             flipMovingDirection();
@@ -97,12 +98,12 @@ void Raptor::move(direction dir)
                 jump();
             }
         }
+        // change direction when collides with blocks
         if (collide(RIGHT)) {
             flipMovingDirection();
-            //jump();
             return;
         }
-        // out of scene prevention, remove later
+        // out of scene cases
         if (x() + getWidth() + getSpeed() > scene()->width()) {
             setPos(scene()->width() - getWidth(), y());
             flipMovingDirection();

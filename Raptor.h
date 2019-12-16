@@ -4,9 +4,9 @@
 #include "Character.h"
 /*
  * A Raptor is a character will slow initial horizontal speed.
- * It speeds up as it moves.
+ * It accelerates until it jumps or reaches its max speed.
  * When there is a block in front of it, it will try to jump on it.
- * Its not strong enough to jump on blocks, so it changes its direction.
+ * Its not strong enough to jump on blocks, so it changes its direction afterwards.
  * It slows down after jumping.
  * It kills player when they collide.
  */

@@ -56,6 +56,7 @@ void Trigger::triggered()
             scene()->addItem(character);
         }
     }
+    // self destruction
     scene()->removeItem(this);
     delete this;
 }

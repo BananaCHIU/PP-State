@@ -4,6 +4,10 @@
 #include <QWidget>
 #include <QPushButton>
 
+/*
+ * Instruction page class
+ */
+
 namespace Ui {
 class Instruction;
 }

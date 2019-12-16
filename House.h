@@ -4,6 +4,11 @@
 #include "Block.h"
 #include <QPixmap>
 
+/*
+ * A House is a special block representing the goal in the game.
+ * Player wins when he/she collides with the house.
+ * It does not move.
+ */
 class House : public Block{
 public:
     // used to distinguish custom pixmap items

@@ -1,13 +1,13 @@
-#include "Game.h"
-#include "Player.h"
 #include "Block.h"
-#include "float.h"
-#include "Linkedlist.h"
-#include "Trigger.h"
 #include "Character.h"
-#include "menu.h"
+#include "float.h"
+#include "Game.h"
 #include "House.h"
+#include "Linkedlist.h"
+#include "menu.h"
+#include "Player.h"
 #include "PoCar.h"
+#include "Trigger.h"
 
 #include <math.h>
 #include <iostream>
