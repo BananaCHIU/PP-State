@@ -6,7 +6,7 @@
 #include "Dog.h"
 #include "House.h"
 #include "Player.h"
-#include "Queue.h"
+#include "LinkedList.h"
 #include "Raptor.h"
 #include "Trigger.h"
 
@@ -29,7 +29,7 @@ public:
     ~Game();
     // accessors
     QList<Bullet*>* getBulletList();
-    Queue<Character>* getCharQueue();
+    Linkedlist<Character>* getCharLinkedlist();
     double getVerticalAcceleration();
     static int getWinHeight();
     static int getWinWidth();
@@ -70,8 +70,8 @@ private:
     QTimer * timer;
     QMediaPlayer* gwMusic, *goMusic,*gameMusic;
     QPixmap img_brick{":/background/res/brick_1.png"};
-    Queue<Block>* q_block, *q_baseBrick;
-    Queue<Character>* q_char;
+    Linkedlist<Block>* q_block, *q_baseBrick;
+    Linkedlist<Character>* q_char;
     QList<Bullet*>* list_bullet;
 };
 

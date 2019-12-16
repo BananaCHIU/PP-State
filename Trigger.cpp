@@ -2,7 +2,7 @@
 #include "Dog.h"
 #include "Game.h"
 #include "PoCar.h"
-#include "Queue.h"
+#include "Linkedlist.h"
 #include "Raptor.h"
 #include "Trigger.h"
 
@@ -31,7 +31,7 @@ void Trigger::setDataAt(int index, characterData data)
 void Trigger::triggered()
 {
     int winHeight = static_cast<Game*>(scene()->views().first())->getWinHeight();
-    Queue<Character>* temp = static_cast<Game*>(scene()->views().first())->getCharQueue();
+    Linkedlist<Character>* temp = static_cast<Game*>(scene()->views().first())->getCharLinkedlist();
     // add character(s) to the scene
     for (int i = 0; i < dataSize; ++i){
         Character *character = nullptr;
@@ -52,7 +52,7 @@ void Trigger::triggered()
 
        if (character != nullptr){
             // add the character to the scene and the data structure
-            temp->enqueue(character);
+            temp->append(character);
             scene()->addItem(character);
         }
     }

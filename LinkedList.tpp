@@ -1,13 +1,13 @@
 #include "Node.h"
-#include "Queue.h"
+#include "Linkedlist.h"
 #include <iostream>
 using namespace std;
 
 template<typename type>
-Queue<type>::Queue() : head(nullptr), tail(nullptr){}
+Linkedlist<type>::Linkedlist() : head(nullptr), tail(nullptr){}
 
 template<typename type>
-Queue<type>::Queue(type* x) {
+Linkedlist<type>::Linkedlist(type* x) {
     Node<type>* n = new Node<type>(x);
     head = n;
     tail = n;
@@ -15,7 +15,7 @@ Queue<type>::Queue(type* x) {
 }
 
 template<typename type>
-Queue<type>::~Queue()
+Linkedlist<type>::~Linkedlist()
 {
     for(Node<type>* p = head; p != nullptr; p = p->next){
         delete p;
@@ -23,13 +23,13 @@ Queue<type>::~Queue()
 }
 
 template<typename type>
-bool Queue<type>::isEmpty()
+bool Linkedlist<type>::isEmpty()
 {
     return size == 0 ? true : false;
 }
 
 template<typename type>
-void Queue<type>::enqueue(type* data)
+void Linkedlist<type>::append(type* data)
 {
     Node<type>* new_node = new Node<type>(data);
     if (isEmpty()) {
@@ -42,7 +42,7 @@ void Queue<type>::enqueue(type* data)
 }
 
 template<typename type>
-type* Queue<type>::dequeue()
+type* Linkedlist<type>::removehead()
 {
     if (isEmpty()) return nullptr;
     Node<type>* temp = head;
@@ -59,15 +59,15 @@ type* Queue<type>::dequeue()
 }
 
 template<typename type>
-void Queue<type>::print(){
-    if(isEmpty()) { cout << "empty queue!!" << endl; }
+void Linkedlist<type>::print(){
+    if(isEmpty()) { cout << "empty list!!" << endl; }
     for(const Node<type>* p = head; p != nullptr; p = p->next){
         cout << p->data << endl;
     }
 }
 
 template<typename type>
-bool Queue<type>::deleteNode(type* data)
+bool Linkedlist<type>::deleteNode(type* data)
 {
     Node<type>* prev = nullptr;
     Node<type>* current;
@@ -95,16 +95,16 @@ bool Queue<type>::deleteNode(type* data)
 }
 
 template<typename type>
-Node<type>* Queue<type>::getHead(){
+Node<type>* Linkedlist<type>::getHead(){
     return head;
 }
 
 template<typename type>
-Node<type>* Queue<type>::getTail(){
+Node<type>* Linkedlist<type>::getTail(){
     return tail;
 }
 
 template<typename type>
-int Queue<type>::getSize(){
+int Linkedlist<type>::getSize(){
     return size;
 }

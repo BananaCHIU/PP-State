@@ -1,23 +1,23 @@
-#ifndef QUEUE_H
-#define QUEUE_H
+#ifndef LINKEDLIST_H
+#define LINKEDLIST_H
 
 #include "Node.h"
 
 template <typename type>
-class Queue{
+class Linkedlist{
     Node<type> *head {nullptr};
     Node<type> *tail {nullptr};
     int size {0};
 
 public:
-    Queue();
-    Queue(type* x);
-    ~Queue();
+    Linkedlist();
+    Linkedlist(type* x);
+    ~Linkedlist();
 
     void print();
     bool isEmpty();
-    void enqueue(type* data);
-    type* dequeue();
+    void append(type* data);
+    type* removehead();
     bool deleteNode(type*);
 
     Node<type>* getHead();
@@ -25,5 +25,5 @@ public:
     int getSize();
 };
 
-#include "Queue.tpp"
-#endif // QUEUE_H
+#include "LinkedList.tpp"
+#endif // LINKEDLIST_H

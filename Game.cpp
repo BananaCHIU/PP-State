@@ -2,7 +2,7 @@
 #include "Player.h"
 #include "Block.h"
 #include "float.h"
-#include "Queue.h"
+#include "Linkedlist.h"
 #include "Trigger.h"
 #include "Character.h"
 #include "menu.h"
@@ -44,9 +44,9 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     centerOn(0,0);
     this->setAttribute(Qt::WA_DeleteOnClose);
 
-    q_block = new Queue<Block>();
-    q_baseBrick = new Queue<Block>();
-    q_char = new Queue<Character>();
+    q_block = new Linkedlist<Block>();
+    q_baseBrick = new Linkedlist<Block>();
+    q_char = new Linkedlist<Character>();
     list_bullet = new QList<Bullet*>();
 
     gameSoundInit();
@@ -56,7 +56,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
         if(((i>=14) && (i<=16)) || ((i>=27) && (i<=30)) || ((i>=42) && (i<=44)) ||
                 ((i>=58) && (i<=68)) || ((i>=88) && (i<=91))) continue;
         Block* brick = new Block(img_brick, i, 1);
-        q_baseBrick->enqueue(brick);
+        q_baseBrick->append(brick);
     }
 
     loadBrick();
@@ -71,7 +71,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
     player->setFlag(QGraphicsItem::ItemIsFocusable);
     player->setFocus();
     player->setPos(200, scene->height() / 2);
-    q_char->enqueue(player);
+    q_char->append(player);
 
     connect(player, SIGNAL(playerIsDead()), this, SLOT(gameOver()));
 
@@ -82,7 +82,7 @@ Game::Game(QWidget *parent) : QGraphicsView(){
 
 Game::~Game(){
     delete scene;
-    //queue
+    //lists
     delete q_block;
     delete q_baseBrick;
     delete q_char;
@@ -266,7 +266,7 @@ void Game::loadBrick(){
     //Read Coordinates
     foreach (QString i,QString(f.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts)){
         Block* brick = new Block(img_brick, i.section(" ",0,0).toInt() , i.section(" ",1,1).toInt());
-        q_block->enqueue(brick);
+        q_block->append(brick);
     }
     f.close();
 }
@@ -349,19 +349,19 @@ void Game::gameOver(){
 
     QGraphicsItem* temp;
     while(!q_baseBrick->isEmpty()){
-        temp = q_baseBrick->dequeue();
+        temp = q_baseBrick->removehead();
         scene->removeItem(temp);
         delete temp;
     }
 
     while(!q_block->isEmpty()){
-        temp = q_block->dequeue();
+        temp = q_block->removehead();
         scene->removeItem(temp);
         delete temp;
     }
 
     while(!q_char->isEmpty()){
-        temp = q_char->dequeue();
+        temp = q_char->removehead();
         scene->removeItem(temp);
         delete temp;
     }
@@ -398,19 +398,19 @@ void Game::gameWin(){
 
     QGraphicsItem* temp;
     while(!q_baseBrick->isEmpty()){
-        temp = q_baseBrick->dequeue();
+        temp = q_baseBrick->removehead();
         scene->removeItem(temp);
         delete temp;
     }
 
     while(!q_block->isEmpty()){
-        temp = q_block->dequeue();
+        temp = q_block->removehead();
         scene->removeItem(temp);
         delete temp;
     }
 
     while(!q_char->isEmpty()){
-        temp = q_char->dequeue();
+        temp = q_char->removehead();
         scene->removeItem(temp);
         delete temp;
     }
@@ -464,7 +464,7 @@ void Game::keyReleaseEvent(QKeyEvent *e)
     player->setKeyValue(e->key(), false);
 }
 
-Queue<Character>* Game::getCharQueue()
+Linkedlist<Character>* Game::getCharLinkedlist()
 {
     return q_char;
 }
