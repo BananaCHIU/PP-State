@@ -165,7 +165,7 @@ void Game::gravity()
             if(p->data->getVerticalVelocity() < 0){
                 //upward
                 if (p->data->collide(UPWARD)) {
-                    player->setVerticalVelocity(0.0);
+
                 } else {
                     p->data->setPos(p->data->x(),p->data->y() + p->data->getVerticalVelocity());
                     p->data->setVerticalVelocity(p->data->getVerticalVelocity() + verticalAcceleration);

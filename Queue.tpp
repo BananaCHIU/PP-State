@@ -76,15 +76,17 @@ bool Queue<type>::deleteNode(type* data)
     {
         if(current->data == data)
         {
-            if (current == head)
-            {
-                head = head->next;
-            }
-            else
-            {
+            if ((head != nullptr) && (head == tail)){
+                head = tail = nullptr;
+            }else if (current == head){
+                head = current->next;
+            } else if (current == tail){
+                tail = prev;
+                tail->next = nullptr;
+                prev->next = current->next;
+            }else{
                 prev->next = current->next;
             }
-            cout << current->data << " will be deleted" << endl;
             delete current;
             --size;
             return true;
